@@ -1,0 +1,4 @@
+audit_id,round_name,audit_type,auditor_name,local_foranea,country_name,location_number,daypart,week_day,date_visit,date_visit_end,visit_duration,release_duration,bs_score,fs_score,bs_fs,overall_score,critics
+1510,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",1384,Dinner,Sunday,"2023-09-24 18:47:13","2023-09-24 20:21:28",1,31,0,5.0,5,A,0
+1519,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",1687,Snack,Sunday,"2023-09-24 16:12:20","2023-09-24 18:31:32",2,33,0,12.0,12,B,0
+1516,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",1241,Lunch,Sunday,"2023-09-24 13:33:02","2023-09-24 15:58:50",2,36,0,9.0,9,A,0

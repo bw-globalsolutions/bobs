@@ -1,0 +1,61 @@
+<?php
+    function new_user_notice_fn($data){
+
+        
+        $mensaje = "<!DOCTYPE html>
+                    <html lang='en'>
+                        <head>
+                            <meta charset='UTF-8'>
+                            <meta name='viewport' content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'>
+                            <title>New access generated</title>
+                        </head>
+                        <body>
+                            <table border='0' align='left' cellpadding='3' cellspacing='2'>
+                                <tbody>
+                                    <tr>
+                                        <td style='padding:5px;border:solid 1px #eeeeee;font-size:12px'>
+                                            <table width='100%' border='0' cellspacing='0' cellpadding='5' style='font-size:11px;font-family:Arial,Helvetica,sans-serif'>
+                                                <tbody>
+                                                    <tr><td width='717'></td></tr>
+                                                    <tr><td style='padding:10px;background:#006938;color:#ffffff;font-size:11px'>
+                                                        <span>We inform you that an access to the auditing platform has been generated</span>
+                                                    </td></tr>
+                                                    <tr>
+                                                        <td style='font-size:14px;padding:0px'>
+                                                            <div style='border:1px solid #eee;padding:10px'>
+                                                                <h3>Access by URL</h3>
+                                                                <hr style='margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee'>
+                                                                <div>
+
+                                                                    Good day!
+
+                                                                    Please access this link: <b><a href=' ".base_url() . "/login/resetPassword?token=" . $data['token']."'> ".base_url() . "/login/resetPassword?token=" . $data['token']."</a></b> so you can reset your password and log in to the PRIDE audit platform.
+                                                                        
+                                                                    Thank you!
+
+                                                                   
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Created:</b> ".date('M d - h:i', time())."</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </body>
+                    </html> ";
+        return $mensaje;
+
+
+
+        
+    }
+?>
+
+
+

@@ -1,0 +1,44 @@
+<?php 
+    headerTemplate($data);
+    getModal('modalImage', null);
+    global $fnT;
+?>
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1>
+                <i class="fa fa-camera" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
+            </h1>
+            <p><?=$fnT('View the photos corresponding to the audit')?></p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><i class="fa fa-list-ol fa-lg"></i></li>
+            <li class="breadcrumb-item"><a href="<?=base_url()?>/<?=$data['page_name']?>"><?=$data['page_title']?></a></li>
+        </ul>
+    </div>
+    <? headerTemplateAudits($_GET['id'], 'Photography') ?>
+    <div class="tile">
+        <div class="tile-body">
+        <? if(!empty($data['files'])): ?>
+            <ul class="list-group list-group-flush">
+                <? foreach($data['files'] as $type => $files): ?>
+                    <li class="list-group-item">
+                        <h2 class="h4 mb-3"><?=$fnT($type)?>:</h2>
+                        <div class="row">
+                            <? foreach($files as $f): ?>
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-6 mb-2 cr-pointer" style="height: 180px" data-toggle="tooltip" data-placement="top" title="<?=$f['name']?>">
+                                    <img class="h-100 w-100 of-cover" src="<?=$f['url']?>" onclick="openImage(this, '<?=$f['name']?>', '<?=$type?>', <?=$f['reference_id']?>)">
+                                </div>
+                            <? endforeach ?>
+                        </div>
+                    </li>
+                <? endforeach ?>
+            </ul>
+        <? else: ?>
+            <h2 class="h4 mb-3"><?=$fnT('There are no images to show')?></h2>
+        <? endif ?>
+        </div>
+    </div>
+    <a class="back-to-top"><i class="fa fa-arrow-up"></i></a>
+</main>
+<?php footerTemplate($data);?>

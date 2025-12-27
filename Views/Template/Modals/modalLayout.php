@@ -1,0 +1,2 @@
+<? global $fnT; ?>
+<!-- Modal -->

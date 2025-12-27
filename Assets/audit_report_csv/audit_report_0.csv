@@ -1,0 +1,9 @@
+audit_id,round_name,audit_type,auditor_name,local_foranea,country_name,location_number,daypart,week_day,date_visit,date_visit_end,visit_duration,release_duration,bs_score,fs_score,bs_fs,overall_score,critics
+1498,"Round 3 2023",Standard,"César Garibay *",Foranea,"United Kingdom",2120,Snack,Saturday,"2023-09-30 16:45:24","2023-09-30 18:56:29",2,16,12.0,9.0,21,C,0
+1446,"Round 3 2023",Standard,"Jesica  Jiménez Vivanco",Foranea,Mexico,1716,Lunch,Saturday,"2023-09-30 13:30:44","2023-09-30 15:55:30",2,7,0,14.0,14,B,0
+1418,"Round 3 2023",Standard,"Jesica  Jiménez Vivanco",Foranea,Mexico,1714,Dinner,Friday,"2023-09-29 17:57:32","2023-09-29 20:52:43",2,26,8.0,27.0,35,F,0
+1417,"Round 3 2023",Standard,"Jesica  Jiménez Vivanco",Foranea,Mexico,1615,Snack,Friday,"2023-09-29 14:40:23","2023-09-29 16:59:08",2,30,3.0,13.0,16,C,0
+1505,"Round 3 2023",Standard,"Enzo Guiseppe   De Nubila Morales",Foranea,"United Kingdom",7036,Lunch,Friday,"2023-09-29 12:12:03","2023-09-29 14:51:27",2,44,11.0,9.0,20,C,0
+1514,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",2224,Snack,Thursday,"2023-09-28 15:51:03","2023-09-28 17:28:43",1,53,5.0,2.0,7,A,0
+1535,"Round 3 2023",Standard,"Juhaina  Khalilieh Castro",Local,Mexico,1561,Snack,Thursday,"2023-09-28 15:09:05","2023-09-28 17:11:41",2,67,0,38.0,38,F,1
+1517,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",2225,Snack,Thursday,"2023-09-28 13:06:18","2023-09-28 14:20:36",1,56,3.0,4.0,7,A,0

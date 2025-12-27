@@ -1,0 +1,23 @@
+.bg-ws{
+    background-color: #F2F3F4;
+}
+
+th{
+    text-align: center;
+}
+
+#tableLeadership tbody td:nth-child(n+3):nth-child(-n+10){
+    background-color: #F2F3F4;
+}
+
+#tableLeadership tfoot tr{
+    background-color: #82E0AA;
+}
+
+.raphael-group-86-bar-hot rect {
+    cursor: pointer;
+}
+
+.raphael-group-195-bar-hot rect {
+    cursor: pointer;
+}

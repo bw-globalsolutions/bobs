@@ -1,0 +1,11 @@
+audit_id,round_name,audit_type,auditor_name,local_foranea,country_name,location_number,daypart,week_day,date_visit,date_visit_end,visit_duration,release_duration,bs_score,fs_score,bs_fs,overall_score,critics
+1528,"Round 3 2023",Self-Evaluation,"Isidro Flores Flores",Local,Mexico,1640,,Wednesday,"2023-09-27 15:54:04","2023-09-27 23:59:59",8,-6,2.0,10.0,12,B,0
+1522,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",7019,Dinner,Tuesday,"2023-09-26 18:28:35","2023-09-26 20:03:13",1,15,0,4.0,4,A,0
+1513,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",7021,Snack,Tuesday,"2023-09-26 15:58:45","2023-09-26 17:39:15",1,18,2.0,8.0,10,B,0
+1442,"Round 3 2023",Standard,"Montserrat González Guitiérrez",Local,Mexico,1489,Snack,Tuesday,"2023-09-26 15:05:17","2023-09-26 17:21:24",2,17,3.0,21.0,24,C,0
+1523,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",1845,Lunch,Tuesday,"2023-09-26 13:20:18","2023-09-26 15:46:11",2,7,5.0,9.0,14,B,0
+1507,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",2371,Dinner,Monday,"2023-09-25 18:26:31","2023-09-25 20:20:57",1,26,0,4.0,4,A,0
+1508,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",1432,Snack,Monday,"2023-09-25 15:49:31","2023-09-25 17:48:43",1,29,4.0,5.0,9,A,0
+1524,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",2167,Lunch,Monday,"2023-09-25 13:18:35","2023-09-25 15:37:21",2,31,1.0,6.0,7,A,0
+1407,"Round 3 2023",Standard,"Gabriela Margarita Ojeda Martínez",Local,Mexico,722,Lunch,Monday,"2023-09-25 13:18:04","2023-09-25 15:29:11",2,31,12.0,28.0,40,F,0
+1428,"Round 3 2023",Standard,"Jesús De la Cruz Torres",Foranea,Mexico,1744,Lunch,Sunday,"2023-09-24 12:40:58","2023-09-24 16:34:01",3,54,7.0,16.0,23,C,0

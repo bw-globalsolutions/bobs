@@ -1,0 +1,2 @@
+audit_id,round_name,audit_type,auditor_name,local_foranea,country_name,location_number,daypart,week_day,date_visit,date_visit_end,visit_duration,release_duration,bs_score,fs_score,bs_fs,overall_score,critics
+1531,"Round 3 2023",Self-Evaluation,"Isidro Flores Flores",Local,Mexico,1424,,Wednesday,"2023-09-27 21:32:28","2023-09-27 23:59:59",2,-1,2.0,10.0,12,B,0

@@ -1,0 +1,5 @@
+audit_id,round_name,audit_type,auditor_name,local_foranea,country_name,location_number,daypart,week_day,date_visit,date_visit_end,visit_duration,release_duration,bs_score,fs_score,bs_fs,overall_score,critics
+1503,"Round 3 2023",Standard,"Enzo Guiseppe   De Nubila Morales",Foranea,"United Kingdom",2155,Snack,Thursday,"2023-09-28 14:04:49","2023-09-28 18:07:54",4,12,10.0,10.0,20,C,0
+1497,"Round 3 2023",Standard,"César Garibay *",Foranea,"United Kingdom",2308,Dinner,Wednesday,"2023-09-27 16:44:29","2023-09-27 18:19:03",1,35,14.0,7.0,21,C,0
+1504,"Round 3 2023",Standard,"Enzo Guiseppe   De Nubila Morales",Foranea,"United Kingdom",2309,Dinner,Wednesday,"2023-09-27 16:15:43","2023-09-27 19:38:58",3,32,3.0,13.0,16,C,0
+1496,"Round 3 2023",Standard,"César Garibay *",Foranea,"United Kingdom",1709,Lunch,Wednesday,"2023-09-27 12:23:57","2023-09-27 14:14:27",1,37,9.0,14.0,23,C,0

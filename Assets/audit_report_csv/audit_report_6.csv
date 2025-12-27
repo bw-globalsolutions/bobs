@@ -1,0 +1,7 @@
+audit_id,round_name,audit_type,auditor_name,local_foranea,country_name,location_number,daypart,week_day,date_visit,date_visit_end,visit_duration,release_duration,bs_score,fs_score,bs_fs,overall_score,critics
+1512,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",7010,Lunch,Thursday,"2023-09-28 11:27:16","2023-09-28 12:58:21",1,35,6.0,5.0,11,B,0
+1518,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",2168,Dinner,Wednesday,"2023-09-27 18:31:47","2023-09-27 20:13:29",1,51,3.0,9.0,12,B,0
+1445,"Round 3 2023",Standard,"Jesús De la Cruz Torres",Foranea,Mexico,820,Snack,Wednesday,"2023-09-27 16:48:12","2023-09-27 19:40:55",2,52,4.0,14.0,18,C,0
+1431,"Round 3 2023",Standard,"Jonathan González Ordoñez",Foranea,Mexico,1543,Snack,Wednesday,"2023-09-27 16:39:29","2023-09-27 19:00:16",2,52,4.0,31.0,35,F,1
+1511,"Round 3 2023",Standard,"Adrián García Furtado",Foranea,"United Arab Emirates",2332,Snack,Wednesday,"2023-09-27 15:58:48","2023-09-27 18:26:10",2,52,0,10.0,10,B,0
+1413,"Round 3 2023",Standard,"Veronica Alejandra Alvárez García",Local,Mexico,2330,Lunch,Wednesday,"2023-09-06 13:18:09","2023-09-28 14:58:21",529,31,0,5.0,5,A,0

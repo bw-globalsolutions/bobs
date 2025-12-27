@@ -1,0 +1,4 @@
+.vscode
+Secrets.php
+Config/Secrets.php
+.DS_Store

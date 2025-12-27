@@ -1,0 +1,64 @@
+#login-bg{
+    background: #ffffff url("/Assets/images/background-login-Bobs.jpg") no-repeat left center / cover;
+}
+
+#login-bg{
+    height: 100vh;
+}
+
+#login-wrapper form{
+    max-width: 400px;
+}
+
+#login-wrapper input:not([type=checkbox]){
+    border-left: 10px solid #009688 !important;
+    height: 50px;
+}
+
+#login-bg-label *{
+    text-shadow: 1px 1px 3px black;
+    max-width: 525px;
+}
+
+#argui-log {
+    bottom: 10px;
+    left: 10px;
+    filter: drop-shadow(0 0 3px #FFF5);
+}
+
+#btn-language{
+    bottom: 10px;
+    right: 10px;
+}
+ 
+#login-wrapper input::placeholder {
+    color: #B2B7BB;
+}
+
+#login-wrapper input:focus {
+    outline:none;
+}
+
+#login-wrapper [type=submit]{
+    border-radius: 50px;
+}
+
+
+@media (max-width: 991.98px) {
+    #login-bg-label{
+        text-align: center;
+        margin-top: -40px;
+    }
+    #login-bg{
+        height: 350px;
+    }
+    #login-wrapper form{
+        margin-top: -80px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    #login-bg{
+        height: 250px;
+    }
+}

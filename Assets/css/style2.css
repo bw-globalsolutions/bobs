@@ -1,0 +1,72 @@
+.app-sidebar__toggle::before{
+/*	display: none;*/
+}
+.headerRegister, .header-primary{
+	background: #009688;
+	color: #FFF;
+}
+.headerUpdate{
+	background: #007bff;
+	color: #FFF;
+}
+.notBlock{
+	display: none;
+}
+/*Estilos login*/
+#divLoading{
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgba(254,254,255, .65);
+	z-index: 9999;
+	display: none;
+}
+#divLoading img{
+	width: 50px;
+	height: 50px;
+}
+.required{
+	color: red;
+	font-size: 13pt;
+	font-weight: bold;
+}
+@media (max-width: 576px) {
+  #topCritical, #criticalDetail, #totalFindings, #findingTrend, #cumplimientoAuto, #detalleDM, #detalleDM3, #detalleDMplan {
+    max-width: 340px;
+  }
+
+  #frecuenciaOpFSA, #fod1, #frecuenciaOpSEA, #fod2, #frecuenciaFSA, #fod3, #frecuenciaSEA, #fod4, #tab1, #porcentajeDictamen, #top10pregunta, #top10pais, #top10auditor {
+    max-width: 320px;
+  }
+}
+
+.dropdown-menu .show {
+	max-height: 366.2px; will-change: transform; top: 0px; left: 0px;
+}
+
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding-top: 70px;
+  width: 230px;
+  overflow: auto;
+  z-index: 1050;
+  background-color: #FFFFFF;
+  -webkit-box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
+  -webkit-transition: left 0.3s ease,
+ width 0.3s ease;
+  -o-transition: left 0.3s ease,
+ width 0.3s ease;
+  transition: left 0.3s ease,
+ width 0.3s ease;
+ background-image: url("../images/logo_pleca.png");
+ background-repeat: no-repeat;
+ background-position: bottom left;
+}
