@@ -5,7 +5,13 @@
         return $item != $data['audit']['status'];
     });
 ?>
-<main class="app-content">
+<div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
     <div class="app-title">
         <div>
             <h1>
@@ -49,6 +55,17 @@
                     </div>
                 <? endif; ?>
                 <div class="col-12 col-lg-4">
+                        <form onchange="moveAuditRound(this)">
+                            <label for="input-round"><?= $fnT('Move audit round') ?></label>
+                            <select class="form-control" id="input-round" name="audit_round">
+                                <? foreach($data['rounds'] as $r): ?>
+                                    <option value="<?= $r['id'] ?>" <?=($data['round']==$r['id']?'selected':'')?>><?= $r['prefix'].' '.$r['name'].' '.$r['type'].' '.$r['country'] ?></option>
+                                <? endforeach ?>
+                            </select>
+                            <input type="hidden" name="audit_id" value="<?= $data['audit']['id'] ?>">
+                        </form>
+                    </div>
+                <div class="col-12 col-lg-4">
                     <form onchange="setSignaturePic(this)">
                         <div class="form-group">
                             <label for="signature_pic"><?= $fnT('Signature image') ?> 
@@ -76,21 +93,6 @@
                         <input type="hidden" name="url_pic" id="front_door_url_pic">
                     </form>
                 </div>
-
-
-                <div class="col-12 col-lg-4">
-                    <form onchange="moveAuditRound(this)">
-                        <label for="input-round"><?= $fnT('Move audit round') ?></label>
-                        <select class="form-control" id="input-round" name="audit_round">
-                            <option value="" selected></option>
-                            <? foreach($data['rounds'] as $r): ?>
-                                <option value="<?=$r['id']?>" <?=$data['audit']['round_id']==$r['id']?'selected':NULL?>>(ID: <?=$r['id']?>) <?=$r['name']?> - <?=$r['type']?></option>
-                            <? endforeach ?>
-                        </select>
-                        <input type="hidden" name="audit_id_round" value="<?= $data['audit']['id'] ?>">
-                    </form>
-                </div>
-             
             </div>
         </div>
     </div>

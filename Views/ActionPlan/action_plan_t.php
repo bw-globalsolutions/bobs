@@ -5,7 +5,13 @@
     $arrLostQuestion = [];
     $arrLostSection = [];
 ?>
-<main class="app-content">
+<div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
     <input type="hidden" id="id_auditoria" name="id_auditoria" value="<?php echo $_GET['id']; ?>">
     <div class="app-title">
         <div>
@@ -43,7 +49,6 @@
                         <th><?=$fnT('#')?></th>
                         <th><?=$fnT('Opportunity')?></th>
                         <th><?=$fnT('Status')?></th>
-                        <th><?=$fnT('Date')?></th>
                         <th></th>
                         <th><?=$fnT('Action')?></th>
                         </tr>

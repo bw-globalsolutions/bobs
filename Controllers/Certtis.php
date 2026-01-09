@@ -172,7 +172,8 @@ class Certtis extends Controllers{
 	public function selectLineaCertis()
     {
 		$id_audit_opp = $_POST['id_audit_opp'];
-        echo json_encode($this->model->selectLineaCertis($id_audit_opp), true);
+		$certtis = $this->model->selectCertis($id_audit_opp);
+        echo json_encode($certtis, true);
     }
 
 
@@ -202,32 +203,7 @@ class Certtis extends Controllers{
 
 		
 
-
-
-		
-
 /**/
-		if($request_action > 0)
-				{
-					$arrResponse = array("status" => true, "msg" => "Data saved successfully");
-				}else{
-					$arrResponse = array("status" => false, "msg" => "It is not possible to store the data");
-				}
-			
-
-			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
-			
-	}
-
-
-	public function deleteCerttis()
-	{
-		$id_certtis = $_POST['id_certtis'];
-		
-
-		$request_action = $this->model->deleteCerttis($id_certtis);
-
-
 		if($request_action > 0)
 				{
 					$arrResponse = array("status" => true, "msg" => "Data saved successfully");

@@ -7,15 +7,19 @@ class HomeModel extends Mysql{
 		parent::__construct();
 	}
 
-	public function getAuditStatistics(){
-		
-		$sql = "SELECT a.status, COUNT(*) AS 'count' FROM audit a INNER JOIN location l ON(a.location_id = l.id) INNER JOIN round r ON(a.round_id = r.id) WHERE a.status IN('Pending', 'Completed' ,'In process') AND r.type NOT IN('Self-Evaluation') AND l.country_id IN({$_SESSION['userData']['country_id']}) AND (a.location_id IN({$_SESSION['userData']['location_id']}) OR '{$_SESSION['userData']['location_id']}'='0') GROUP BY a.status";
-		//echo $sql;
+	public function getAuditStatistics($hayFiltro=false, $strPeriodos="", $strTipos="", $strPaises=""){
+		$filtro = " AND r.name in (".$strPeriodos.") ";
+		$sql = "SELECT a.status, SUM(IF(s.value_4<1, 1, 0)) AS 'zero', COUNT(*) AS 'count' FROM audit a INNER JOIN location l ON(a.location_id = l.id) INNER JOIN round r ON(a.round_id = r.id) LEFT JOIN audit_score s ON(a.id=s.audit_id) WHERE a.status IN('Pending', 'Completed' ,'In process') ".($hayFiltro?$filtro:"")." AND r.type ".($hayFiltro?"IN ($strTipos)":"NOT IN('Self-Evaluation')")." AND l.country_id IN(".($strPaises==""?$_SESSION['userData']['country_id']:$strPaises).") AND (a.location_id IN({$_SESSION['userData']['location_id']}) OR '{$_SESSION['userData']['location_id']}'='0') GROUP BY a.status";
+
 		$request = [];
-		foreach($this->select_all($sql) as $row){
-			$request[$row['status']] = [
-				'count'		=> $row['count']
-			];
+		$result = $this->select_all($sql);
+		if($result){
+			foreach($this->select_all($sql) as $row){
+				$request[$row['status']] = [
+					'zero'	=> $row['zero'],
+					'count'		=> $row['count']
+				];
+			}
 		}
 		return $request;
 	}
@@ -53,25 +57,6 @@ class HomeModel extends Mysql{
 		$sql = "SELECT l.number, IFNULL(TIMESTAMPDIFF(MONTH, MAX(ar.date_visit), CURDATE()), 1) AS 'month' FROM location l LEFT JOIN (SELECT a.location_id, a.date_visit, r.type FROM audit a INNER JOIN round r ON(a.round_id=r.id) WHERE a.status='Completed')ar ON(ar.location_id=l.id) WHERE l.id IN($location_id) GROUP BY l.number";
 
 		$request = $this->select_all($sql);
-		return $request;
-	}
-
-	public function getAuditList($columns=[], $condition=null, $limit=false){	
-		$isGM = $_SESSION['userData']['permission']['Auditorias']['w']? "OR (status IN('Completed', 'In Process', 'Pending') AND type IN('Self-Evaluation','Standar'))" : '';
-		$isAdmin = in_array($_SESSION['userData']['role']['id'], [1,2])? '' : "AND (status IN('Completed') $isGM) ";
-		
-		if($limit){
-			$limit = "LIMIT 1000";
-		} else{
-			$limit = "";
-		}
-		
-		$query = "SELECT ". (count($columns) ? implode(',', $columns) : "*") ."
-					FROM audit_list a WHERE 
-					". ($condition ? "$condition" : '1') ." AND country_id IN({$_SESSION['userData']['country_id']}) AND (a.location_id IN({$_SESSION['userData']['location_id']}) OR '{$_SESSION['userData']['location_id']}'=0) $isAdmin 
-				ORDER BY date_visit DESC, id DESC $limit";
-		$res = new Mysql;
-		$request = $res->select_all($query);
 		return $request;
 	}
 }

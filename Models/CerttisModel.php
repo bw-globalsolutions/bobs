@@ -95,20 +95,6 @@ class CerttisModel extends Mysql {
 	}
 
 
-	public function deleteCerttis(int $id_certtis)
-	{
-
-		$query_update = "UPDATE certtis SET estatus_certtis = 0 WHERE id_certtis = $id_certtis ";
-		$arrData = array();
-		$request = $this->insert($query_update,$arrData);
-		return $request;
-
-
-	
-	
-	}
-
-
 //CERTTIS
 
 public function selectLineaCertis(int $id_audit_opp )
@@ -116,10 +102,15 @@ public function selectLineaCertis(int $id_audit_opp )
 	return $this->select_all("CALL SELECT_CERTTIS_CONCENTRADO($id_audit_opp)");
 }
 
+public function selectCertis(int $id_audit_opp){
+	$sql = "SELECT t1.comentario_certtis, DATE_FORMAT(t1.fecha_hora_certtis, '%Y-%m-%d') AS fecha_certtis, DATE_FORMAT(t1.fecha_hora_certtis, '%H:%i:%s') AS hora_certtis, t2.name nombre_usuario, t3.nombre_certtis, JSON_EXTRACT(t3.datos_tipo_certtis, '$.color') AS color, JSON_EXTRACT(t3.datos_tipo_certtis, '$.icono') AS icono FROM certtis t1 LEFT JOIN user t2 ON(t2.id = t1.id_user) LEFT JOIN ct_tipo_certtis t3 ON (t3.id_tipo_certtis = t1.id_tipo_certtis) WHERE id_audit_opp = $id_audit_opp";
+	$rs = $this->select_all($sql);
+	return $rs;
+}
+
 public function selectLineaCertisLast(int $audit_id )
 {
 	return $this->select_all("SELECT 
-								id_certtis,
 								nombre_certtis,
 								comentario_certtis,
                     			question_prefix,
@@ -140,7 +131,7 @@ public function selectLineaCertisLast(int $audit_id )
 							            INNER JOIN certtis a ON t1.id = a.id_audit_opp
 							            INNER JOIN ct_tipo_certtis b ON a.id_tipo_certtis = b.id_tipo_certtis
 										INNER JOIN audit c ON t1.audit_id = c.id
-							WHERE t1.audit_id = $audit_id AND estatus_certtis = 1
+							WHERE t1.audit_id = $audit_id 
 							ORDER BY  questionP ");
 }
 

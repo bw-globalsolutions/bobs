@@ -1,6 +1,6 @@
 <?php
 class Announced_VisitsModel extends Mysql {
-		private $intIdUsuario;
+	
 	public function __construct(){
 		parent::__construct();
 	}
@@ -136,57 +136,21 @@ class Announced_VisitsModel extends Mysql {
 		//echo $week;
 		
 		$query = "SELECT 
-					al.*, 
+					al.*, al.id as id_visit, 
 					WEEKOFYEAR(al.announced_date) select_week,
-					lo.*
+					lo.*, lo.id as location_id 
 				FROM audit_list al
 				left join location lo
 				on al.location_id = lo.id
 				where al.status = 'Pending'
-				".$condition."  
+				".$condition." AND type = 'Training-visits' 
 				order by al.id";
-		
-	//	echo $query;
 		
 		$res = new Mysql;
 		$request = $res -> select_all($query);
 		
 		return $request;
 	}
-
-
-
-	public function updateAnnouncedVisits($condition) {
-	
-	$query = "SELECT al.id
-				FROM audit_list al
-				LEFT JOIN location lo ON al.location_id = lo.id
-				WHERE al.status = 'Pending' " . $condition . "  
-				ORDER BY al.id";
-
-	$res = new Mysql;
-	$idsResult = $res->select_all($query);
-
-	if (!empty($idsResult)) {
-		
-		$idList = array_column($idsResult, 'id');
-
-		
-		$placeholders = implode(',', array_fill(0, count($idList), '?'));
-
-		$updateQuery = "UPDATE audit SET announced_mail = 1 WHERE id IN ($placeholders)";
-
-		
-		$request = $res->update($updateQuery, $idList);
-
-		return $request;
-	}
-
-	return false; 
-}
-
-
-
 
 	public function insertDataLog($args) {
 		$query = "INSERT INTO data_logs SET ";
@@ -265,19 +229,12 @@ class Announced_VisitsModel extends Mysql {
 
 	public function getFranchises($columns=[], $condition=NULL){	
 		$query = "SELECT ". (count($columns) ? implode(',', $columns) : "*") ." 
-				  FROM franchises
+				  FROM location
 				  ". ($condition ? " WHERE $condition " : '') ." 
 				  ORDER BY id DESC";
-	
+		
 		$request = $this -> select_all($query);
 		return $request;
-	}
-
-	public function setLog(int $idUser, string $accion,string $parameter){
-		$this->intIdUsuario = $idUser;
-		$sql = "INSERT INTO system_logs(user_id, module, action,parameters) VALUES (?, ?, ?,?)";
-		$request = $this->update($sql, [$this->intIdUsuario, 'Announced visit', $accion,$parameter]);
-		return $request;	
 	}
 
 }

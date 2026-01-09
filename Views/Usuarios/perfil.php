@@ -4,18 +4,32 @@
   global $fnT;
 ?>
 
-    <main class="app-content">
+    <div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
+    <div class="app-title">
+      <div>
+        <h1><i class="fa fa-user fa-lg"></i> <?=$data['page_title']?></h1>
+      </div>
+      <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item"><i class="fa fa-user fa-lg"></i></li>
+        <li class="breadcrumb-item"><a href="<?=base_url()?>/<?=$data['page_name']?>"><?=$data['page_title']?></a></li>
+      </ul>
+    </div>
       <div class="row user">
         <div class="col-md-12">
-          <div class="profile">
-            <div class="info"><img class="app-sidebar__user-avatar of-cover shadow" src="<?=$_SESSION['userData']['profile_picture']?? media() . '/images/user.png'?>" height="100" width="100" alt="User Image">
+          <div class="profile" style="display:flex; justify-content:center;">
+            <div class="info"><img class="app-sidebar__user-avatar of-cover perfil" style="max-width:300px;" src="<?=$_SESSION['userData']['profile_picture']?? media() . '/images/user.png'?>" height="200" width="200" alt="User Image">
               <h4><?=$_SESSION['userData']['name']?></h4>
               <p class="text-uppercase"><?=$_SESSION['userData']['role']['name']?></p>
             </div>
-            <div class="cover-image"></div>
           </div>
         </div>
-        <div class="col-md-3">
+        <!--<div class="col-md-3">
           <div class="tile p-0">
             <ul class="nav flex-column nav-tabs user-tabs">
               <li class="nav-item">
@@ -23,9 +37,9 @@
               </li>
             </ul>
           </div>
-        </div>
-        <div class="col-md-9">
-          <div class="tab-content">
+        </div>-->
+        <div class="" style="width:100%;">
+          <div class="tab-content" style="margin:0; position:relative; bottom:42px;">
             <div class="tab-pane active" id="user-data">
               <div class="timeline-post">
                   <table class="table table-bordered">

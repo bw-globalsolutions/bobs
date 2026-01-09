@@ -1,3 +1,4 @@
+<?php global $fnT; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,9 +15,10 @@
                         <tbody>
                             <tr><td width='717'></td></tr>
                             <tr>
-                                <td style='text-align: center; padding:10px;background:red; color:#ffffff; font-size:11px'>
+                                <td style='text-align: center; padding:10px;background:#eab54c; color:#ffffff; font-size:11px'>
                                 <span>Operational Performance Improvement Required</span></td>
                             </tr>
+                            <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-church's"></center></td></tr>
 
                             <? if (strpos($_SERVER['HTTP_HOST'], '-stage.') !== false): ?>
                                 <tr>
@@ -73,7 +75,7 @@
                             </tr>
 
                             <tr>
-                                <td><b>Created:</b> <?=date('M d - h:i', time())?></td>
+                                <td><b><?=$fnT('Created:')?></b> <?=date('M d - h:i', time())?></td>
                             </tr>
                         </tbody>
                     </table>

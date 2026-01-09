@@ -20,26 +20,69 @@ class UsuariosModel extends Mysql{
 	}
 
 	public function insertUsuario(string $name, string $email, string $brand, string $country, int $role, int $notification, int $status, string $language, string $locations=null){
+		if(in_array($role, [1,2,3,30]))$locations='0';
 		$sql = "SELECT * FROM user WHERE email = '$email'";
 		$request = $this->select_all($sql);
 		if(empty($request)){
 			$sql = "INSERT INTO user(brand_id, country_id, role_id, notification, default_language, name, email, location_id, password, status) VALUES (?,?,?,?,?,?,?,?, SHA2(LEFT(UUID(), 16), 256),?)";
 			$return = $this->update($sql, [$brand, $country, $role, $notification, $language, $name, $email, $locations, $status]);
+			$sql = "SELECT * FROM user WHERE email = '$email'";
+			$return = 0;
+			$rs = $this->select_all($sql);
+			$return = $rs[0]['id'];
 		}else{
 			$return = "exist";
 		}
 		return $return;
 	}
 
+	public function crearActualizarUser(string $name, string $email, string $brand, string $country, int $role, int $notification, int $status, string $language, string $locations=null){
+		$sql = "SELECT * FROM user WHERE email = '$email'";
+		$request = $this->select_all($sql);
+		if(empty($request)){
+			$sql = "INSERT INTO user(brand_id, country_id, role_id, notification, default_language, name, email, location_id, password, status) VALUES (?,?,?,?,?,?,?,?, SHA2(LEFT(UUID(), 16), 256),?)";
+			$return = $this->update($sql, [$brand, $country, $role, $notification, $language, $name, $email, $locations, $status]);
+			$sql = "SELECT * FROM user WHERE email = '$email'";
+			$return = 0;
+			$rs = $this->select_all($sql);
+			$return = $rs[0]['id'];
+		}else{
+			if($request[0]['location_id']!=''){
+				$arrLocations = explode(",", $request[0]['location_id']);
+			}else{
+				$arrLocations=[];
+			}
+
+			if(!in_array($locations, $arrLocations)){
+				array_push($arrLocations, $locations);
+				sort($arrLocations, SORT_NUMERIC);
+			}
+			if(count($arrLocations)>1){
+				$strLocations = implode(',', $arrLocations);
+			}else if(count($arrLocations)==1){
+				$strLocations = $arrLocations[0];
+			}else{
+				$strLocations = "";
+			}
+			
+			$sql = "UPDATE user SET brand_id=?, country_id=?, role_id=?, notification=?, default_language=?, name=?, location_id=?, status=? WHERE email = ?";
+			$return = $this->update($sql, [$brand, $country, $role, $notification, $language, $name, $strLocations, $status, $email]);
+			$sql = "SELECT * FROM user WHERE email = '$email'";
+			$return = 0;
+			$rs = $this->select_all($sql);
+			$return = $rs[0]['id'];
+		}
+		return $return;
+	}
+
 	public function selectUsuarios($isRoot)
 	{
-		$isRoot = $isRoot? '':"AND role_id NOT IN(1, 2, 17, 15)";
 		$country_set = array_reduce(array_keys($_SESSION['userData']['country']), function($acc, $item){
 			$acc .= "OR FIND_IN_SET($item, u.country_id) ";
 			return $acc;
 		}, '0 ');
 
-		$sql = "SELECT id, name, email, (SELECT GROUP_CONCAT(name SEPARATOR ', ') FROM brand WHERE FIND_IN_SET(id, u.brand_id)) AS 'brand', (SELECT GROUP_CONCAT(prefix SEPARATOR ', ') FROM country WHERE FIND_IN_SET(id, u.country_id)) AS 'country', (SELECT name FROM role WHERE id = u.role_id) AS 'role', status FROM user u WHERE 1 $isRoot AND ($country_set)";
+		$sql = "SELECT id, name, email, (SELECT GROUP_CONCAT(name SEPARATOR ', ') FROM brand WHERE FIND_IN_SET(id, u.brand_id)) AS 'brand', (SELECT GROUP_CONCAT(prefix SEPARATOR ', ') FROM country WHERE FIND_IN_SET(id, u.country_id)) AS 'country', (SELECT name FROM role WHERE id = u.role_id) AS 'role', status FROM user u WHERE 1 AND ($country_set)";
 		$request = $this->select_all($sql);
 		return $request;
 	}
@@ -53,6 +96,14 @@ class UsuariosModel extends Mysql{
         return $request;
     }
 
+	public function getUsers($condition = "1"){
+		$sql = "SELECT * FROM user WHERE ".$condition;
+		$res = new Mysql;
+        $request = $res->select_all($sql);
+        //echo $sql;
+        return $request;
+	}
+
 	public function updateStatusUsuario(int $id){
 		$sql = "UPDATE user SET status=? WHERE id = ?";
 		$res = new Mysql;
@@ -65,6 +116,13 @@ class UsuariosModel extends Mysql{
 		$this->intIdUsuario = $iduser;
 		$sql = "SELECT id, profile, name, email, (SELECT GROUP_CONCAT(name SEPARATOR ', ') FROM brand WHERE FIND_IN_SET(id, brand_id)) AS 'brand', brand_id, (SELECT GROUP_CONCAT(prefix SEPARATOR ', ') FROM country WHERE FIND_IN_SET(id, country_id)) AS 'country', (SELECT GROUP_CONCAT(name SEPARATOR ', ') FROM location WHERE FIND_IN_SET(id, location_id)) AS 'location', location_id, (SELECT level FROM role WHERE id = role_id) AS 'level', country_id, (SELECT name FROM role WHERE id = role_id) AS 'role', role_id, status, DATE_FORMAT(created, '%d-%m-%Y') as 'created', default_language, notification FROM user WHERE id = $this->intIdUsuario ";
 		//echo $sql;exit;
+		$request = $this->select($sql);
+		return $request;
+	}
+
+	public function getUsuario($columns=[], $condition='')
+	{
+		$sql = "SELECT " . (count($columns) ? implode(', ', $columns) : "*") . " FROM user " . ($condition ? " WHERE $condition " : '');
 		$request = $this->select($sql);
 		return $request;
 	}
@@ -96,6 +154,13 @@ class UsuariosModel extends Mysql{
 		return $request? 'ok' : 'error';
 	}
 
+	public function inactivarUsuario(int $iduser, int $status)
+	{
+		$sql = "UPDATE user SET status=? WHERE id = ?";
+		$request = $this->update($sql, [$status, $iduser]);
+		return $request? 'ok' : 'error';
+	}
+
 	public function updateProfile(int $id, string $name, string $email, string $language, string $profile_picture)
 	{
 		$sql = "UPDATE user SET name=?, email=?, default_language=?, profile_picture=? WHERE id = ? ";
@@ -121,8 +186,22 @@ class UsuariosModel extends Mysql{
 
 	public function setLog(int $idUser, string $accion){
 		$this->intIdUsuario = $idUser;
+		$this->accion = $accion;
 		$sql = "INSERT INTO system_logs(user_id, module, action) VALUES (?, ?, ?)";
-		$request = $this->update($sql, [$this->intIdUsuario, 'users', $accion]);
+		$request = $this->update($sql, [$this->intIdUsuario, 'users', $this->accion]);
+		return $request;	
+	}
+
+	public function setLogParameters(int $idUser, string $accion, array $array){
+		$this->intIdUsuario = $idUser;
+		date_default_timezone_set('America/Mexico_City');
+	
+		$date_log = date('Y-m-d H:i:s');
+
+		$datos= json_encode($array);
+
+		$sql = "INSERT INTO system_logs(user_id, module, action,parameters, created) VALUES (?, ?, ?, ?, ?)";
+		$request = $this->update($sql, [$this->intIdUsuario, 'users', $accion, $datos,$date_log]);
 		return $request;	
 	}
 
@@ -142,8 +221,18 @@ class UsuariosModel extends Mysql{
 
 	public function cleanUsersLocations($numbers){
 		foreach($numbers as $number){
-			$query_update = "UPDATE user SET location_id = DROP_FROM_SET((SELECT id FROM location WHERE number = ?) , location_id) WHERE FIND_IN_SET((SELECT id FROM location WHERE number = ?), location_id)";
-			$this->update($query_update, [$number, $number]);
+			$sql = "SELECT id FROM user WHERE FIND_IN_SET((SELECT id FROM location WHERE number = $number), location_id)";
+			$request = $this->select_all($sql);
+			foreach($request as $r){
+				$query_update = "UPDATE user SET location_id = DROP_FROM_SET((SELECT id FROM location WHERE number = ?) , location_id) WHERE id=?";
+				$this->update($query_update, [$number, $r['id']]);
+				$sql = "SELECT location_id FROM user WHERE id=".$r['id'];
+				$request2 = $this->select($sql);
+				if($request2['location_id']=='' || $request2['location_id']==NULL){
+					$query_update = "UPDATE user SET status=0 WHERE id=?";
+					$this->update($query_update, [$r['id']]);
+				}
+			}
 		}
 	}
 
@@ -155,7 +244,7 @@ class UsuariosModel extends Mysql{
 			$locations = [end($locations)];
 		}
 		$strLocations = implode("','", $locations);
-		
+
 		if($currLocations != false){
 			if(!empty($currLocations['lnumber']) && $role_id != 10){
 				$strLocations = "$strLocations','" . str_replace(",", "','", $currLocations['lnumber']);
@@ -163,6 +252,8 @@ class UsuariosModel extends Mysql{
 
 			$query_update = "UPDATE user SET country_id = (SELECT GROUP_CONCAT(DISTINCT country_id SEPARATOR ',') FROM location WHERE number IN('$strLocations')), role_id=?, location_id=(SELECT GROUP_CONCAT(id SEPARATOR ',') FROM location WHERE number IN('$strLocations')) WHERE email = ?";
 			$tmp = $this->update($query_update, [$role_id, $email]);
+			$query_update = "UPDATE user SET status=? WHERE email = ?";
+			$tmp2 = $this->update($query_update, [1, $email]);
 			if($tmp){
 				$request = ['action' => 'update', 'locations' => $locations];
 			}
@@ -406,11 +497,7 @@ $storePhone            = ($data['storePhone'] === '' || $data['storePhone'] === 
 $tempClosed            = ($data['tempClosed'] === '' || $data['tempClosed'] === null) ? null : str_replace("'", "", $data['tempClosed']);
 $venueType             = ($data['venueType'] === '' || $data['venueType'] === null) ? null : str_replace("'", "", $data['venueType']);
 $zip                   = ($data['zip'] === '' || $data['zip'] === null) ? null : str_replace("'", "", $data['zip']);
-$area                  = ($data['area'] === '' || $data['area'] === null) ? null : str_replace("'", "", $data['area']);
-$storeStatus           = ($data['storeStatus'] === '' || $data['storeStatus'] === null) ? null : str_replace("'", "", $data['storeStatus']);
 
-	
-	
 	
 
 
@@ -448,9 +535,7 @@ $query = "CALL CSV_VALIDACION_FEED_LOCATIONS('$addressLine1',
 											 '$storePhone', 
 											 '$tempClosed', 
 											 '$venueType', 
-											 '$zip',
-											 '$area',       
-											 '$storeStatus')";
+											 '$zip')";
 
 
 
@@ -506,24 +591,6 @@ public function locationFix(){
 
 	$res = new Mysql;
 	$request = $res -> select_all($query);
-
-
-
-
-	return $request;
-
-}
-
-public function userFix(){
-
-	$query = "UPDATE user SET status = 0 WHERE location_id ='' and status = 1 AND role_id IN(10,14,18,19,20)";
-
-	$res = new Mysql;
-	$request = $res -> select_all($query);
-
-
-
-	
 	return $request;
 
 }
@@ -584,6 +651,60 @@ public function insertLog($action){
 
 	
 
+}
+
+public function getRolAsociado($rol, $location_id){
+	if(in_array($rol, [1,2,3,30])){
+		$sql = "SELECT GROUP_CONCAT(email) as emails FROM user WHERE role_id = $rol";
+	}else{
+		$sql = "SELECT GROUP_CONCAT(email) as emails FROM user WHERE role_id = $rol AND FIND_IN_SET($location_id, location_id)";
+	}
+	$res = new Mysql;
+	$request = $res -> select_all($sql);
+	return $request[0]['emails'];
+}
+
+public function getTo($notification_id, $location_id, $esCalibracion=false, $countryStore=0){
+	$sql = "SELECT country_id FROM location WHERE id = $location_id";
+	$res = new Mysql;
+	$rs = $res -> select_all($sql); 
+	$pais = $rs[0]['country_id'];
+	$limitante = "";
+	if(in_array($notification_id, [1,2])){
+		switch($pais){
+			case 29: //Emiratos
+				$limitante="AND role_id NOT IN(23) ";
+				break;
+			case 23: //Singapoore
+
+				break;
+			case 6: //Canada
+
+				break;
+			case 1: //Mexico
+
+				break;
+		}
+	}
+	$sql = "SELECT GROUP_CONCAT(email) as emails FROM user WHERE role_id IN (SELECT role_id FROM sendEmail WHERE notification_id = $notification_id AND send=1 $limitante) AND FIND_IN_SET($location_id, location_id) > 0 AND status = 1";
+	$sql2 = "SELECT GROUP_CONCAT(email) as emails FROM user WHERE role_id IN (SELECT role_id FROM sendEmail WHERE notification_id = $notification_id AND send=1 AND role_id IN (1,2,30)) AND FIND_IN_SET($countryStore, country_id) > 0 AND status = 1";
+
+	$request = $res -> select_all($sql); //usuarios relacionados a la tienda
+	$request2 = $res -> select_all($sql2); //roles que tienen la notificacion activada pero no estan relacionados a la tienda
+	$res="";
+	if($request[0]['emails']!='' && $request[0]['emails']!=NULL){
+		$res .= $request[0]['emails'];
+	}
+	if($request2[0]['emails']!='' && $request2[0]['emails']!=NULL){
+		if($res!=""){
+			$res .=','.$request2[0]['emails'];
+		}else{
+			$res = $request2[0]['emails'];
+		}
+	}
+	if($esCalibracion) $res='mosorio@bw-globalsolutions.com,cordonez@bw-globalsolutions.com,alopez@arguilea.com,mmaximiliano@arguilea.com';
+
+	return $res;
 }
 
 

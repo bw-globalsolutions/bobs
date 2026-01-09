@@ -18,6 +18,19 @@ class Audit_LogModel extends Mysql {
 		
 		return $request;
 	}
+
+	public function getLastAudit_Log($columns=[], $condition=NULL){
+				
+		$query = "SELECT ". (count($columns) ? implode(',', $columns) : "*") ." 
+				  FROM audit_log 
+				  ". ($condition ? " WHERE $condition " : '') ." 
+				  ORDER BY id DESC";
+		
+		$res = new Mysql;
+		$request = $res -> select_all($query);
+		
+		return $request[0];
+	}
 	
 	public function insertAudit_Log($args){
 

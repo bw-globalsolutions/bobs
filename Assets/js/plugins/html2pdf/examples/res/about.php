@@ -44,7 +44,7 @@
     <br><br><br><br><br>
     <div style="text-align: center; width: 100%;">
         <br>
-        <img src="./res/logo.png" alt="Logo HTML2PDF" style="width: 150mm">
+        <img src="./res/logo.png?<?=rand(1, 15)?>" alt="Logo HTML2PDF" style="width: 150mm">
         <br>
     </div>
     <br><br><br><br><br>

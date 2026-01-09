@@ -17,7 +17,9 @@ class ModuloComunicacion extends Controllers{
 
 	public function moduloComunicacion()
 	{
-		
+		if(!$this->permission['r']){
+			header('Location: '.base_url());
+		}
 
 		$data['page_tag'] = "Manual";
 		$data['page_title'] = "Modulo de comunicacion";
@@ -26,14 +28,25 @@ class ModuloComunicacion extends Controllers{
 		
 		$data['permission'] = $this->permission;
 		$data['locations'] = selectLocation(['id', 'name', 'number', 'country_id']);
+		$data['periods'] = $this->model->getPeriods();
 		
 		$where = '';
-		
+		switch ($_SESSION['userData']['role']['id']) {
+			case 1:  
+				break;
+			case 2:
+				$where = "id NOT IN(1) AND status = 1";
+				break;
+			case 17:
+				$where = "id NOT IN(1,2,17) AND status = 1";
+				break;
+			default:
+				$where = "id NOT IN(1,2) AND status = 1";
+		}
 		$data['role'] = selectRole(['id', 'name', 'level'], $where);
 		//$data['role'] = selectRole(['id', 'name', 'level'], (in_array($_SESSION['userData']['role']['id'], [1,2,17])? '1' : "id IN(10,11,12)") . ' AND status = 1');
 		$data['brands'] = selectBrands(['id', 'name']);
 		$data['paises'] = [];
-		$data['country_name'] = base64_decode($_GET['country']);
 		
 		$tmp = selectCountries(['id', 'name', 'region'], "id IN({$_SESSION['userData']['country_id']})");
 		foreach($tmp as $i){
@@ -51,119 +64,60 @@ class ModuloComunicacion extends Controllers{
 	public function setManual(){
 		
 		if(empty($_POST['txtCategoria']) || empty($_POST['txtDescripcion']) || empty($_POST['txtNombre'])){
-			$arrResponse = array("status" => false, "msg" => "Datos incorrecto.");
-		}else{
 
-			if( $_POST['txtCategoria'] == 1){
-				$txtCategoria 	= $_POST['nuevaCategoria'];
-			}else{
-				$txtCategoria 	= $_POST['txtCategoria'];
+			$arrResponse = array("status" => false, "msg" => "Datos incorrecto.");
+		
+		}else{
+if( $_POST['txtCategoria'] == 1){
+	$txtCategoria 	= $_POST['nuevaCategoria'];
+}else{
+	$txtCategoria 	= $_POST['txtCategoria'];
+}
+				
+
+
+
+				
+				$txtDescripcion = $_POST['txtDescripcion'];
+				$txtNombre 		= $_POST['txtNombre'];
+				$txtArchivo 	= $_POST['evidencias_1'];
+
+				$request_user = $this->model->insertManual($txtCategoria,
+													   	   $txtDescripcion,
+													   	   $txtNombre,
+													   	   $txtArchivo);
 			}
-		
-			$txtDescripcion = $_POST['txtDescripcion'];
-			$txtNombre 		= $_POST['txtNombre'];
-			$txtArchivo 	= $_POST['evidencias_1'];
-			$txtLang 		= $_POST['txtLang'];
-		
-			$request_user = $this->model->insertManual($txtCategoria,
-												   	   $txtDescripcion,
-												   	   $txtNombre,
-												   	   $txtArchivo,
-													   $txtLang);
-		}
 			
-		$arrResponse = array("status" => true, "msg" => "Datos guardados correctamente.");	
+				$arrResponse = array("status" => true, "msg" => "Datos guardados correctamente.");	
 			
-		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 
 		die();
 	}
 
-
-
-	
-
 	public function getManuales(){
-										
-
-		if (!empty($_GET['country'])) {
-		    $country_name = base64_decode($_GET['country']);
-		    $where = "WHERE lang IN (SELECT language FROM country WHERE name = '$country_name')";
-		} else {
-		    $where = "WHERE lang IN ('".$_SESSION['userData']['default_language']."')"; 
-		}
-
-		$arrData = $this->model->selectManuales($where);																						
+													
+		$arrData = $this->model->selectManuales();																						
 		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);												
 		die();												
 		
 	}
+
+
 	
 
 
 
-	public function eliminarManual() {
-		if (empty($_POST['id_manual'])) {
-			$arrResponse = array("status" => false, "msg" => "ID del manual incorrecto.");
-		} else {
-			$id_manual = $_POST['id_manual'];
+
+
+
 	
-			// Llamas al método del modelo que elimina el manual
-			$request_delete = $this->model->eliminarManual($id_manual);
 	
-			$arrResponse = array("success" => true, "msg" => "...");
-		}
 	
-		echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
-		die();
+	
+	
 	}
-
-
-public function editarManual() {
-    if (empty($_POST['id_manual']) || empty($_POST['nombre']) || empty($_POST['categoria'])) {
-        $arrResponse = array("success" => false, "msg" => "Datos incompletos para la edición.");
-    } else {
-        $id_manual = $_POST['id_manual'];
-        $nombre = $_POST['nombre'];
-        $categoria = $_POST['categoria'];
-        $txtLang = $_POST['txtLang'] ?? ''; // <---- agregado
-
-        // Llamada al modelo para actualizar el manual (Agregado txtLang)
-        $request_update = $this->model->editarManual($id_manual, $nombre, $categoria, $txtLang);
-
-        if ($request_update) {
-            $arrResponse = array("success" => true, "msg" => "Manual actualizado correctamente.");
-        } else {
-            $arrResponse = array("success" => false, "msg" => "Error al actualizar el manual.");
-        }
-    }
-
-    echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
-    die();
-}
-
-
-
-
-	public function viewPDF()
-{
-    // Obtener la URL del PDF desde GET
-    $pdfUrl = isset($_GET['file']) ? $_GET['file'] : '';
-
-    // Si quieres más seguridad, decodifica base64:
-    // $pdfUrl = base64_decode($_GET['file']);
-
-    // Enviar a la vista como array asociativo
-    $this->views->getView($this, "viewPDF", [
-        'pdfUrl' => $pdfUrl
-    ]);
-}
-
-
-
-
-	
-}
 
 
 

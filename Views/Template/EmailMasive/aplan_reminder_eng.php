@@ -32,14 +32,14 @@
                                                 </ul>
                                                 <hr style='margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee'>
                                                 <div>
-                                                    
+                                                    <span>{$data['mensaje']} </span><br>
                                                     
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Create:</b> ". date('M d - h:i', time()) ."</td>
+                                        <td><b>Created:</b> ". date('M d - h:i', time()) ."</td>
                                     </tr>
                                 </tbody>
                             </table>

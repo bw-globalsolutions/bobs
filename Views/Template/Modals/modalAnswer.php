@@ -1,4 +1,5 @@
-<?php global $fnT; ?>
+<?php global $fnT; 
+getModal('modalCerttis',$data);?>
 
 <!-- Modal -->
 <div class="modal fade" id="modalViewAnwers" tabindex="-1" role="dialog" aria-hidden="true">
@@ -22,16 +23,12 @@
                         </div>
                         <? if($data['update']): ?>
                             <div class="form-group can-update">
-                                <input type="file" class="form-control-file file-trigger" style="display: none;" onchange="uploadPic(this)">
+                                <input type="file" class="form-control-file" multiple onchange="uploadPic(this)">
                             </div>
-
-                            <button type="button" class="btn-file btn btn-primary mr-1">
-                                <?=$fnT('Choose picture')?> <!-- Texto editable -->
-                            </button>
                         <? endif; ?>
-                        <input name="checklist_item_id" id="checklist_item_id" hidden>
-                        <input type="" name="opp_id" id="opp_id" hidden>
-                        <input type="" name="audit_id" value="<?=$data['audit_id']?>" hidden>
+                        <input type="hidden" name="checklist_item_id" id="checklist_item_id">
+                        <input type="hidden" name="opp_id" id="opp_id">
+                        <input type="hidden" name="audit_id" value="<?=$data['audit_id']?>">
                     </form>
                     <div id="auditor-files" class="d-flex flex-wrap"></div>
                 </div>
@@ -42,9 +39,12 @@
                         <span class="text-danger cr-pointer can-update" id="btn-remove-opp" onclick="removeOpp()"><?=$fnT('Remove Opp')?></span>
                     <? endif; ?>
                 </div>
-                <div>
+                <div style="display:flex;">
                     <? if($data['update']): ?>
-                        <button type="submit" class="btn btn-primary mr-1 can-update" id="btn-save-answers" form="form-answers"><?=$fnT('Save')?></button>
+                        <button type="submit" class="btn btn-primary mr-1 btnCloseAction" id="btn-save-answers" form="form-answers"><?=$fnT('Save')?></button>
+                    <? endif; ?>
+                    <? if($data['update'] && $data['type']!='Self-Evaluation'): ?>
+                        <button data-toggle="modal" data-target="#modalCerttis" data-dismiss="modal" id="btn-certtis" onclick="obtenerdatosCerttis(<?=$data['audit_id']?>)" class="btn btn-primary mr-1 can-update" id="btn-certti"><?=$fnT('Certti')?></button>
                     <? endif; ?>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$fnT('Close')?></button>
                 </div>
@@ -52,12 +52,3 @@
         </div>
     </div>
 </div>
-
-
-<script>
-
-    document.querySelector('.btn-file').addEventListener('click', function() {
-    document.querySelector('.file-trigger').click();
-});
-    
-</script>

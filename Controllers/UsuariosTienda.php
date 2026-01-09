@@ -46,7 +46,7 @@ class UsuariosTienda extends Controllers{
 		$data['brands'] = selectBrands(['id', 'name']);
 		$data['paises'] = [];
 		
-		$tmp = selectCountries(['id', 'name', 'region'], "id IN({$_SESSION['userData']['country_id']})");
+		$tmp = selectCountries(['id', 'name', 'region'], "id IN({$_SESSION['userData']['country_id']}) AND active=1");
 		foreach($tmp as $i){
 			if (!array_key_exists($i['region'], $data['paises'])) {
 				$data['paises'][$i['region']] = [];

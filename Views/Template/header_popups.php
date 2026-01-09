@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Alex G.">
     <meta name="theme-color" content="#009688">
-    <link rel="shortcut icon" href="<?=media();?>/images/favicon.ico">
+    <link rel="shortcut icon" href="<?=media();?>/images/icono.png?<?=rand(1, 15)?>">
     <title><?= $data['page_title']?></title>
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo media()?>/css/mainResults.css?<?=date('yhi')?>">

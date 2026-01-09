@@ -84,20 +84,20 @@ class ActionPlan extends Controllers{
 						$auxStatus = $key['action_status'];
 						$auxId = $key['id'];
 						$badgeStatus = '<span class="badge badge-primary">'.$fnT($key['action_status']).'</span>';
-						$actions .= ' <span class="text-primary"><i class="fa fa-question"></i> '.$fnT($key['action_comment']).'</span><br>';
+						$actions .= ' <span class="text-primary"><i class="fa fa-question"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Selected options').':</span><br>'.$key['checks']:'').'</span><br>';
 					} else if ( $key['action_status'] == 'Approved' ) {
 						$auxId = $key['id'];
 						$auxStatus = $key['action_status'];
 						$badgeStatus = '<span class="badge badge-success">'.$fnT($key['action_status']).'</span>';
-						$actions .= ' <span class="text-success"><i class="fa fa-check-square"></i> '.$fnT($key['action_comment']).'</span> <br>';
+						$actions .= ' <span class="text-success"><i class="fa fa-check-square"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Selected options').':</span><br>'.$key['checks']:'').'</span> <br>';
 					} else if ( $key['action_status'] == 'Rejected' ) {
 						$auxStatus = $key['action_status'];
 						$badgeStatus = '<span class="badge badge-danger">'.$fnT($key['action_status']).'</span>';
-						$actions .= ' <span class="text-danger"><i class="fa fa-minus-square"></i> '.$fnT($key['action_comment']).'</span> <br>';
+						$actions .= ' <span class="text-danger"><i class="fa fa-minus-square"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Selected options').':</span><br>'.$key['checks']:'').'</span> <br>';
 					} else if ( $key['action_status'] == 'Finished' ) {
 						$auxStatus = $key['action_status'];
 						$badgeStatus = '<span class="badge badge-success">'.$fnT($key['action_status']).'</span>';
-						$actions .= ' <span class="text-success"><i class="fa fa-check-square"></i> '.$fnT($key['action_comment']).'</span> <br>';
+						$actions .= ' <span class="text-success"><i class="fa fa-check-square"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Selected options').':</span><br>'.$key['checks']:'').'</span> <br>';
 					}
 					
 				}
@@ -118,7 +118,7 @@ class ActionPlan extends Controllers{
 			}
 
 			$data[$i]['opportunity'] = '<span class="h6"><span class="badge badge-info"> '.$fnT($data[$i]['section_name']).'</span> <br>
-										<span class="badge badge-secondary">'.$data[$i]['question_prefix'].'</span> '.$data[$i]['question'].' <span class="badge badge-danger">'.$fnT($data[$i]['questionV']) .'</span> <br>
+										<span class="badge badge-secondary prefix'.$data[$i]['id_audit_opp'].'">'.$data[$i]['question_prefix'].'</span> '.$data[$i]['question'].' <span class="badge badge-danger">'.$fnT($data[$i]['questionV']) .'</span> <br>
 										<span class="text-danger"><i class="fa fa-thumbs-o-down"></i> '.$data[$i][$idi].'</span> <br>'.$answers;
 
 			if(!empty($data[$i]['auditor_comment'])){
@@ -161,15 +161,15 @@ class ActionPlan extends Controllers{
 			
 
 			if ($auxStatus == 'Pending' || $auxStatus == 'Rejected') {
-				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 10, 14,20] ) ) {
+				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 10] ) ) {
 					$btnAction = '<button '.$temporalidad.' class="btn btn-success btnAddAction" onClick="fntAddAction('.$data[$i]['id_audit_opp'].','.$audit.')" title="'.$fnT("Add action").'"><i class="fa fa-plus-circle"></i> '.$fnT("Add action").'</button>';
 				}
 			} else if ($auxStatus == 'In Review') {
-				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14,20] ) ) {
+				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14, 19, 20] ) ) {
 					$btnAction = '<button class="btn btn-info btnChangeStatus" onClick="fntChangeStatusAction('.$auxId.','.$auxIdOpp.')" title="'.$fnT("Approve / Decline").'"> '.$fnT("Approve / Decline").'</button>';
 				}
 			} else if ($auxStatus == 'Approved') {
-				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 10, 14,20] ) ) {
+				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14, 19, 20] ) ) {
 					$btnAction = '<button class="btn btn-primary btnCloseAction" onClick="fntCloseAction('.$auxId.','.$auxIdOpp.')" title="'.$fnT("Finish action").'"> '.$fnT("Finish action").'</button>';
 				}
 			}
@@ -212,7 +212,8 @@ class ActionPlan extends Controllers{
 				$idOpp = intVal($_POST['opp_id']);
 				$evidencia = $_POST['evidencia'];
 				$action = ucwords(strClear($_POST['action']));
-				$actionDate = date('Y-m-d H:i:s');
+				$checks = $_POST['checks'];
+				$actionDate = date('Y-m-d');
 				//$status = 'In Review';
 				$request_action = "";
 				require_once("Models/Audit_OppModel.php");
@@ -221,8 +222,10 @@ class ActionPlan extends Controllers{
 				$request_opp = $objData->updateOpportunity([
 					"actionplan_status"	=> $status
 				], "id = {$_POST['opp_id']}");
+				$audit_id = $objData->getAuditId($_POST['opp_id']);
+				
 
-				$request_action = $this->model->insertPlanAction($idOpp, $action, $actionDate, $status,$evidencia);
+				$request_action = $this->model->insertPlanAction($idOpp, $action, $actionDate, $status,$evidencia, $checks);
 
 				if($request_action > 0)
 				{
@@ -265,6 +268,25 @@ class ActionPlan extends Controllers{
 	{
 		progressTemplateActionPlan($_GET['id']);
 		//die();
+	}
+
+	public function getPlanOptions(){
+		$id = intVal($_GET['id']);
+		$prefix = $_GET['prefix'];
+
+		$request = $this->model->getOP($prefix, $_SESSION['userData']['default_language']);
+		if($request){
+			$arrResponse = array("status" => true, "rs" => $request, "lan" => $_SESSION['userData']['default_language']);
+		}else{
+			$arrResponse = array("status" => true, "rs" => []);
+		}
+		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		die();
+	}
+
+	public function para(){
+		$res = getToTest(1, 225);
+		echo $res;
 	}
 
 }

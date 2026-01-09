@@ -3,7 +3,13 @@
   getModal('modalAddTranslate',$data);
   global $fnT;
 ?>
-    <main class="app-content">
+    <div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
         <div class="app-title">
             <div>
                 <h1>
@@ -53,10 +59,10 @@
                     <div class="tile-body">
                         <div class="d-flex justify-content-center">
                             <div class="input-group rounded mt-3" style="width: 270px;">
-                                <input class="form-control rounded" id="filter_search" placeholder="<?= $fnT('Search') ?>" onkeyup="searchString(this.value)">
-                                <span class="input-group-text border-0 bg-transparent">
-                                    <i class="fa fa-search"></i>
-                                </span>
+                                <input class="input-s1 form-control rounded" style="padding-left: 20px;" id="filter_search" placeholder="<?= $fnT('Search') ?>" onkeyup="searchString(this.value)">
+                                <div class="drop-icon" style="position:absolute; top:-7px; left:-40px">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M11 2a9 9 0 1 0 5.618 16.032l3.675 3.675a1 1 0 0 0 1.414-1.414l-3.675-3.675A9 9 0 0 0 11 2m-6 9a6 6 0 1 1 12 0a6 6 0 0 1-12 0" clip-rule="evenodd"></path></svg>
+                                </div>
                             </div>
                         </div>
                         

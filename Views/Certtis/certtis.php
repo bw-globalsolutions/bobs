@@ -10,7 +10,13 @@
 
 <style>  .colorBase{background: linear-gradient(to right,  #000856, #003956); color:white;}</style>
 
-<main class="app-content">
+<div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
     <input type="hidden" id="id_auditoria" name="id_auditoria" value="<?php echo $_GET['id']; ?>">
     <div class="app-title">
         <div>

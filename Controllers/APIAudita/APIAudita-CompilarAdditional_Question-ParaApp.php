@@ -25,7 +25,7 @@ $jsonApp['info'] = [
 
 //Conocer las Audited Areas del Checklist
 $areas = [];
-$rs = Checklist_ItemModel::getChecklistItemArea(['area'], "checklist_id=$additional_question_id AND area IS NOT NULL GROUP BY area  ");
+$rs = Checklist_ItemModel::getChecklistItem(['area'], "checklist_id=2 AND area IS NOT NULL");
 if(count($rs)) foreach($rs as $r){
     $areas[] = ['title'=>$r['area'], 'title_esp'=>$r['area'], 'requests'=>NULL];
 } else {
@@ -62,6 +62,7 @@ $jsonApp['result']['REQUIRED_GENERAL_INFORMATION'] = [
 //Fotos Adicionales
 $additional_photos = [];
 $rs = Additional_Question_ItemModel::getAdditional_Question_Item([], "additional_question_id=$additional_question[id] AND type='General Pictures'");
+$rs = (is_array($rs) || $rs instanceof Countable ? $rs : []);
 foreach($rs as $r){
     $additional_photos[] = [
         'title' => $r[$lang],
@@ -77,6 +78,7 @@ $jsonApp['result']['REQUIRED_GENERAL_PICTURES']['requests'] = $additional_photos
 //Preguntas Adicionales
 $addi_questions = [];
 $rs = Additional_Question_ItemModel::getAdditional_Question_Item([], "additional_question_id=$additional_question[id] AND type='Additional Questions'");
+$rs = (is_array($rs) || $rs instanceof Countable ? $rs : []);
 foreach($rs as $r){
     $options = [];
     if($r[$lang.'_answer']) {

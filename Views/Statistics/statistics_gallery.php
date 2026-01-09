@@ -4,7 +4,13 @@
     global $fnT;
 ?>
 <link rel="stylesheet" type="text/css" href="<?=media()?>/css/statistics.css">
-<main class="app-content">
+<div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
     <div class="app-title">
         <div>
             <h1>
@@ -49,110 +55,18 @@
                             </select>
                         </div>
                     </div>
-<!-- REGION -->
-                    <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2,3,17])? 'd-none' : '' ?>">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Region')?></span>
-                            </div>
-                            <select class="form-control selectpicker" id="list_country" name="list_region[]"   multiple data-actions-box="true" data-selected-text-format="count>2" required>
-                                <? foreach($data['region'] as $country): ?>
-                                    <? $val = !empty($country) ? $country : 'N/A'; ?>
-                                    <option value="<?= $val ?>" selected><?= $val ?></option>
-                                <? endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-<!-- COUNTRY -->
-                    <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2,3,17])? 'd-none' : '' ?>">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Country')?></span>
-                            </div>
-                            <select class="form-control selectpicker" id="list_country" name="list_country[]"   multiple data-actions-box="true" data-selected-text-format="count>2" required>
-                                <? foreach($data['country'] as $country): ?>
-                                    <? $val = !empty($country) ? $country : 'N/A'; ?>
-                                    <option value="<?= $val ?>" selected><?= $val ?></option>
-                                <? endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-
-<!-- AUDIT FILE -->
-               
-<div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1,2,3,17]) ? 'd-none' : '' ?>">
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text border-0"><?= $fnT('Audit file') ?></span>
-        </div>
-        <select class="form-control selectpicker" id="audit_file" name="audit_file[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
-            <?php foreach ($data['auditFile'] as $group => $files): ?>
-                
-                    <?php foreach ((array)$files as $f): ?>
-                        <option value="<?= htmlspecialchars($f) ?>" <?= array_key_first($data['auditFile']) == $group ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($f) ?>
-                        </option>
-                    <?php endforeach; ?>
-              
-            <?php endforeach; ?>
-        </select>
-    </div>
-</div>
-
-
-
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text border-0"><?=$fnT('Franchise')?></span>
                             </div>
-                            <select class=" selectpicker" id="filter_franchise" name="list_franchise[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
+                            <select class="form-control selectpicker" id="filter_franchise" name="list_franchise[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                                 <? foreach($data['franchissees'] as $f): ?>
                                     <option value="<?=$f['name']?>" selected><?=$f['name']?></option>
                                 <? endforeach ?>
                             </select>
                         </div>
                     </div>
-
-
-                    <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2])? 'd-none' : '' ?>">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Section')?></span>
-                            </div>
-                            <select class="form-control selectpicker" id="filter_checklist" name="list_checklist[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
-                                    <? foreach($data['checklist'] as $checklist): ?>
-                                        <option value="<?=$checklist['main_section']?>" selected><?=$fnT($checklist['main_section'])?></option>
-                                    <? endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-
-                   <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2]) ? 'd-none' : '' ?>">
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text border-0"><?=$fnT('Checklist item')?></span>
-        </div>
-        <select 
-            class="form-control selectpicker" 
-            id="filter_checklist_item" 
-            name="list_checklist_item[]" 
-            multiple 
-            data-actions-box="true" 
-            data-selected-text-format="count>1" 
-            data-live-search="true"  
-            required
-        >
-            <?php foreach($data['checklist_item'] as $checklist_item): ?>
-                <option value="<?=$checklist_item['question_prefix']?>" selected>
-                    <?=$checklist_item['question_prefix']?>: <?=$checklist_item['section_name']?> - <?=$checklist_item['eng']?>
-                </option>
-            <?php endforeach ?>
-        </select>
-    </div>
-</div>
-
-
                     <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2])? 'd-none' : '' ?>">
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -167,7 +81,32 @@
                     </div>
 
                     
-                    
+                    <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2])? 'd-none' : '' ?>">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text border-0"><?=$fnT('Checklist')?></span>
+                            </div>
+                            <select class="form-control selectpicker" id="filter_checklist" name="list_checklist[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
+                                    <? foreach($data['checklist'] as $checklist): ?>
+                                        <option value="<?=$checklist['id']?>" selected><?=$checklist['name']?></option>
+                                    <? endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2])? 'd-none' : '' ?>">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text border-0"><?=$fnT('Checklist item')?></span>
+                            </div>
+                            <select class="form-control selectpicker" id="filter_checklist_item" name="list_checklist_item[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
+                                    <? foreach($data['checklist_item'] as $checklist_item): ?>
+                                        <option value="<?=$checklist_item['question_prefix']?>" selected><?=$checklist_item['question_prefix']?>: <?=$checklist_item['section_name']?>-<?=$checklist_item['eng']?></option>
+                                    <? endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+
 
 
                     <div class="col-lg-3 my-1">

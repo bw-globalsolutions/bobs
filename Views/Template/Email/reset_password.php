@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<title>Password request</title>
+	<title>Restablecer contraseña</title>
 </head>
 <body>
     <table border='0' align='left' cellpadding='3' cellspacing='2'>
@@ -13,22 +13,23 @@
                     <table width='100%' border='0' cellspacing='0' cellpadding='5' style='font-size:11px;font-family:Arial,Helvetica,sans-serif'>
                         <tbody>
                             <tr><td width='717'></td></tr>
-                            <tr><td style='padding:10px;background:#cf0a2c;color:#ffffff;font-size:11px'>
-                                <span>We inform you that you have requested to reset your password.</span>
+                            <tr><td style='padding:10px;background:#eab54c;color:#ffffff;font-size:11px'>
+                                <span>Le informamos que han solicitado restablecer la contraseña</span>
                             </td></tr>
+                            <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-church's"></center></td></tr>
                             <tr>
                                 <td style='font-size:14px;padding:0px'>
                                     <div style='border:1px solid #eee;padding:10px'>
-                                        <h3>URL access</h3>
+                                        <h3>Acceso por URL</h3>
                                         <hr style='margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee'>
                                         <div>
-                                            <span>Reset your password here:</span> <b><a href='<?=base_url() . "/login/resetPassword?token=" . $data['token']?>'><?=base_url() . "/login/resetPassword?token=" . $data['token']?></a></b>
+                                            <span>Restablezca su contraseña aquí:</span> <b><a href='<?=base_url() . "/login/resetPassword?token=" . $data['token']?>'><?=base_url() . "/login/resetPassword?token=" . $data['token']?></a></b>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td><b>Create:</b> <?=date('M d - h:i', time())?>   /   <b>Validity:</b> 24 hours</td>
+                                <td><b>Creado:</b> <?=date('M d - h:i', time())?>   /   <b>Validez:</b> 24 horas</td>
                             </tr>
                         </tbody>
                     </table>

@@ -52,11 +52,11 @@
 
         <p>Ref.: Notice to Franchisee of Necessary Improvements no. 55777</p>
 
-        <p>Dear DQ® Franchisee:</p>
+        <p>Dear Franchisee:</p>
 
-        <p>ARGUILEA recently completed a PRIDE Visit for American Dairy Queen Corporation (“<b>{$data['franchissees_name']}</b>”) at restaurant no. <b>{$data['numero_tienda']}</b>, located at <b>{$data['address_1']}</b> on <b>{$data['date_visit']}</b>.</p>
+        <p>ARGUILEA recently completed a PRIDE Visit for American Corporation (“<b>{$data['franchissees_name']}</b>”) at restaurant no. <b>{$data['numero_tienda']}</b>, located at <b>{$data['address_1']}</b> on <b>{$data['date_visit']}</b>.</p>
 
-        <p>Franchisees are required to operate their DAIRY QUEEN® restaurants in accordance with Franchisor’s standards as outlined in the DQ® System Standards and Operations Manual and PRIDE Standards of Performance (“System Standards”). </p>
+        <p>Franchisees are required to operate their restaurants in accordance with Franchisor’s standards as outlined in the System Standards and Operations Manual and PRIDE Standards of Performance (“System Standards”). </p>
         
         <p>During the PRIDE Visit, ARGUILEA identified areas of operational performance in which improvement is required to meet said System Standards. Specific details of the operational performance deficiencies identified in the PRIDE Visit were provided to you by email and through the ARGUILEA portal, accessible through The Feed.</p>
         

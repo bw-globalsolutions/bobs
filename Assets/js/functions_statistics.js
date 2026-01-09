@@ -1,55 +1,55 @@
 const reloadAll = async (element) => {
     payload = new FormData(element);
     
-    const fetchTopOpp = fetch(base_url + "/statistics/getTopOpp", {//OK
+    const fetchTopOpp = fetch(base_url + "/statistics/getTopOpp", {
         method: 'POST',
 		body: payload
-    }).then(res => res.json());
+    }).then(res => res.json()); //si
     
-    const fetchLeadership = fetch(base_url + "/statistics/getLeadership", {//OK
+    const fetchLeadership = fetch(base_url + "/statistics/getLeadership", {
         method: 'POST',
 		body: payload
     }).then(res => res.json());
 
-    const fetchActionPlanStatus = fetch(base_url + "/statistics/getActionPlanStatus", {//OK
+    const fetchActionPlanStatus = fetch(base_url + "/statistics/getActionPlanStatus", {
         method: 'POST',
 		body: payload
-    }).then(res => res.json());
+    }).then(res => res.json()); //si
     
-    const fetchDaypart = fetch(base_url + "/statistics/getDaypart", {//OK
+    const fetchDaypart = fetch(base_url + "/statistics/getDaypart", {
         method: 'POST',
 		body: payload
-    }).then(res => res.json());
+    }).then(res => res.json()); //si
     
-    const fetchWeekday = fetch(base_url + "/statistics/getWeekday", {//OK
+    const fetchWeekday = fetch(base_url + "/statistics/getWeekday", {
         method: 'POST',
 		body: payload
-    }).then(res => res.json());
+    }).then(res => res.json()); //si
     
-    const fetchDuration = fetch(base_url + "/statistics/getDuration", {//OK
+    const fetchDuration = fetch(base_url + "/statistics/getDuration", {
         method: 'POST',
 		body: payload
-    }).then(res => res.json());
+    }).then(res => res.json()); //si
     
-    const fetchProgressStatus = fetch(base_url + "/statistics/getProgressStatus", {//OK
+    const fetchProgressStatus = fetch(base_url + "/statistics/getProgressStatus", {
         method: 'POST',
 		body: payload
-    }).then(res => res.json());
+    }).then(res => res.json()); //si
 
-    const fetchCategoryTrend = fetch(base_url + "/statistics/getCategoryTrend", {//OK
+    const fetchCategoryTrend = fetch(base_url + "/statistics/getCategoryTrend", {
         method: 'POST',
 		body: payload
-    }).then(res => res.json());
+    }).then(res => res.json()); //si
     
-    const fetchQuestionTrend = fetch(base_url + "/statistics/getQuestionTrend", {//OK
+    const fetchQuestionTrend = fetch(base_url + "/statistics/getQuestionTrend", {
         method: 'POST',
 		body: payload
-    }).then(res => res.json());
+    }).then(res => res.json()); //si
     
-    const fetchActionCompletion = fetch(base_url + "/statistics/getActionCompletion", {//OK
+    const fetchActionCompletion = fetch(base_url + "/statistics/getActionCompletion", {
         method: 'POST',
 		body: payload
-    }).then(res => res.json());
+    }).then(res => res.json()); //si
 
     const fetchScoreTopBottom = fetch(base_url + "/statistics/getScoreTopBottom", {
         method: 'POST',
@@ -57,27 +57,7 @@ const reloadAll = async (element) => {
     }).then(res => res.json());
     
     $('#divLoading').css('display', 'flex');
-    [dataTopOpp, 
-     dataLeadership, 
-     dataActionPlanStatus, 
-     dataDaypart, 
-     dataWeekday, 
-     dataDuration, 
-     dataProgressStatus, 
-     dataCategoryTrend, 
-     dataQuestionTrend, 
-     dataActionCompletion, 
-     dataScoreTopBottom] = await Promise.all([fetchTopOpp, 
-                                              fetchLeadership, 
-                                              fetchActionPlanStatus, 
-                                              fetchDaypart, 
-                                              fetchWeekday, 
-                                              fetchDuration, 
-                                              fetchProgressStatus, 
-                                              fetchCategoryTrend, 
-                                              fetchQuestionTrend, 
-                                              fetchActionCompletion, 
-                                              fetchScoreTopBottom]);
+    [dataTopOpp, dataLeadership, dataActionPlanStatus, dataDaypart, dataWeekday, dataDuration, dataProgressStatus, dataCategoryTrend, dataQuestionTrend, dataActionCompletion, dataScoreTopBottom] = await Promise.all([fetchTopOpp, fetchLeadership, fetchActionPlanStatus, fetchDaypart, fetchWeekday, fetchDuration, fetchProgressStatus, fetchCategoryTrend, fetchQuestionTrend, fetchActionCompletion, fetchScoreTopBottom]);
     
     genTopOpp(dataTopOpp);
     genActionPlanStatus(dataActionPlanStatus);
@@ -93,6 +73,51 @@ const reloadAll = async (element) => {
 
     $('#divLoading').css('display', 'none');
 }
+
+/*cargarTema();
+
+function cargarTema(){
+
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUrl = base_url+'/personalization/cargarTema';
+            var strData = "id=1";
+            request.open("POST",ajaxUrl,true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(strData);
+            request.onreadystatechange = function(){
+
+                if(request.readyState == 4 && request.status == 200){
+                    //console.log(request.responseText);
+                    var objData = JSON.parse(request.responseText);
+
+                    document.documentElement.style.setProperty("--color1", objData[0].color1);
+                    document.documentElement.style.setProperty("--color2", objData[0].color2);
+                    document.documentElement.style.setProperty("--color3", objData[0].color3);
+                    document.documentElement.style.setProperty("--color4", objData[0].color4);
+
+                    if(objData[0].img2!=''){
+                        if(document.querySelector('.img-fluid')){
+                            document.querySelector('.img-fluid').src=objData[0].img2;
+                        }
+                    }
+
+                    if(objData[0].img3!=''){
+                        // Obtener el elemento del favicon (si existe)
+                        const favicon = document.querySelector('link[rel="icon"]') || 
+                        document.createElement('link');
+
+                        // Configurar sus atributos
+                        favicon.rel = 'icon';
+                        favicon.href = objData[0].img3; // Ruta del nuevo favicon
+                        favicon.type = 'image/x-icon';
+
+                        // Añadirlo al <head> si no existía
+                        document.head.appendChild(favicon);
+                    }
+
+                }
+            }
+}*/
 
 const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -110,54 +135,60 @@ const getExportable = async (target, name) => {
     $('#divLoading').css('display', 'none');
 }
 
-const genLeadership = data => $('#tableLeadership').dataTable({
-    footerCallback: function(){
-
-        const api = this.api();
-
-        const total_visits = api
-            .column(1)
+const genLeadership = data => { 
+    console.log('data: '+data[0]['Overall score']); 
+    if($.fn.DataTable.isDataTable('#tableLeadership')) {
+        $('#tableLeadership').DataTable().destroy();
+      }
+    
+      $('#tableLeadership').DataTable({
+        data: data,
+        columns: [
+          {"data": "name"},
+          {"data": "visits"},
+          {"data": "af"},
+          {"data": "Food safety"},
+          {"data": "Operations excellence"},
+          {"data": "Overall score"}
+        ],
+        processing: true,
+        language: {
+          url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" // Ajusta el idioma
+        },
+        dom: "<'row'<'col-sm-12'tr>>", // Estructura simple
+        responsive: true,
+        destroy: true,
+        pageLength: 10,
+        order: [[0, "asc"]],
+        paging: false,
+        columnDefs: [
+          {"className": "dt-center", "targets": "_all"}
+        ],
+        footerCallback: function(row, data, start, end, display) {
+          const api = this.api();
+          const totalRows = api.rows().count();
+          
+          // Actualizar footer para visitas (suma)
+          const visitTotal = api
+            .column(1, {page: 'current'})
             .data()
-            .reduce((a, b) => a + parseFloat(b), 0);
-        $(api.column(1).footer()).html(total_visits);
-
-        const total_rows = api.column(0).data().length
-        for (var i = 2; i < 7; i++) {
-            const total_items = api
-                .column(i)
-                .data()
-                .reduce((a, b) => a + parseFloat(b), 0);
-            $(api.column(i).footer()).html((total_items / total_rows).toFixed(2));
+            .reduce((a, b) => a + (parseFloat(b) || 0), 0);
+          $(api.column(1).footer()).html(visitTotal);
+    
+          // Actualizar otros (promedios)
+          for (let i = 2; i <= 4; i++) {
+            const colTotal = api
+              .column(i, {page: 'current'})
+              .data()
+              .reduce((a, b) => a + (parseFloat(b) || 0), 0);
+            $(api.column(i).footer()).html((colTotal / totalRows).toFixed(2));
+          }
         }
-    },
-    "aProcessing":true,
-    "aServerSide":true,
-    "language": {
-        "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
-    },
-    "data": data,
-    "columns": [
-            {"data":"franchissees_name"},
-            {"data":"visits"},
-            {"data":"criticos"},
-            {"data":"no_criticos"},
-            {"data":"amarillo"},
-            {"data":"rojo"},
-            {"data":"mantenimiento"},
-    ],
-    "dom": "lrtip",
-    "buttons": [],
-    "resonsieve":"true",
-    "bDestroy": true,
-    "iDisplayLength": 10,
-    "order":[[0,"asc"]],
-    "paging": false,
-    "columnDefs": [
-        {"className": "dt-center", "targets": "_all"}
-    ]
-});
+      });
+}
 
 const genTopOpp = data => {
+    console.log(data);
     currTopOpp = data;
     setTopOpp($('#select-top-opp').val());
 }
@@ -171,7 +202,7 @@ const setTopOpp = mainSection => {
         dataFormat: 'json',
         dataSource: {
             "chart": {
-                "caption": '',
+                "caption": fnT(mainSection),
                 "subCaption": "Top 10",
                 "xAxisName": fnT('Questions'),
                 "yAxisName": fnT('Incidence'),
@@ -196,7 +227,7 @@ const showTopOppDetails = (eventObj, dataObj) => {
         type: "info",
         showCancelButton: true,
         confirmButtonColor: '#0B9C26',
-        confirmButtonText: fnT('Download'),
+        confirmButtonText: fnT('Download picklist details'),
         cancelButtonText: fnT('Close')
     },
     function(isConfirm){
@@ -207,19 +238,13 @@ const showTopOppDetails = (eventObj, dataObj) => {
 }
 
 window.genActionPlanStatus = (data, renderAt = 'chart-action-plan') => {
-    // Definimos colores fijos por status
-    const statusColors = {
-        'Pending': '29c3be',   // rojo
-        'In Process': 'f2726f', // verde agua
-        'Finished': '5d62b5'  // morado
-    };
-
     const fcActionPlanStatus = new FusionCharts({
         type: 'doughnut2d',
         renderAt: renderAt,
         width: '100%',
         height: '400',
         dataFormat: 'json',
+        theme: 'ocean',
         dataSource: {
             chart: {
                 caption: fnT('Action plan'),
@@ -227,19 +252,15 @@ window.genActionPlanStatus = (data, renderAt = 'chart-action-plan') => {
                 centerlabel: fnT('Audits') + ": $value",
                 theme: 'ocean',
                 showPercentageValues: '1',
+                palettecolors: '5d62b5,29c3be,f2726f,A88CCC,EED482,FFAE91,FE93B5,D98ACF,7BCDE8,94A8E9',
                 valueFontSize: "12",
                 showBorder: '1'
             },
-            data: data.map(item => ({
-                label: fnT(item.action_plan_status),
-                value: item.count,
-                color: statusColors[item.action_plan_status] || 'cccccc' // gris si no está en el mapa
-            }))
+            data: data.map(item => ({label: fnT(item.action_plan_status), value: item.count}))
         }
     });
     fcActionPlanStatus.render();
-};
-
+}
 
 window.genDaypart = (data, renderAt = 'chart-daypart') => {
     const fcActionDaypart = new FusionCharts({
@@ -463,7 +484,7 @@ const genActionCompletion = data => {
                 showBorder: '1',
                 plottooltext: '$seriesname, $percentValue, $value',
                 yAxisName: fnT('Audits'),
-                palettecolors: 'f2726f,29c3be,5d62b5'
+                palettecolors: '5d62b5,29c3be,f2726f,A88CCC,EED482,FFAE91,FE93B5,D98ACF,7BCDE8,94A8E9'
             },
             categories: [
                 {
@@ -482,7 +503,7 @@ const genActionCompletion = data => {
                             data: data.map(item => ({value: item.Pending}))
                         },
                         {
-                            seriesname: fnT('Finished'),
+                            seriesname: fnT('Completed'),
                             data: data.map(item => ({value: item.Finished}))
                         }
                     ]
@@ -496,6 +517,59 @@ const genActionCompletion = data => {
 $('#select-score-topbutton').on('changed.bs.select', function (e) {
     setScoreTopBottom(e.target.value);
 });  
+
+document.getElementById('filter_countrys').addEventListener('change', (e)=>{
+    console.log($('#filter_countrys').val());
+    actualizarTiendasFiltro();
+});
+
+document.getElementById('filter_ml').addEventListener('change', (e)=>{
+    console.log($('#filter_ml').val());
+    actualizarTiendasFiltro();
+});
+
+document.getElementById('filter_subF').addEventListener('change', (e)=>{
+    console.log($('#filter_subF').val());
+    actualizarTiendasFiltro();
+});
+
+function actualizarTiendasFiltro(){
+    let paises = $('#filter_countrys').val().join(',');
+    let ml = $('#filter_ml').val().join(',');
+    let subF = arrayToSafeQuotedString($('#filter_subF').val());
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+    var ajaxUrl = base_url+'/statistics/actualizarTiendasFiltro';
+    var strData = "countrys="+paises+"&ml="+encodeURIComponent(ml)+"&subF="+encodeURIComponent(subF);
+    request.open("POST",ajaxUrl,true);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.send(strData);
+    request.onreadystatechange = function(){
+        if(request.readyState == 4 && request.status == 200){
+            //console.log(request.responseText);
+            var objData = JSON.parse(request.responseText);
+            if(objData.status)
+            {
+                document.getElementById('filter_franchise').innerHTML='';
+                objData.stores.forEach(e=>{
+                    document.getElementById('filter_franchise').innerHTML+='<option value="'+e['name']+'" selected>'+e['name']+'</option>';
+                });
+                $('#filter_franchise').selectpicker('refresh');
+                console.log($('#filter_franchise').val())
+            }else{
+                swal("Atención!", fnT(objData.msg), "error");
+            }
+        }
+    }
+}
+
+function arrayToSafeQuotedString(arr) {
+    if (!Array.isArray(arr)) return "''";
+    if (arr.length === 0) return "''";
+    
+    return arr
+        .map(item => `'${String(item).replace(/'/g, "\\'")}'`)
+        .join(', ');
+}
 
 const genScoreTopBottom = data =>{
     currScoreTopBottom = data;
@@ -514,6 +588,8 @@ const setScoreTopBottom = select => {
 }
 
 const genCompare = async (period, reference) => {
+    console.log('period:'+period);
+    console.log('reference:'+reference);
     const comparePayload = payload;
     comparePayload.delete('list_period[]');
     comparePayload.append('list_period[]', period);
@@ -525,6 +601,7 @@ const genCompare = async (period, reference) => {
 
     $('#divLoading').css('display', 'flex');
     const dataCompare = await fetchCompare;
+    //console.log(dataCompare['sql']);
     $('#divLoading').css('display', 'none');
 
     window[`gen${reference}`](window[`data${reference}`], 'chart-current-period');
@@ -546,6 +623,3 @@ const limitRegion = () => {
 }
 
 document.addEventListener('DOMContentLoaded', () => $('#filter_form').submit());
-
-
-

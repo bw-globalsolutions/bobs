@@ -1,5 +1,7 @@
 <?php
-  $lan = $_GET['lan'] ?? 'eng';
+  //$lan = $_GET['lan'] ?? 'eng';
+  //$lan = 'eng';
+  $lan = ($data['lan']==NULL?$lan='eng':$data['lan']);
   $fnT = translate($lan);
 ?>
 <!DOCTYPE html>
@@ -9,28 +11,37 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Miguel O.">
-        <link rel="shortcut icon" href="<?=media();?>/images/favicon.ico">
+        <link rel="shortcut icon" href="<?=media();?>/images/icono.png?<?=rand(1, 15)?>">
 
         <!-- Main CSS-->
         <link rel="stylesheet" type="text/css" href="<?=media()?>/css/main.css">
+        <link rel="stylesheet" type="text/css" href="<?=media()?>/css/colors.css">
         <link rel="stylesheet" type="text/css" href="<?=media()?>/css/audit_report.css">
         
         <!-- Font-icon css-->
-        <!-- Font Awesome 6 CDN -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <title><?=$data['page_tag']?></title>
     </head>
+    <style>
+        .card-header.hd-ss {
+            color: var(--color4);
+            
+        }
+        .card-header:first-child {
+            
+        }
+
+    </style>
     <body class="bg-ss">
         <div class="container">
             <div class="d-flex justify-content-center mt-1 mb-1">
-                <img class="img-fluid" src="<?=media()?>/images/logo.png" alt="LogoDQ" id="img-main" height="100">
+                <img class="img-fluid" src="<?=media()?>/images/logo.png?<?=rand(1, 15)?>" alt="LogoChurchs" id="img-main" height="100">
             </div>
             <div class="bg-white rounded p-3 mb-5">
                 <div class="row">
                     <div class="col-lg-5">
                         <div class="card mb-3">
-                            <h5 class="card-header bg-ss text-white"><?=$fnT('Assesment info')?></h5>
+                            <h5 class="card-header hd-ss" style="color:#fff; background-color: #000; font-weight: bold; border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0; padding: 0.75rem 1.25rem;"><?=$fnT('Assesment info')?></h5>
                             <div class="card-body p-2">
                                 <table class="w-100" cellpadding="3">
                                     <tr>
@@ -74,80 +85,32 @@
                                         <td align="right"><?=$fnT('Manager')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$data['audit']['manager_name']?></b></td>
                                     </tr>
+                                    <? if($data['audit']['type']!='Self-Evaluation'){ ?>
                                     <tr>
                                         <td align="right"><?=$fnT('Signature')?>:</td>
                                         <td>&nbsp;&nbsp; 
                                             <img width="121" height="92" class="of-contain" src="<?= empty($data['audit']['manager_signature']) || $data['audit']['manager_signature']=='Sin Firma'? media().'/images/no-image-available.jpg' : $data['audit']['manager_signature'] ?>" alt="Manager signature">
                                         </td>
                                     </tr>
+                                    <? } ?>
                                 </table>      
                             </div>
                         </div>
                     </div>
-                   
-                        
-               
-            
-                                
-
                     <div class="col-lg-7">
                         <div class="card mb-3">
                             <div class="d-flex text-center">
-                                <div class="col card-header bg-secondary text-white">
-                                    <h6><?=$fnT('FSPC')?></h6>
-                                  
+                                <div class="col card-header" style="background-color: var(--color1);">
+                                    <h6><?=$fnT('Food safety')?></h6>
                                 </div>
-                                <div class="col card-header bg-secondary text-white">
-                                    <h6><?=$fnT('CPC')?></h6>
-                                </div>
-                                 <div class="col card-header bg-secondary text-white">
-                                    <h6><?=$fnT('Overall Score')?></h6>
+                                <div class="col card-header" style="background-color: var(--color1);">
+                                    <h6><?=$fnT('Operations Excellence')?></h6>
                                 </div>
                             </div>
 
                             <div class="card-body d-flex p-2">
-
-                <? if ($data['scoring']['Criticos'] > 1): $fspc = 'Fail'; $icono ='<i class="fa-solid fa-x text-danger" style="font-size: 4rem;"></i>'; else: $fspc = 'Pass'; $icono ='<i class="fa-solid fa-check text-success mb-2" style="font-size: 4rem;"></i>'; endif; ?>
-                                <div class="col d-none d-md-flex flex-column justify-content-center align-items-center">
-                                  <?=$icono ?>
-                                  <b class="display-6"><?=$fnT($fspc) ?? 0?></b>
-                                </div>
-                
-                <? if ($data['scoring']['Rojos'] > 6): $cpc = 'Fail'; $icono ='<i class="fa-solid fa-x text-danger" style="font-size: 4rem;"></i>'; else: $cpc = 'Pass'; $icono ='<i class="fa-solid fa-check text-success mb-2" style="font-size: 4rem;"></i>'; endif; ?>
-                                <div class="col d-none d-md-flex flex-column justify-content-center align-items-center">
-                                  <?=$icono ?>
-                                  <b class="display-6"><?=$fnT($cpc) ?? 0?></b>
-                                </div>
-               
-                <? if($data['scoring']['Result'] == 'Fail'):  $icono ='<i class="fa-solid fa-x text-danger" style="font-size: 4rem;"></i>'; endif ?>
-                <? if($data['scoring']['Result'] == 'Pass'):  $icono ='<i class="fa-solid fa-check text-success mb-2" style="font-size: 4rem;"></i>'; endif ?>
-                                <div class="col d-none d-md-flex flex-column justify-content-center align-items-center">
-                                  <?=$icono ?>
-                                  <b class="display-6"><?=$fnT($data['scoring']['Result'])??0?></b>
-                                </div>
-
-
-                                
-                           
-                            </div>
-                           
-                           
-                            
-                        </div>
-                      
-                        <div class="card mb-3">
-                            <div class="d-flex text-center">
-                                <div class="col card-header hd-red">
-                                    <h6><?=$fnT('Critics')?></h6>
-                                </div>
-                                <div class="col card-header hd-yel">
-                                    <h6><?=$fnT('No Critics')?></h6>
-                                </div>
-                            </div>
-
-                            <div class="card-body d-flex p-2">
-                                <div class="col d-none d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['Criticos']??0?></b><span>#</span></div>
-                                <div class="col d-none d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['NoCriticos']??0?></b><span>#</span></div>
+                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['FootSafety']??0?></b><span>#</span></div>
+                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['OperationsE']??0?></b><span>#</span></div>
                             </div>
                             <!-- <div class="card-header hd-red d-flex text-center">
                                 <h6 class="col border-right d-none d-md-block"><?=$fnT('Green')?></h6>
@@ -156,23 +119,23 @@
                             </div> -->
                             <div class="d-flex text-center">
                                 <div class="col card-header hd-red">
-                                    <h6><?=$fnT('Red')?></h6>
+                                    <h6><?=$fnT('Auto Fail')?></h6>
                                 </div>
-                                <div class="col card-header hd-yel">
-                                    <h6><?=$fnT('Yellow')?></h6>
+                                <div class="col card-header" style="background-color: var(--color1);">
+                                    <h6><?=$fnT('Overall score')?></h6>
                                 </div>
                             </div>
                             <div class="card-body d-flex p-2">
                                 <!-- <div class="col d-none d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['Verdes']??0?></b><span>#</span></div> -->
-                                <div class="col d-none d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['Rojos']??0?></b><span>#</span></div>
-                                <div class="col d-none d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['Amarillos']??0?></b><span>#</span></div>
+                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['AutoFail']??0?></b><span>#</span></div>
+                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['OverallScore']??0?></b><span>#</span></div>
                             </div>
-                            <div class="card-header bg-ss text-white d-flex text-center">
-                                <h6 class="col"><?=$fnT('Maintenance')?></h6>
+                            <!--<div class="card-header hd-ss d-flex text-center">
+                                <h6 class="col"><?=$fnT('Letter')?></h6>
                             </div>
                             <div class="card-body d-flex p-2">
-                                <div class="col d-none d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['Mantenimiento']??0?></b><span>#</span></div>
-                            </div>
+                                <div class="col d-none d-md-flex justify-content-center align-items-center" style="background-color:<?=$data['scoring']['color']?>; color:#fff;"><b class="display-4"><?=$data['scoring']['Letra']??0?></b><span>#</span></div>
+                            </div>-->
                             
                         </div>
                         <? 
@@ -180,7 +143,7 @@
                             $points = 0; $questions = 0;
                         ?>
                             <div class="card mb-3">
-                                <h6 class="card-header bg-ss text-white"><?=$fnT($m)?></h6>
+                                <h6 class="card-header hd-ss"><?=$fnT($m)?></h6>
                                 <div class="card-body p-2">
                                     <table class="w-100 score" cellpadding="4">
                                         <thead class="border-bottom">
@@ -213,7 +176,7 @@
                 </div>
             </div>
             <div class="card mb-5">
-                <h4 class="card-header hd-red text-white"><i class="fa fa-bolt"></i>&nbsp;&nbsp;<?=$fnT('Opportunity detail')?></h4>
+                <h4 class="card-header bg-danger text-white"><i class="fa fa-bolt"></i>&nbsp;&nbsp;<?=$fnT('Opportunity detail')?></h4>
                 <div class="card-body pb-0">
                     <? foreach($data['questions'] as $s => $questions): ?>
                         <ul class="list-group mb-4">
@@ -254,5 +217,15 @@
         <!-- The javascript plugin to display page loading on top-->
         <script src="<?=media()?>/js/plugins/pace.min.js"></script>
         <script type="text/javascript" src="<?=media()?>/js/plugins/sweetalert.min.js"></script>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const download = urlParams.get('download');
+
+            if(download==1){
+                window.print();
+                setTimeout(()=>{window.close()}, 1000);
+                
+            }
+        </script>
     </body>
 </html>

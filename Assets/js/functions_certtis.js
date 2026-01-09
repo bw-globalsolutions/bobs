@@ -87,16 +87,6 @@ tableCerttis = $('#tableCerttis').dataTable({
 			{"data":"question_prefix", "className": "text-center"},
 			{"data":"auditor_answer", "className": "text-center"},
 			{"data":"auditor_comment", "className": "text-center"},
-			{"data": null,"render": function (dato, type, row, meta) {
-                  
-                data = `<a class="btn btn-danger "  
-                            onclick = 'deleteCerttis(`+row['id_certtis']+`);'>
-                            <i class="fa fa-minus-circle" aria-hidden="true"></i>
-                        </a>`
-                return  data;
-
-                }
-            }
            
 		],
 		"responsive":"true",
@@ -137,37 +127,57 @@ tableCerttis = $('#tableCerttis').dataTable({
 
 });
 
+/*cargarTema();
+
+function cargarTema(){
+
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUrl = base_url+'/personalization/cargarTema';
+            var strData = "id=1";
+            request.open("POST",ajaxUrl,true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(strData);
+            request.onreadystatechange = function(){
+
+                if(request.readyState == 4 && request.status == 200){
+                    //console.log(request.responseText);
+                    var objData = JSON.parse(request.responseText);
+
+                    document.documentElement.style.setProperty("--color1", objData[0].color1);
+                    document.documentElement.style.setProperty("--color2", objData[0].color2);
+                    document.documentElement.style.setProperty("--color3", objData[0].color3);
+                    document.documentElement.style.setProperty("--color4", objData[0].color4);
+
+                    if(objData[0].img2!=''){
+                        if(document.querySelector('.img-fluid')){
+                            document.querySelector('.img-fluid').src=objData[0].img2;
+                        }
+                    }
+
+                    if(objData[0].img3!=''){
+                        // Obtener el elemento del favicon (si existe)
+                        const favicon = document.querySelector('link[rel="icon"]') || 
+                        document.createElement('link');
+
+                        // Configurar sus atributos
+                        favicon.rel = 'icon';
+                        favicon.href = objData[0].img3; // Ruta del nuevo favicon
+                        favicon.type = 'image/x-icon';
+
+                        // Añadirlo al <head> si no existía
+                        document.head.appendChild(favicon);
+                    }
+
+                }
+            }
+}*/
+
 
 //CERTTIS OBTENER DATOS
 function obtenerdatosCerttis(audit_id,id_audit_opp) {
 document.querySelector('#id_audit_opp_certtis').value = id_audit_opp;
 document.querySelector('#audit_id_certtis').value = audit_id;
 }
-
-function deleteCerttis(id_certtis) {
-	alert(id_certtis);
-
-
-	$.ajax({
-		type: "POST",
-           url:  " "+base_url+"/certtis/deleteCerttis",
-		   data: {id_certtis},
-		success: function(response) {
-		
-			console.log('Éxito:', response);
-			swal(fnT('Exito'), 'Eliminado correctamente', "success");
-			tableCerttisEmail.api().ajax.reload();
-			
-			 
-		
-		},
-		error: function(xhr, status, error) {
-			// Manejar el error
-			console.error('Error:', error);
-			alert('Hubo un problema al enviar el formulario.');
-		}
-	});
-	}
 
 
 //CERTTIS LINEA TIEMPO
@@ -187,25 +197,25 @@ function lineaTiempoCerttis(audit_id,id_audit_opp){
                 let nombre_usuario     = registro.nombre_usuario;              
                 let nombre_certtis     = registro.nombre_certtis;              
                 let comentario_certtis = registro.comentario_certtis;                  
-                let color              = registro.color;    
-                let icono              = registro.icono;    
+                let color              = registro.color.replaceAll('"', '');    
+                let icono              = registro.icono.replaceAll('"', '');    
                 let fecha_certtis      = registro.fecha_certtis;            
                 let hora_certtis       = registro.hora_certtis;  
 
                 $("#lineaTiempo").append(`
                 <div class="time-label">
-                	<span style="background:  `+color+`; color:white;"> `+fecha_certtis+`</span>
+                	<span style="background:  ${color}; color:white;"> ${fecha_certtis}</span>
                 </div>
                 <div>
-                	<i class="`+icono+`" style="background: `+color+`; color:white;"></i>
+                	<i class="${icono}" style="background: ${color}; color:white; padding:5px; border-radius:50%;"></i>
                 	<div class="timeline-item">
-                		<span class="time"><i class="fas fa-clock"></i>`+hora_certtis+`</span>
+                		<span class="time"><i class="fas fa-clock"></i>${hora_certtis}</span>
                 		<h3 class="timeline-header">
-                			<a>`+nombre_usuario+`</a><br>
-                			<small><b>Certtis: </b>`+nombre_certtis+`</small>
+                			<a>${nombre_usuario}</a><br>
+                			<small><b>Certtis: </b>${nombre_certtis}</small>
                 		</h3>
                 		<div class="timeline-body">
-                		  `+comentario_certtis+`
+                		  ${comentario_certtis}
                 		</div>
                 	</div>
                 </div>`);
@@ -220,7 +230,7 @@ function lineaTiempoCerttis(audit_id,id_audit_opp){
 
 
 function sendEmailCerttis(){
-	alert('hola');
+	alert('test');
 	
 }
 

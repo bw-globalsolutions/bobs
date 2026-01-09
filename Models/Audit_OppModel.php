@@ -88,6 +88,12 @@ class Audit_OppModel extends Mysql {
 		return $arrQPrefix;
 	}
 
+	public function getAuditId($id){
+		$query = "SELECT audit_id FROM audit_opp WHERE id = $id";
+		$rs = $this->select_all($query);
+		return $rs[0]['audit_id'];
+	}
+
 	public function newOpportunity(int $audit_id, int $checklist_item_id, string $auditor_answer, string $auditor_comment){
 		$request = null;
 		$sql = "SELECT * FROM audit_na_question WHERE audit_id = $audit_id AND question_prefix = (SELECT question_prefix FROM checklist_item WHERE id = $checklist_item_id)";
@@ -95,6 +101,13 @@ class Audit_OppModel extends Mysql {
 			$query = "CALL newOpportunity($audit_id, $checklist_item_id, '$auditor_answer', '$auditor_comment');";
 			$request = $this->select($query);
 		}
+		return $request;
+	}
+
+	public function setAutoFail(){
+		$query = "UPDATE audit_score SET value_3 = 'F', value_4 = 0";
+		$request = $this->update($query);
+		
 		return $request;
 	}
 	

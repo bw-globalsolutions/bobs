@@ -18,9 +18,8 @@ class ActionPlanModel extends Mysql {
 					t1.actionplan_status,
 					t1.actionplan_comment,
 					t1.actionplan_owner,
-			
+					t1.actionplan_date,
 					(SELECT item_action_plan FROM audit_plan_action WHERE audit_opp_id = t1.id LIMIT 1 )item_action_plan,
-					(SELECT date(action_date) FROM audit_plan_action WHERE audit_opp_id = t1.id LIMIT 1 )actionplan_date,
 
 					(SELECT COUNT(*) FROM audit_opp b INNER JOIN checklist_item c ON b.checklist_item_id = c.id WHERE b.audit_id = ".$idAudit." AND  (c.eng IN('No critico') OR c.main_section IN('LIMPIEZA')))no_critico,
 					(SELECT COUNT(*) FROM audit_opp b INNER JOIN checklist_item c ON b.checklist_item_id = c.id WHERE b.audit_id = ".$idAudit." AND eng IN('Crítico'))critico,
@@ -57,9 +56,9 @@ class ActionPlanModel extends Mysql {
 	}
 
 	public function getActions(int $idOpp){
-				
-		$query = "SELECT *
-				FROM audit_plan_action
+
+		$query = "SELECT t1.*, (SELECT GROUP_CONCAT(op SEPARATOR '<br><br>') FROM action_plan_op WHERE FIND_IN_SET(id, t1.checks_action_plan)) checks 
+				FROM audit_plan_action t1
 				where audit_opp_id = ".$idOpp;
 		
 		$res = new Mysql;
@@ -68,20 +67,31 @@ class ActionPlanModel extends Mysql {
 		return $request;
 	}
 
-	public function insertPlanAction(int $intIdOpp, string $strAccion, string $strAccionDate, string $strStatus,string $evidencia)
+	public function insertPlanAction(int $intIdOpp, string $strAccion, string $strAccionDate, string $strStatus,string $evidencia, string $checks)
 	{
-		$query_insert = "INSERT INTO audit_plan_action (audit_opp_id, action_comment, action_date, action_status, item_action_plan) 
-						VALUES (?,?,?,?,?) ";
-		$arrData = array($intIdOpp, $strAccion, $strAccionDate, $strStatus, $evidencia);
+		$query_insert = "INSERT INTO audit_plan_action (audit_opp_id, action_comment, action_date, action_status, item_action_plan, checks_action_plan) 
+						VALUES (?,?,?,?,?,?) ";
+		$arrData = array($intIdOpp, $strAccion, $strAccionDate, $strStatus, $evidencia, $checks);
 		$request = $this->insert($query_insert,$arrData);
 		return $request;
 	}
 
 	public function updatePlanAction(int $idPlanAction, string $strStatus)
 	{
-		$sql = "UPDATE audit_plan_action SET action_status = ? WHERE id = $idPlanAction ";
+		$sql = "UPDATE audit_plan_action SET action_status = ? WHERE id = $idPlanAction";
 		$arrData = array($strStatus);
 		$request = $this->update($sql, $arrData);
+		return $request;
+	}
+
+	public function getOP($prefix, $lan){
+		$query = "SELECT id FROM checklist_item WHERE question_prefix = '$prefix' AND type = 'Question'";
+		
+		$res = new Mysql;
+		$request0 = $res -> select_all($query);
+		$query = "SELECT * FROM action_plan_op WHERE id_item = '".$request0[0]['id']."'";
+		$request = $res -> select_all($query);
+		
 		return $request;
 	}
 }

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-
+<?php global $fnT; ?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<title>Re-audit</title>
+	<title>New certtis generated</title>
 </head>
 <body>
     <table border='0' align='left' cellpadding='3' cellspacing='2'>
@@ -14,21 +14,22 @@
                     <table width='100%' border='0' cellspacing='0' cellpadding='5' style='font-size:11px;font-family:Arial,Helvetica,sans-serif'>
                         <tbody>
                             <tr><td width='717'></td></tr>
-                            <tr><td style='padding:10px;background:#006938;color:#ffffff;font-size:11px'>
+                            <tr><td style='padding:10px;background:#eab54c;color:#ffffff;font-size:11px'>
                                 <span><?=$data['asunto']?></span>
                             </td></tr>
+                            <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-church's"></center></td></tr>
                             <tr>
                                 <td style='font-size:14px;padding:0px'>
                                     <div style='border:1px solid #eee;padding:10px'>
                                         <hr style='margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee'>
                                         <div>
-                                            <b><?=$data['tabla']?></b>
+                                            <b><?=$data['tabla_certtis'] ?></b>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td><b>Created:</b> <?=date('M d - h:i', time())?> &nbsp;</td>
+                                <td><b><?=$fnT('Created:')?></b> <?=date('M d - h:i', time())?> &nbsp;</td>
                             </tr>
                         </tbody>
                     </table>

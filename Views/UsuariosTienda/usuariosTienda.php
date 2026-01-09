@@ -6,7 +6,13 @@
 <style>
   table thead{background: linear-gradient(to right,  #335bff, #335bff); color:white;}  .colorBase{background: linear-gradient(to right,  #603B96, #603B96); color:white;}
 </style>
-    <main class="app-content">
+    <div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
       
       <div class="row">
         <div class="col-md-12">

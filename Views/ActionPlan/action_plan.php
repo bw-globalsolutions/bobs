@@ -5,7 +5,13 @@
     $arrLostQuestion = [];
     $arrLostSection = [];
 ?>
-<main class="app-content">
+<div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
     <div class="app-title">
         <div>
             <h1>
@@ -50,7 +56,7 @@
                                     <div data-snumber="<?=$q['snumber']?>" class="question-item">
                                         <div class="card-header d-flex justify-content-between">
                                             <span data-toggle="collapse" data-target="#cpicklist<?=$q['prefix']?>" aria-expanded="false" aria-controls="cpicklist<?=$q['prefix']?>" style="cursor: pointer">
-                                                <span class="badge badge-secondary"><?=$q['prefix']?></span> - 
+                                                <span class="badge badge-secondary prefix"><?=$q['prefix']?></span> - 
                                                 <? if(!empty($q['priority'])): ?>
                                                     <b><?=$q['priority']?>:</b>&nbsp;
                                                 <? endif ?>

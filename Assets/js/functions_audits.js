@@ -1,56 +1,109 @@
 function applyFilter(){
     console.log('Filtros apply');
-  
     let count = 0;
     $('.audit-item').filter(function(){
-
-
-      
-
-
-        
-const rnameFilter        = $('#filter_rname').val();
-const locationFilter     = $('#filter_location').val();
-const statusFilter       = $('#filter_status').val();
-const aemailFilter       = $('#filter_aemail').val();
-const countryFilter      = $('#filter_country').val();
-const areaFilter         = $('#filter_area').val();
-const conceptFilter      = $('#filter_concept').val();
-const franchisseesFilter = $('#filter_franchissees_name').val();
-const areaManagerFilter  = $('#filter_email_area_manager').val();
-const shopTypFilter      = $('#filter_shop_type').val();
-const escalation1Filter  = $('#filter_email_ops_leader').val();
-const escalation2Filter  = $('#filter_email_ops_director').val();
-
-console.log('Filtro:', areaManagerFilter, 'Dato:', $(this).data('fareamanager'));
-
-
-const include = 
-    (!rnameFilter || rnameFilter.includes(($(this).data('rname') ?? '').toString())) &&
-    (!locationFilter || locationFilter.includes(($(this).data('lnumber') ?? '').toString())) &&
-    (!statusFilter || statusFilter.includes(($(this).data('status') ?? '').toString())) &&
-    (!aemailFilter || aemailFilter.includes(($(this).data('aemail') ?? '').toString()))&&
-    (!countryFilter || countryFilter.includes(($(this).data('acountry') ?? '').toString()))&&
-    (!areaFilter || areaFilter.includes(($(this).data('farea') ?? '').toString()))&&
-    (!conceptFilter || conceptFilter.includes(($(this).data('fconcept') ?? '').toString()))&&
-    (!areaManagerFilter || areaManagerFilter.includes(($(this).data('fareamanager') ?? '').toString()))&&
-    (!franchisseesFilter || franchisseesFilter.includes(($(this).data('ffranchissees') ?? '').toString()))&&
-    (!escalation1Filter || escalation1Filter.includes(($(this).data('emailopsleader') ?? '').toString()))&&
-    (!escalation2Filter || escalation2Filter.includes(($(this).data('emailopsdirector') ?? '').toString()))&&
-    (!shopTypFilter || shopTypFilter.includes(($(this).data('shoptype') ?? '').toString()))
-    ;
-
-$(this).toggle(include);
+        const include = $('#filter_rname').val().includes($(this).data('rname').toString()) && 
+        $('#filter_location').val().includes($(this).data('lnumber').toString()) && 
+        $('#filter_status').val().includes($(this).data('status')) &&
+        $('#filter_aemail').val().includes($(this).data('aemail'))
+        $(this).toggle(include);
         count = include? count + 1 : count;
     });
     $('#count').html(count);
     $('#filter_search').val('');
     $('#search-addon').removeClass('text-primary');
+    window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    console.log(0);
     // saveFilter();
 }
 
+/*cargarTema();
 
+function cargarTema(){
 
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUrl = base_url+'/personalization/cargarTema';
+            var strData = "id=1";
+            request.open("POST",ajaxUrl,true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(strData);
+            request.onreadystatechange = function(){
+
+                if(request.readyState == 4 && request.status == 200){
+                    //console.log(request.responseText);
+                    var objData = JSON.parse(request.responseText);
+
+                    document.documentElement.style.setProperty("--color1", objData[0].color1);
+                    document.documentElement.style.setProperty("--color2", objData[0].color2);
+                    document.documentElement.style.setProperty("--color3", objData[0].color3);
+                    document.documentElement.style.setProperty("--color4", objData[0].color4);
+
+                    if(objData[0].img2!=''){
+                        if(document.querySelector('.img-fluid')){
+                            document.querySelector('.img-fluid').src=objData[0].img2;
+                        }
+                    }
+
+                    if(objData[0].img3!=''){
+                        // Obtener el elemento del favicon (si existe)
+                        const favicon = document.querySelector('link[rel="icon"]') || 
+                        document.createElement('link');
+
+                        // Configurar sus atributos
+                        favicon.rel = 'icon';
+                        favicon.href = objData[0].img3; // Ruta del nuevo favicon
+                        favicon.type = 'image/x-icon';
+
+                        // Añadirlo al <head> si no existía
+                        document.head.appendChild(favicon);
+                    }
+
+                }
+            }
+}*/
+const rootStyles = getComputedStyle(document.documentElement);
+    const color1v = rootStyles.getPropertyValue('--color1').trim();
+    const color2v = rootStyles.getPropertyValue('--color2').trim();
+    const color3v = rootStyles.getPropertyValue('--color3').trim();
+    const color4v = rootStyles.getPropertyValue('--color4').trim();
+    const color5v = rootStyles.getPropertyValue('--color5').trim();
+    const color6v = rootStyles.getPropertyValue('--color6').trim();
+    const color7v = rootStyles.getPropertyValue('--color7').trim();
+    const color8v = rootStyles.getPropertyValue('--color8').trim();
+    const color9v = rootStyles.getPropertyValue('--color9').trim();
+
+    document.querySelectorAll('.etlbls').forEach(e=>{
+        switch(e.innerHTML){
+            case 'Pending':
+                e.style.backgroundColor=color6v;
+                break;
+            case 'In Process':
+                e.style.backgroundColor=color7v;
+                break;
+            case 'Completed':
+                e.style.backgroundColor=color8v;
+                break;
+            case 'Deleted!':
+                e.style.backgroundColor=color9v;
+                break;
+        }
+    });
+
+/*window.onload = function() {
+    setTimeout(()=>{
+        document.getElementById('selectSE').nextElementSibling.setAttribute('class','addSelf');
+    }, 500)
+    
+}*/
+
+function abrirAdd(event){
+    event.preventDefault();
+    event.stopPropagation();
+    document.querySelector('.addSelf').click();
+}
 
 function searchString(val){
     if(val != ''){
@@ -60,14 +113,6 @@ function searchString(val){
             $(this).data('lname').toLowerCase().indexOf(val.toLowerCase()) > -1 || 
             $(this).data('aname').toLowerCase().indexOf(val.toLowerCase()) > -1 || 
             $(this).data('aemail').indexOf(val) > -1 || 
-            $(this).data('acountry').toLowerCase().indexOf(val) > -1 ||
-            $(this).data('farea').toLowerCase().indexOf(val) > -1 ||
-            $(this).data('fconcept').toLowerCase().indexOf(val) > -1 ||
-            $(this).data('ffranchissees').toLowerCase().indexOf(val) > -1 ||
-            $(this).data('fareamanager').toLowerCase().indexOf(val) > -1 ||
-            $(this).data('shoptype').toLowerCase().indexOf(val) > -1 ||
-            $(this).data('emailopsdirector').toLowerCase().indexOf(val) > -1 ||
-            $(this).data('emailopsleader').toLowerCase().indexOf(val) > -1 ||
             $(this).data('id').toString().indexOf(val) > -1;
             $(this).toggle(include);
             count = include? count + 1 : count;
@@ -125,13 +170,13 @@ function generarAutoEval(idTienda){
                     {
                             swal({
                                 title: "",
-                                text: fnT(objData.msg),
+                                text: objData.msg,
                                 type: "success",
-                                confirmButtonText: fnT("Yes, accept"),
+                                confirmButtonText: fnT("Accept"),
                                 closeOnConfirm: false,
                             }, function(isConfirm){
                                 if(isConfirm){
-                                     location.href = base_url+'/audits/auditInfo?id='+objData.id_audit;
+                                    location.reload();
                                 }
                             });
                     }else{
@@ -146,62 +191,24 @@ function generarAutoEval(idTienda){
     });
 }
 
+// function saveFilter(){
+//     sessionStorage.setItem('audit_type', audit_type);
+//     document.querySelectorAll('#form-filter select[id]').forEach(item => {
+//         const id = item.getAttribute('id');
+//         sessionStorage.setItem(id, JSON.stringify($('#' + id).val()));
+//     });
+// }
 
-
-function generarIDQ(idTienda){
-    const pais = $(`#selectSE option[value='${idTienda}']`).data('country');
-    $('#selectSE').selectpicker('val', '');
-
-    swal({
-        title: fnT("IDQ Internal Audit"),
-        text: fnT("Do you really want to continue?"),
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonText: fnT("Yes, accept"),
-        cancelButtonText: fnT("No, cancel"),
-        closeOnConfirm: false,
-        closeOnCancel: true
-    }, function(isConfirm){
-        if(isConfirm){
-            //location.reload();
-
-            var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-            var ajaxUrl = base_url+'/audits/addIDQ';
-            var strData = "location_id="+idTienda+"&country_id="+pais;
-            request.open("POST",ajaxUrl,true);
-            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            request.send(strData);
-            request.onreadystatechange = function(){
-
-                if(request.readyState == 4 && request.status == 200){
-                    //console.log(request.responseText);
-                    var objData = JSON.parse(request.responseText);
-
-                    if(objData.status)
-                    {
-                            swal({
-                                title: "",
-                                text: fnT(objData.msg),
-                                type: "success",
-                                confirmButtonText: fnT("Yes, accept"),
-                                closeOnConfirm: false,
-                            }, function(isConfirm){
-                                if(isConfirm){
-                                     location.href = base_url+'/audits/audit?id='+objData.id_audit;
-                                }
-                            });
-                    }else{
-                        swal("Atención!", fnT(objData.msg), "error");
-                    }
-                }
-                //divLoading.style.display = "none";
-                //return false;
-            }
-            //alert('ok');
-        }
-    });
-}
-
+// window.addEventListener('DOMContentLoaded', () => {
+//     if(sessionStorage.getItem("audit_type") == audit_type){
+//         document.querySelectorAll('#form-filter select[id]').forEach(item => {
+//             const id = item.getAttribute('id');
+//             let data = JSON.parse(sessionStorage.getItem(id));
+//             $('#' + id).selectpicker('val', data);
+//         });
+//     }
+//     applyFilter();
+// });
 
 window.addEventListener('DOMContentLoaded', () => {
     applyFilter();

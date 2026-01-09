@@ -19,6 +19,12 @@ class Permisos extends Controllers{
 		die(json_encode($arrPermisosRol, JSON_UNESCAPED_UNICODE));
 	}
 
+	public function getNotifications(int $id)
+	{
+		$arrPermisosRol = $this->model->getPNotifications(['notification_id', 'send'], "role_id = $id");
+		die(json_encode($arrPermisosRol, JSON_UNESCAPED_UNICODE));
+	}
+
 	public function setPermisos()
 	{
 		if($_POST){
@@ -31,6 +37,29 @@ class Permisos extends Controllers{
 					$u = strpos($perm, 'u') === false ? 0 : 1;
 					$d = strpos($perm, 'd') === false ? 0 : 1;
 					$requestPermiso = $this->model->insertPermisos($role_id, $module_id, $r, $w, $u, $d);
+				}
+			}
+			if($requestPermiso > 0)
+			{
+				$arrResponse = array('status' => true, 'msg' => 'Permissions assigned correctly');
+				$this->model->setLog($_SESSION['userData']['id'], "update permission id:$intIdrol");
+			}else{
+				$arrResponse = array('status' => false, 'msg' => 'Permissions cannot be assigned');
+			}
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
+
+	public function setNotifications()
+	{
+		if($_POST){
+			$role_id = $_POST['role_id'];
+			$this->model->deleteNotifications($role_id);
+			foreach($_POST as $module_id => $perm){
+				if(is_int($module_id)){
+					$send = strpos($perm, 'send') === false ? 0 : 1;
+					$requestPermiso = $this->model->insertNotifications($role_id, $module_id, $send);
 				}
 			}
 			if($requestPermiso > 0)

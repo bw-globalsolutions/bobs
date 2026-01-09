@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Alex G.">
     <meta name="theme-color" content="#009688">
-    <link rel="shortcut icon" href="<?=media();?>/images/favicon.ico">
+    <link rel="shortcut icon" href="<?=media();?>/images/icono.png?<?=rand(1, 15)?>">
     <link rel="shortcut icon" href="">
     <title><?= $data['page_title']?></title>
     <!-- Main CSS-->
@@ -45,7 +45,10 @@
     <header class="app-header"><a class="app-header__logo" href="<?=base_url()?>/home" style="font-family: Calibri,Arial;" id="header-main-logo"><?=NOMBRE_EMPESA?></a>
     <!-- Sidebar back-->
     <? if($isBack): ?>
-      <a class="app-sidebar__toggle btn-back" onclick="window.history.back()" href="#"></a>
+      <script>if(document.querySelector('.app-title div h1')){
+        document.querySelector('.app-title div h1').innerHTML='<button>Atras</button>'+document.querySelector('.app-title div h1').innerHTML;
+      }</script>
+      <!--<a class="app-sidebar__toggle btn-back" onclick="window.history.back()" href="#"></a>-->
     <? endif; ?>
     <!-- Sidebar toggle button--><a class="app-sidebar__toggle" style="z-index: 3; <?=$isBack? 'margin-right: -21.6' : '' ?>" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       <ul class="app-nav">

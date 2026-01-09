@@ -1,6 +1,54 @@
 const formPlanAction = document.getElementById('formPlanAction');
 const divLoading = document.getElementById('divLoading');
 const idAudit = $('#id_auditoria').val();
+let mostrarOpcionesPlan = false;
+
+
+
+/*cargarTema();
+
+function cargarTema(){
+
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUrl = base_url+'/personalization/cargarTema';
+            var strData = "id=1";
+            request.open("POST",ajaxUrl,true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(strData);
+            request.onreadystatechange = function(){
+
+                if(request.readyState == 4 && request.status == 200){
+                    //console.log(request.responseText);
+                    var objData = JSON.parse(request.responseText);
+
+                    document.documentElement.style.setProperty("--color1", objData[0].color1);
+                    document.documentElement.style.setProperty("--color2", objData[0].color2);
+                    document.documentElement.style.setProperty("--color3", objData[0].color3);
+                    document.documentElement.style.setProperty("--color4", objData[0].color4);
+
+                    if(objData[0].img2!=''){
+                        if(document.querySelector('.img-fluid')){
+                            document.querySelector('.img-fluid').src=objData[0].img2;
+                        }
+                    }
+
+                    if(objData[0].img3!=''){
+                        // Obtener el elemento del favicon (si existe)
+                        const favicon = document.querySelector('link[rel="icon"]') || 
+                        document.createElement('link');
+
+                        // Configurar sus atributos
+                        favicon.rel = 'icon';
+                        favicon.href = objData[0].img3; // Ruta del nuevo favicon
+                        favicon.type = 'image/x-icon';
+
+                        // Añadirlo al <head> si no existía
+                        document.head.appendChild(favicon);
+                    }
+
+                }
+            }
+}*/
 
 let tableAuditPlanActions;
 let rowTable = "";
@@ -22,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function(){
             {"data":"num"},
 			{"data":"opportunity", "width": "60%"},
 			{"data":"status", "className": "text-center"},
-			{"data":"actionplan_date", "className": "text-center"},
 			{"data": null,"render": function (dato, type, row, meta) {
 
                 if(row['item_action_plan'] == null || row['item_action_plan'] == ''){
@@ -63,8 +110,30 @@ document.addEventListener('DOMContentLoaded', function(){
 	});
 
     formPlanAction.addEventListener('submit', e => {
+        e.preventDefault();
+        if(mostrarOpcionesPlan){
+            valorChecks = '';
+            document.querySelectorAll('.chk').forEach(e=>{
+                if(e.checked){
+                    valorChecks+=e.value+',';
+                }
+            });
+            if(valorChecks!=''){
+                document.querySelector('.errorBoxC').style.display='none';
+                valorChecks = valorChecks.slice(0, -1);
+                document.getElementById('checks').value=valorChecks;
+            }else{
+                document.querySelector('.errorBoxC').style.display='block';
+                return;
+            }
+        }else{
+            if(document.getElementById('action').value==''){
+                document.querySelector('.errorBoxN').style.display='block';
+                return;
+            }
+        }
+        mostrarOpcionesPlan=false;
         //var intIdOpp = document.querySelector('#opp_id').value;
-		e.preventDefault();
 		divLoading.style.display = "flex";
 		const payload = new FormData(formPlanAction);
 		fetch(base_url + '/actionPlan/setAction', {
@@ -89,9 +158,35 @@ document.addEventListener('DOMContentLoaded', function(){
 function fntAddAction(idOpp,idAudit){
     console.log(idOpp);
 	console.log(idAudit);
+    let prefix = document.querySelector('.prefix'+idOpp).innerHTML;
     document.querySelector('#opp_id').value = idOpp;
 	document.querySelector('#opp_audit_id').value = idAudit;
-	$('#modalFormAction').modal('show');
+    fetch(base_url + '/actionPlan/getPlanOptions?id='+idAudit+'&prefix='+prefix, {
+        method: 'POST'
+    }).then(res => res.json()).then(dat => {
+        console.log(dat)
+        let lan = dat['lan'];
+        if(dat.status){
+            if(dat.rs.length>0){
+                mostrarOpcionesPlan=true;
+                document.querySelector('.formCheck').innerHTML='';
+                dat.rs.forEach(e=>{
+                    document.querySelector('.formCheck').innerHTML+=`<div style="display:flex; gap:10px;"><input type="checkbox" id="${e['id']}" class="chk" value="${e['id']}">
+                            <label for="${e['id']}"> ${(lan=='esp'?e['op_esp']:e['op'])}</label></div><br>`;
+                });
+            }else{
+                mostrarOpcionesPlan=false;
+            }
+            $('#modalFormAction').modal('show');
+            if(mostrarOpcionesPlan){
+                document.querySelector('.formCheck').style.display='block';
+            }else{
+                document.querySelector('.formCheck').style.display='none';
+            }
+        }else{
+            swal(fnT('Error'), fnT(dat.msg), "error");
+        }
+    });
 }
 
 function fntChangeStatusAction(idAction,idOpp){
@@ -110,7 +205,7 @@ function fntChangeStatusAction(idAction,idOpp){
     function(isConfirm){
     if (isConfirm){
         divLoading.style.display = "flex";
-        fetch(base_url + '/actionPlan/updateStatus?id='+idAction+'&idOpp='+idOpp+'&status=Approved', {
+        fetch(base_url + '/actionPlan/updateStatus?id='+idAction+'&idOpp='+idOpp+'&status=Finished', {
 			method: 'POST'
 		}).then(res => res.json()).then(dat => {
 			if(dat.status){
@@ -118,6 +213,7 @@ function fntChangeStatusAction(idAction,idOpp){
 				tableAuditPlanActions.api().ajax.reload();
 				swal(fnT('Action Plan'), fnT(dat.msg), "success");
 				formPlanAction.reset();
+                refreshStatics();
 			}else{
 				swal(fnT('Error'), fnT(dat.msg), "error");
 			}
@@ -142,7 +238,6 @@ function fntChangeStatusAction(idAction,idOpp){
         swal("Action Rejected", "The action has been rejected!", "error");
     }
     });
-    refreshStatics();
 }
 
 function fntCloseAction(idAction,idOpp){

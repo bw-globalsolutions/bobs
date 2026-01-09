@@ -37,17 +37,17 @@ class Usuarios extends Controllers{
 				$where = "id NOT IN(1) AND status = 1";
 				break;
 			case 17:
-				$where = "id NOT IN(1,2,3,17) AND status = 1";
+				$where = "id NOT IN(1,2,17) AND status = 1";
 				break;
 			default:
-				$where = "id NOT IN(1,2,3) AND status = 1";
+				$where = "id NOT IN(1,2) AND status = 1";
 		}
 		$data['role'] = selectRole(['id', 'name', 'level'], $where);
 		//$data['role'] = selectRole(['id', 'name', 'level'], (in_array($_SESSION['userData']['role']['id'], [1,2,17])? '1' : "id IN(10,11,12)") . ' AND status = 1');
 		$data['brands'] = selectBrands(['id', 'name']);
 		$data['paises'] = [];
 		
-		$tmp = selectCountries(['id', 'name', 'region'], "id IN({$_SESSION['userData']['country_id']})");
+		$tmp = selectCountries(['id', 'name', 'region'], " active=1");
 		foreach($tmp as $i){
 			if (!array_key_exists($i['region'], $data['paises'])) {
 				$data['paises'][$i['region']] = [];
@@ -65,12 +65,12 @@ class Usuarios extends Controllers{
 				$arrResponse = array("status" => false, "msg" => "Wrong data");
 			}else{
 				$level = $this->model->getLevelRole($_POST['role']);
-				switch ($level) {
+				/*switch ($level) {
 					case 6: case 5:
 						$_POST['list_location'] = [0];
 						break;
 					case 4:
-						if(count($_POST['list_country']) > 1000){
+						if(count($_POST['list_country']) > 1){
 							die(json_encode(['status' => false, "msg" => "An error occurred in the process, if the problem persists please contact support"],JSON_UNESCAPED_UNICODE));
 						}
 						$_POST['list_location'] = [0];
@@ -85,7 +85,7 @@ class Usuarios extends Controllers{
 							die(json_encode(['status' => false, "msg" => "An error occurred in the process, if the problem persists please contact support"],JSON_UNESCAPED_UNICODE));
 						}
 						break;
-				}				  
+				}	*/			  
 
 				$id = intVal($_POST['id']);
 				$name = ucwords(strClear($_POST['name']));
@@ -96,22 +96,34 @@ class Usuarios extends Controllers{
 				$notification = intVal($_POST['notification']);
 				$status = intVal($_POST['status']);
 				$language = strClear($_POST['language']);
-				$location = implode(',', $_POST['list_location']);
+				if($_POST['list_location']!=''){
+					$location = implode(',', $_POST['list_location']);
+				}else{
+					$location = '';
+				}
 				$request_user = "";
+
 
 				if($id == 0)
 				{
 					$option = 1;
 					if($this->permission['w']){
 						$request_user = $this->model->insertUsuario($name, $email, $brand, $country, $role, $notification, $status, $language, $location);
-						require_once("Models/LoginModel.php");
-						$objLogin = new LoginModel();
-						/*$arrPass = $objLogin->setRecoverPass($email, 1);
+						if($request_user!=0 && $request_user!='exist'){
 
-						if($arrPass != false){
-							$data = ['asunto' => 'Nuevo acceso generado', 'email' => $email, 'token' => $arrPass[1]];
-							sendEmail($data, 'new_user_notice');
-						}*/
+							require_once("Models/LoginModel.php");
+							$objLogin = new LoginModel();
+							$arrPass = $objLogin->setRecoverPass($email, 1);
+
+							if($arrPass != false){
+								$data = ['asunto' => 'New access generated', 'email' => $email, 'token' => $arrPass[1], 'country'=>$country];
+								if(esEspanol([$country])){
+									sendEmail($data, 'new_user_notice');
+								}else{
+									sendEmail($data, 'new_user_notice_eng');
+								}
+							}
+						}
 					}
 				}else{
 					if($this->permission['w']){
@@ -124,7 +136,8 @@ class Usuarios extends Controllers{
 					if($option == 1)
 					{
 						$arrResponse = array("status" => true, "msg" => "Data saved successfully");
-						$this->model->setLog($_SESSION['userData']['id'], "insert user");
+						$array = array('iduser'     =>  $request_user);
+						$this->model->setLogParameters($_SESSION['userData']['id'], "insert user", $array);
 					}else{
 						$arrResponse = array("status" => true, "msg" => "Data updated successfully");
 						$this->model->setLog($_SESSION['userData']['id'], "update user id:$id");
@@ -154,6 +167,7 @@ class Usuarios extends Controllers{
 			$btnEdit = '';
 			$btnDelete = '';
 
+			$status = $arrData[$i]['status'];
 			if($arrData[$i]['status'] == 1)
 			{
 				$arrData[$i]['status'] = '<span class="badge badge-success">Active</span>';
@@ -175,7 +189,7 @@ class Usuarios extends Controllers{
 			}
 
 			if($this->permission['d']){
-				$btnDelete = '<button class="btn mr-1 mb-1 btn-danger btn-sm btnDelUsuario" onClick="fntDelUsuario('.$arrData[$i]['id'].')" title="Delete"> <i class="fa fa-trash"></i></button>';
+				$btnDelete = '<button class="btn mr-1 mb-1 btn-danger btn-sm btnDelUsuario" status="'.$status.'" '.($status==1?'':'style="background-color:#f4d05b;"').' onClick="fntStatusUsuario('.$arrData[$i]['id'].', '.($status==1?0:1).')" title="Delete"> '.($status==1?'<i class="fa fa-trash"></i>':'<i class="fa fa-bolt" aria-hidden="true"></i>').'</button>';
 			}
 
 			$arrData[$i]['options'] = '<div class="text-center">'.$btnView.' '.$btnEdit.' '.$btnDelete.'</div>';
@@ -232,6 +246,26 @@ class Usuarios extends Controllers{
 		die();
 	}
 
+	public function inactivarUsuario(){
+		if($_POST){
+			if($this->permission['d']){
+				$intIduser = intVal($_POST['iduser']);
+				$status = $_POST['statusx'];
+				$requestDelete = $this->model->inactivarUsuario($intIduser, $status);
+				if($requestDelete == 'ok')
+				{
+					$array = array('iduser'     =>  $intIduser);
+					$r = $this->model->setLogParameters($_SESSION['userData']['id'], ($status==1?'Activate user':'Inactivate user'), $array);
+					$arrResponse = array('status' => true, 'msg' => 'The user has been inactivated');
+				}else{
+					$arrResponse = array('status' => true, 'msg' => 'Error inactivate user');
+				}
+				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+			}
+		}
+		die();
+	}
+
 	public function perfil()
 	{
 		$data['page_tag'] = "Profile";
@@ -265,7 +299,11 @@ class Usuarios extends Controllers{
 		$request = false;
 		if(Validators::check(['email' => $_POST['email']]) and !empty($_POST['name']) and !empty($_POST['language'])){
 			if($this->model->updateProfile($_SESSION['userData']['id'], $_POST['name'], $_POST['email'], $_POST['language'], $_POST['profile_picture'])){
-				$this->model->setLog($_SESSION['userData']['id'], 'update profile');
+				$array = array('name'     =>  $_POST['name'],
+							   'email'    =>  $_POST['email'],
+							   'profile_picture'    =>  $_POST['profile_picture'],
+							   'language'    =>  $_POST['language']);
+				$this->model->setLogParameters($_SESSION['userData']['id'], 'update profile', $array);
 				$_SESSION['userData']['name'] = $_POST['name'];
 				$_SESSION['userData']['email'] = $_POST['email'];
 				$_SESSION['userData']['profile_picture'] = $_POST['profile_picture'];

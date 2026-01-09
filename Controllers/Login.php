@@ -14,7 +14,7 @@ class Login extends Controllers{
 
 	public function login()
 	{
-		$data['page_tag'] = "Bob's";
+		$data['page_tag'] = "Church's Reports";
 		//$data['page_tag'] = "Login";
 		$data['page-functions_js'] = "functions_login.js";
 
@@ -30,7 +30,7 @@ class Login extends Controllers{
 			foreach($user as $key => $val){
 				$_SESSION['userData'][$key] = $val;
 			}
-			$request = ['status' => 1];
+			$request = ['status' => 1, 'name' =>$_SESSION['userData']['name']];
 			$this->model->setLog($user['id'], 'sing in');
 		}else{
 
@@ -43,10 +43,20 @@ class Login extends Controllers{
 	}
 
 	public function recoverPass(){
+		require_once("Models/UsuariosModel.php");
+		$objData = new UsuariosModel();
 		if(Validators::check(['email' => $_POST['email']])){
 			if($response = $this->model->setRecoverPass($_POST['email'])){
-				$data = ['asunto' => 'Password request', 'email' => $_POST['email'], 'token' => $response[1]];
-				sendEmail($data, 'reset_password');
+				$user = $objData->getUsuario([], "email = '".$_POST['email']."'");
+				$arr = explode(",", $user['country_id']);
+				$isAmerican = isAmerican2($arr);
+				$titulo = (esEspanol($arr)?'Solicitud de contraseña':'Password request');
+				$data = ['asunto' => $titulo, 'email' => $_POST['email'], 'token' => $response[1], 'isAmerican'=>$isAmerican]; //'cc'=>'cordonez@bw-globalsolutions.com',
+				if(esEspanol($arr)){
+					sendEmail($data, 'reset_password');
+				}else{
+					sendEmail($data, 'reset_password_eng');
+				}
 
 				$this->model->setLog($response[0], 'request password');
 			}

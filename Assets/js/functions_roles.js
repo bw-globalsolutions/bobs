@@ -1,7 +1,6 @@
 const formRole = document.getElementById("formRol");
 const divLoading = document.querySelector('#divLoading');
 var tableRoles;
-var tableRolesVista;
 
 document.addEventListener('DOMContentLoaded', function(){
 
@@ -23,32 +22,6 @@ document.addEventListener('DOMContentLoaded', function(){
 			{"data":"level"},
 			{"data":"status"},
 			{"data":"options"},
-		],
-		"resonsieve":"true",
-		"bDestroy": true,
-		"iDisplayLength": 10,
-		"order":[[0,"asc"]]
-	});
-
-
-
-	tableRolesVista = $('#tableRolesVista').dataTable({
-		"aProcessing":true,
-		"aServerSide":true,
-		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
-		},
-		"ajax":{
-			"url": " "+base_url+"/roles/getRoles",
-
-			"dataSrc":""
-		},
-		"columns":[
-			{"data":"id"},
-			
-			{"data":"description"},
-			{"data":"level"},
-			{"data":"status"},
 		],
 		"resonsieve":"true",
 		"bDestroy": true,
@@ -78,16 +51,52 @@ document.addEventListener('DOMContentLoaded', function(){
 	});
 
 	$('#tableRoles').DataTable();
-
-
-
-
-
-
-
-
-
 });
+
+/*cargarTema();
+
+function cargarTema(){
+
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUrl = base_url+'/personalization/cargarTema';
+            var strData = "id=1";
+            request.open("POST",ajaxUrl,true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(strData);
+            request.onreadystatechange = function(){
+
+                if(request.readyState == 4 && request.status == 200){
+                    //console.log(request.responseText);
+                    var objData = JSON.parse(request.responseText);
+
+                    document.documentElement.style.setProperty("--color1", objData[0].color1);
+                    document.documentElement.style.setProperty("--color2", objData[0].color2);
+                    document.documentElement.style.setProperty("--color3", objData[0].color3);
+                    document.documentElement.style.setProperty("--color4", objData[0].color4);
+
+                    if(objData[0].img2!=''){
+                        if(document.querySelector('.img-fluid')){
+                            document.querySelector('.img-fluid').src=objData[0].img2;
+                        }
+                    }
+
+                    if(objData[0].img3!=''){
+                        // Obtener el elemento del favicon (si existe)
+                        const favicon = document.querySelector('link[rel="icon"]') || 
+                        document.createElement('link');
+
+                        // Configurar sus atributos
+                        favicon.rel = 'icon';
+                        favicon.href = objData[0].img3; // Ruta del nuevo favicon
+                        favicon.type = 'image/x-icon';
+
+                        // Añadirlo al <head> si no existía
+                        document.head.appendChild(favicon);
+                    }
+
+                }
+            }
+}*/
 
 function openModal(){
 	document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
@@ -132,6 +141,22 @@ function fntEditRol(idrol){
 			divLoading.style.display = "none";
 		}
 	}
+}
+
+function fntEditNotifications(role_id){
+	submitNotifications = () => sendNotifications(role_id);
+	const checkBox = document.querySelectorAll('#notification-table input[type=checkbox]');
+	checkBox.forEach(item => item.checked = false);
+
+	divLoading.style.display = "flex";
+	const url = base_url + '/permisos/getNotifications/' + role_id;
+	fetch(url).then(res => res.json()).then(dat => {
+		dat.forEach(item => {
+			document.getElementById(`s${item.notification_id}`).checked = item.send == 1;
+		});
+		divLoading.style.display = "none";
+		$('#modalNotifications').modal('show');
+	});
 }
 
 function fntDelRol(idrol){
@@ -205,6 +230,33 @@ function sendPermission(role_id){
 
 	divLoading.style.display = "flex";
 	fetch(base_url + '/permisos/setPermisos/', {
+		method: 'POST',
+		body: payload
+	}).then(res => res.json()).then(dat => {
+		if(dat.status){
+			swal(fnT('Role permits'), fnT(dat.msg), "success");
+		}else{
+			swal(fnT('Error'), fnT(dat.msg), "error");
+		}
+		divLoading.style.display = "none";
+	});
+}
+
+function sendNotifications(role_id){
+	const checkBox = document.querySelectorAll('#notification-table input[type=checkbox]:checked');
+	const payload = new FormData();
+	payload.append('role_id', role_id);
+	checkBox.forEach(item => {
+		if(!payload.has(item.getAttribute('data-module'))){
+			payload.append(item.getAttribute('data-module'), item.getAttribute('data-perms'));
+		} else{
+			let tmpValue = payload.get(item.getAttribute('data-module')) + item.getAttribute('data-perms');
+			payload.set(item.getAttribute('data-module'), tmpValue);
+		}
+	});
+
+	divLoading.style.display = "flex";
+	fetch(base_url + '/permisos/setNotifications/', {
 		method: 'POST',
 		body: payload
 	}).then(res => res.json()).then(dat => {

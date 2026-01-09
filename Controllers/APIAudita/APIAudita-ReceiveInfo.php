@@ -76,13 +76,28 @@ foreach ($appdata['json_data']['checklistInfo'] as $item) {
 
 //General Pictures
 foreach ($appdata['json_data']['generalPictures'] as $item) {
+    $reference = NULL;
+    //echo ("'".$item['title']."'");
+    //die("titulo: '".$item['title']."' 'Foto de entrada principal del restaurante'");
+    if(trim($item['title'])=='Foto de entrada principal del restaurante'){ //se añadio esto por que es español no se añadia la referencia
+        $reference=10;
+    }else if(trim($item['title'])=='Comentario del Gerente'){
+        $reference=11;
+    }else if(trim($item['title'])=='Foto con uniforme y red'){
+        $reference=12;
+    }else if(trim($item['title'])=='Foto de tus materiales'){
+        $reference=13;
+    }
+    //die("referencia:".$reference);
     $insertAudit_FileValues = [
         'audit_id' => $isAudit['id'],
         'type' => 'General Pictures',
-        'name' => $item['title'],
+        'reference_id' => $reference,
+        'name' => trim($item['title']),
         'url' => $item['location'],
     ];
-    Audit_FileModel::insertAudit_File($insertAudit_FileValues);
+    $foto = Audit_FileModel::insertAudit_File($insertAudit_FileValues);
+    //die($foto);
 }
 
 //Fotos en caso de ser Cerrada

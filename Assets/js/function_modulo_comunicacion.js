@@ -1,129 +1,90 @@
 
 console.log('Modulo de comunicacion:');
 document.addEventListener('DOMContentLoaded', function(){
-	manualesAutomatico();
-	getManuales();
+	manualesAutomatico();	
+
 	
-$('#formManual').on('submit', function(event) {
-	event.preventDefault(); 
-	var formData = $(this).serialize();
-	$.ajax({
-		url: base_url + '/moduloComunicacion/setManual', 
-		type: 'POST',
-		data: formData,
-		success: function(response) {
-		
-			console.log('Éxito:', response);
-			Swal.fire({
-				title: 'Éxito',
-				text: 'Manual registrado correctamente',
-				icon: 'success',
-				confirmButtonText: 'OK'
-			});
+	$('#formManual').on('submit', function(event) {
+		event.preventDefault(); 
+		var formData = $(this).serialize();
+		$.ajax({
+			url: base_url + '/moduloComunicacion/setManual', 
+			type: 'POST',
+			data: formData,
+			success: function(response) {
 			
-			manualesAutomatico();	
-			getManuales();
-
-			$('#modalFormManual').modal('hide');
-		},
-		error: function(xhr, status, error) {
-			console.error('Error:', error);
-			Swal.fire({
-				title: 'Error',
-				text: 'Hubo un problema al enviar el formulario.',
-				icon: 'error'
-			});
-		}
+				console.log('Éxito:', response);
+				swal(fnT('Exito'), 'Manual registrado correctamente', "success");
+				manualesAutomatico();	
+				  $('#modalFormManual').modal('hide');
+			
+			},
+			error: function(xhr, status, error) {
+				// Manejar el error
+				console.error('Error:', error);
+				alert('Hubo un problema al enviar el formulario.');
+			}
+		});
 	});
-});
-
 	
 
 });
 
+/*cargarTema();
 
-function getManuales() {
+function cargarTema(){
 
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUrl = base_url+'/personalization/cargarTema';
+            var strData = "id=1";
+            request.open("POST",ajaxUrl,true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(strData);
+            request.onreadystatechange = function(){
 
+                if(request.readyState == 4 && request.status == 200){
+                    //console.log(request.responseText);
+                    var objData = JSON.parse(request.responseText);
 
-    // Obtener el parámetro "country" de la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const country = urlParams.get('country'); // Ej: ?country=MX
+                    document.documentElement.style.setProperty("--color1", objData[0].color1);
+                    document.documentElement.style.setProperty("--color2", objData[0].color2);
+                    document.documentElement.style.setProperty("--color3", objData[0].color3);
+                    document.documentElement.style.setProperty("--color4", objData[0].color4);
 
-    tableManuales = $('#tableManuales').dataTable({
-        "aProcessing": true,
-        "aServerSide": true,
-       "language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
-		},
-		
-        "ajax": {
-            "url": base_url + "/moduloComunicacion/getManuales",
-            "data": function (d) {
-                d.country = country; // agrega el parámetro de la URL
-            },
-            "dataSrc": ""
-        },
+                    if(objData[0].img2!=''){
+                        if(document.querySelector('.img-fluid')){
+                            document.querySelector('.img-fluid').src=objData[0].img2;
+                        }
+                    }
 
-        searchPanes: {
-            dtOpts: {
-                dom: 'tp',
-                paging: 'true',
-                pagingType: 'simple',
-                searching: true
-            }
-        },
-        dom: 'Pfrtip',
-        columnDefs: [
-            {
-                searchPanes: { show: true, initCollapsed: true },
-                targets: [1]
-            },
-            {
-                searchPanes: { show: false, initCollapsed: true },
-                targets: [0, 2, 3, 4]
-            }
-        ],
+                    if(objData[0].img3!=''){
+                        // Obtener el elemento del favicon (si existe)
+                        const favicon = document.querySelector('link[rel="icon"]') || 
+                        document.createElement('link');
 
-        "columns": [
-            { "data": "id_manual" },
-            { "data": "categoria" },
-            { "data": "nombre_manual" },
-            { "data": "descripcion_manual" },
-            { "data": "lang" },
-            { 
-                "data": "ruta_manual",
-                "render": function (dato, type, row, meta) {
-                    return `<center>
-                        <button class="btn btn-outline-danger" 
-                            onclick="window.open('/moduloComunicacion/viewPDF?file=${encodeURIComponent(row['ruta_manual'])}', '_blank')">
-                            <i class="fa-solid fa-file-pdf"></i>
-                        </button>
-                    </center>`;
+                        // Configurar sus atributos
+                        favicon.rel = 'icon';
+                        favicon.href = objData[0].img3; // Ruta del nuevo favicon
+                        favicon.type = 'image/x-icon';
+
+                        // Añadirlo al <head> si no existía
+                        document.head.appendChild(favicon);
+                    }
+
                 }
             }
-        ],
-
-        "dom": "PlfZtip",
-        "resonsieve": "true",
-        "bDestroy": true,
-        "iDisplayLength": 10,
-        "order": [[0, "desc"]],
-    });
-
-}
-
+}*/
 
 function openModal(){
 	$('#modalFormManual').modal('show');
 	document.querySelector('#formManual').reset();
 	$("#nuevaCategoria").hide();
 }
-/*function manualesAutomatico(){
+function manualesAutomatico(){
 	
 	$("#section_manual").empty();
 	$("#div_boton_manual").empty();
-	$("#div_boton_manual").append(<a class="category_item" category="all"><b>TODO</b></a>);
+	$("#div_boton_manual").append(`<a class="category_item" category="all"><b>TODO</b></a>`);
 
 
 	// MANUALES  
@@ -136,15 +97,9 @@ function openModal(){
 					   success: function(data){
 		
 					$.each(data,function(key, registro) {
-	var rol = $("#rol").val();
-	console.log('ejuemplo');
-	console.log(rol);
-						if (rol > 2){
- var oculto = 'hidden';
-}else {
-	var oculto = '';
-}
-	console.log(oculto);					
+	
+						
+						
 						let id_manual     	    = registro.id_manual;  
 						let ruta_manual     	= registro.ruta_manual;  
 						let categoria     		= registro.categoria;  
@@ -154,35 +109,25 @@ function openModal(){
 						
 						if ($("#div_boton_manual a[category='categoria" + categoria + "']").length === 0) {
 							// Si no existe, agregar el botón de categoría
-							$("#div_boton_manual").append(<a class="category_item" category="categoria + categoria + "><b> + categoria + </b></a>);
+							$("#div_boton_manual").append(`<a class="category_item" category="categoria` + categoria + `"><b>` + categoria + `</b></a>`);
 						}
 						if ($("#txtCategoria option[value='" + categoria + "']").length === 0) {
 							// Si no existe, agregar la opción
-							$("#txtCategoria").append(<option value="+categoria+">+categoria+</option>);
+							$("#txtCategoria").append(`<option value="`+categoria+`">`+categoria+`</option>`);
 						}
 						
-						$("#section_manual").append(<div class="col-lg-12 col-12">			
-													  <div class="product-item" category="+categoria+">
-													    <div class="card">
-													      <h5 class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-													        <span>+nombre_manual+</span>
-													        <div>
-													          <button class="btn btn-primary btn-sm mr-2" onclick="editarManual('+id_manual+')" +oculto+>
-													            <i class="fa fa-edit" aria-hidden="true"></i>
-													          </button>
-													          <button class="btn btn-danger btn-sm" onclick="eliminarManual('+id_manual+')" +oculto+>
-													            <i class="fa fa-trash" aria-hidden="true"></i>
-													          </button>
-													        </div>
-													      </h5>
-													      <div class="card-body">
-													        <iframe src="+ruta_manual+" width="100%" height="500"></iframe>
-													        <div class="float-right">
-													        </div>
-													      </div>
-													    </div>
-													  </div>
-													</div>);
+						$("#section_manual").append(`<div class="col-lg-12 col-12">			
+														  <div class="product-item" category="categoria`+categoria+`">
+															  <div class="card" >
+																  <h5 class="card-header bg-dark text-center text-white">`+nombre_manual+`</h5>
+																  <div class="card-body">
+																	  <iframe src="`+ruta_manual+`" width="100%" height="500"></iframe>
+																	  <div class="float-right">
+																	  </div>
+																  </div>
+															  </div>
+														  </div>
+													  </div>`);
 					});
 						  
 	// AGREGANDO CLASE ACTIVE AL PRIMER ENLACE 
@@ -227,101 +172,7 @@ function openModal(){
 				 }
 	});
 	
-} 
-*/
-
-function manualesAutomatico() {
-
-    // Limpiar secciones
-    $("#section_manual").empty();
-    $("#div_boton_manual").empty().append(`<a class="category_item" category="all"><b>TODO</b></a>`);
-    
-
-    // Obtener rol del usuario
-    const rol = $("#rol").val();
-
-    // Llamada AJAX
-    $.ajax({
-        type: "POST",
-        url: base_url + "/moduloComunicacion/getManuales",
-        dataType: "json",
-        success: function(data) {
-
-            $.each(data, function(_, registro) {
-                
-                let id_manual          = registro.id_manual;  
-                let ruta_manual        = registro.ruta_manual;  
-                let categoria          = registro.categoria;  
-                let descripcion_manual = registro.descripcion_manual;  
-                let nombre_manual      = registro.nombre_manual; 
-
-                // Botón de categoría si no existe
-                if ($("#div_boton_manual a[category='" + categoria + "']").length === 0) {
-                    $("#div_boton_manual").append(
-                        `<a class="category_item" category="${categoria}"><b>${categoria}</b></a>`
-                    );
-                }
-
-                // Opción del select si no existe
-                if ($("#txtCategoria option[value='" + categoria + "']").length === 0) {
-                    $("#txtCategoria").append(`<option value="${categoria}">${categoria}</option>`);
-                }
-
-                // Determinar si se muestra el botón de editar/eliminar
-                let oculto = (rol > 2) ? 'hidden' : '';
-
-                // Agregar tarjeta de manual
-                $("#section_manual").append(`
-                    <div class="col-lg-6 col-6">			
-                        <div class="product-item" category="${categoria}">
-                            <div class="card">
-                                <h5 class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                                    <span>${nombre_manual}</span>
-                                    <div>
-                                        <button class="btn btn-primary btn-sm mr-2" onclick="editarManual('${id_manual}')" ${oculto}>
-                                            <i class="fa fa-edit" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" onclick="eliminarManual('${id_manual}')" ${oculto}>
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </h5>
-                                <div class="card-body">
-                                    <iframe src="${ruta_manual}" width="100%" height="500"></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `);
-            });
-
-            // Activar la categoría "all" al inicio
-            $('.category_item[category="all"]').addClass('ct_item-active');
-
-            // Evento para filtrar productos por categoría
-            $('.category_item').off('click').on('click', function() {
-                let catProduct = $(this).attr('category');
-
-                // Marcar activa
-                $('.category_item').removeClass('ct_item-active');
-                $(this).addClass('ct_item-active');
-
-                if (catProduct === "all") {
-                    $('.product-item').fadeIn().css('transform', 'scale(1)');
-                } else {
-                    $('.product-item').hide().css('transform', 'scale(0)');
-                    $('.product-item[category="'+catProduct+'"]').fadeIn().css('transform', 'scale(1)');
-                }
-            });
-
-        },
-        error: function(err) {
-            console.error("Error cargando manuales:", err);
-        }
-    });
-
 }
-
 
 
 
@@ -359,125 +210,6 @@ function verificarSeleccion() {
 		
 	}else{$("#nuevaCategoria").hide();}
 }
-function editarManual(id_manual) {
-	const card = document.querySelector(`[onclick="editarManual('${id_manual}')"]`).closest('.card');
-	const nombreActual = card.querySelector('.card-header span').innerText;
-	const categoriaActual = card.closest('.product-item').getAttribute('category');
-  
-	let nombreInput, categoriaInput, langInput;
-  
-	Swal.fire({
-	  title: 'Editar',
-	  html: `<div style="display: flex; align-items: center; margin-bottom: 10px;">
-      			<label for="nombre" style="width: 100px; text-align: right; margin-right: 10px;">Nombre:</label>
-      			<input type="text" id="nombre" class="swal2-input" style="width: 250px;" value="${nombreActual}">
-    		</div>
-    		<div style="display: flex; align-items: center;">
-    		  	<label for="categoria" style="width: 100px; text-align: right; margin-right: 10px;">Categoría:</label>
-    		  	<input type="text" id="categoria" class="swal2-input" style="width: 250px;" value="${categoriaActual}">
-    		</div>
-			<div style="display: flex; align-items: center;">
-    		  	<label for="categoria" style="width: 100px; text-align: right; margin-right: 10px;">Idioma:</label>
-    		  	<select class="form-control" id="txtLang" name="txtLang" type="text">
-                      <option value="eng">English</option>
-                      <option value="esp">Spanish</option>
-                      <option value="ind">Indonesian</option>
-                </select>
-    		</div>`,
-				
-	  confirmButtonText: 'Guardar',
-	  focusConfirm: false,
-	  didOpen: () => {
-		const popup = Swal.getPopup();
-		nombreInput = popup.querySelector('#nombre');
-		categoriaInput = popup.querySelector('#categoria');
-		langInput = popup.querySelector('#txtLang'); // <---- agregado
-
-		nombreInput.onkeyup = (event) => event.key === 'Enter' && Swal.clickConfirm();
-		categoriaInput.onkeyup = (event) => event.key === 'Enter' && Swal.clickConfirm();
-	  },
-	  preConfirm: () => {
-		const nombre = nombreInput.value.trim();
-		const categoria = categoriaInput.value.trim();
-		const txtLang = langInput.value; // <---- agregado
-  
-		if (!nombre || !categoria) {
-		  Swal.showValidationMessage('Por favor, completa todos los campos');
-		  return false;
-		}
-  
-		return { nombre, categoria, txtLang }; // <---- agregado
-	  }
-	}).then(result => {
-	  if (result.isConfirmed) {
-		const { nombre: nuevoNombre, categoria: nuevaCategoria, txtLang } = result.value; // <---- agregado
-  
-		const formData = {
-		  id_manual: id_manual,
-		  nombre: nuevoNombre,
-		  categoria: nuevaCategoria,
-		  txtLang: txtLang // <---- agregado
-		};
-  
-		$.ajax({
-		  url: base_url + '/moduloComunicacion/editarManual',
-		  type: 'POST',
-		  data: formData,
-		  success: function(response) {
-			console.log('Éxito:', response);
-  
-			Swal.fire('Actualizado', 'El manual fue actualizado exitosamente.', 'success').then(() => {
-			  card.querySelector('.card-header span').innerText = nuevoNombre;
-			  card.closest('.product-item').setAttribute('category', nuevaCategoria);
-			});
-  
-			$('#modalFormManual').modal('hide');
-			manualesAutomatico();
-			getManuales();
-		  },
-		  error: function(xhr, status, error) {
-			console.error('Error:', error);
-			Swal.fire('Error', 'Hubo un problema al enviar el formulario.', 'error');
-		  }
-		});
-	  }
-	});
-}
-
-  
-  function eliminarManual(id_manual) {
-	Swal.fire({
-	  title: "¿Estás seguro?",
-	  text: "¡No podrás revertir esto!",
-	  icon: "warning",
-	  showCancelButton: true,
-	  confirmButtonColor: "#3085d6",
-	  cancelButtonColor: "#d33",
-	  confirmButtonText: "Sí, eliminar",
-	  cancelButtonText: "Cancelar"
-	}).then((result) => {
-	  if (result.isConfirmed) {
-		$.ajax({
-		  url: base_url + '/moduloComunicacion/eliminarManual', // Ajusta la URL si es necesario
-		  type: 'POST',
-		  data: { id_manual: id_manual },
-		  success: function(response) {
-			
-			  Swal.fire("Eliminado", "El manual ha sido eliminado.", "success");
-			  manualesAutomatico();	
-			  getManuales();
-			  const card = document.querySelector(`[onclick="eliminarManual('${id_manual}')"]`).closest('.col-12');
-			  if (card) card.remove();
-			
-		  },
-		  error: function(xhr, status, error) {
-			console.error(error);
-			Swal.fire("Error", "Ocurrió un error en la conexión.", "error");
-		  }
-		});
-	  }
-	});
-  }
 
 
 

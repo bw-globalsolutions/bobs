@@ -26,6 +26,7 @@ class Roles extends Controllers{
 		$data['page_name'] = "roles";
 		$data['page-functions_js'] = "functions_roles.js";
 		$data['modules'] = selectModules(['id', 'name']);
+		$data['notifications'] = selectNotifications(['id', 'name']);
 		$data['permission'] = $this->permission;
 
 		$this->views->getView($this, "roles", $data);
@@ -37,7 +38,7 @@ class Roles extends Controllers{
 			echo "Restricted access";
 			exit;
 		}
-		$arrData = $this->model->getRole([], 'id NOT IN(1)');
+		$arrData = $this->model->getRole([], null);
 
 		for($i=0; $i<count($arrData); $i++){
 			$btnView = '';
@@ -54,13 +55,14 @@ class Roles extends Controllers{
 			if($this->permission['u']){
 				$btnView = '<button class="btn btn-secondary btn-sm btnPermisosRol" onClick="fntPermisos('.$arrData[$i]['id'].')" title="Permissions"> <i class="fa fa-key"></i></button>';
 				$btnEdit = '<button class="btn btn-primary btn-sm btnEditRol" onClick="fntEditRol('.$arrData[$i]['id'].')" title="Edit"> <i class="fa fa-pencil"></i></button>';
+				$btnMail = '<button class="btn btn-primary btn-sm" style="background-color:#007cff;" onClick="fntEditNotifications('.$arrData[$i]['id'].')" title="Notification"> <i class="fa fa-envelope"></i>';
 			}
 
 			if($this->permission['d']){
 				$btnDelete = '<button class="btn btn-danger btn-sm btnDelRol" onClick="fntDelRol('.$arrData[$i]['id'].')" title="Delete"> <i class="fa fa-trash"></i></button>';
 			}
 
-			$arrData[$i]['options'] = '<div class="text-center">'.$btnView.' '.$btnEdit.' '.$btnDelete.'</div>';
+			$arrData[$i]['options'] = '<div class="text-center">'.$btnView.' '.$btnEdit.' '.$btnMail.' '.$btnDelete.'</div>';
 		}
 
 		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
@@ -102,6 +104,7 @@ class Roles extends Controllers{
 			//Crear
 			$request_rol = $this->model->insertRol($name, $description, $level, $status);
 			$option = 1;
+			$request_send = $this->model->crearPermisosEmail();
 		}else{
 			//Actualizar
 			$request_rol = $this->model->updateRol($id, $name, $description, $level, $status);

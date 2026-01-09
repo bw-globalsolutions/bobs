@@ -19,14 +19,21 @@
     }
 </style>
 <div id="contentAjax"></div>
-<main class="app-content">
+<div class="fig1"></div>
+<div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
     <input type="hidden" id="tipoR" value="<?=$_SESSION['userData']['role']['name']?>">
     <div class="app-title">
         <div>
             <h1>
                 <i class="fa fa-id-card-o" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
                 <!-- Definir que roles pueden crear apelaciones -->
-                <? if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 10,20,18,19] ) ): ?>
+                <? if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 10] ) ): ?>
                     <button class="btn btn-md btn-primary" type="button" onclick="openModalNew();"><i class="fa fa-plus-circle" aria-hidden="true"></i><?=$fnT('New appeal')?></button>
                 <? endif ?>
             </h1>
@@ -37,7 +44,7 @@
         </ul>
     </div>
     
-    <div class="tile">
+    <div class="tile filtroFix" style="padding: 20px 20px 9px; top: 50px;">
         <div class="tile-body">
             <div class="form-row">
                 <div class="col-lg-3 my-1">
@@ -86,7 +93,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" style="margin-top: 60px;">
         <div class="col-md-12">
             <div class="tile">
                 <div class="tile-body">

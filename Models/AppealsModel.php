@@ -42,9 +42,9 @@ class AppealsModel extends Mysql {
 							t1.appeal_id, 
 							t1.audit_opp_id, 
 							t1.decision_result, 
+							t1.decision_comment, 
 							t1.author_comment, 
-							t1.owner_comment,
-							t1.decision_comment,
+							t1.owner_comment, 
 							t3.*
 						FROM appeal_item t1
 						left join 
@@ -96,8 +96,6 @@ class AppealsModel extends Mysql {
 					". ($condition ? "$condition" : '1') ."
 				  ORDER BY date_visit DESC, id DESC";
 		$res = new Mysql;
-
-		//echo $query;
 		$request = $res->select_all($query);
 		return $request;
 	}
@@ -163,11 +161,11 @@ class AppealsModel extends Mysql {
 							FROM checklist_item t3
 							inner join (select question_prefix, IFNULL({$_SESSION['userData']['default_language']}, eng) AS 'question', priority as priorityV, IF(priority = 'Critical', 0, 1) priority
 										FROM checklist_item
-										where type = 'Question'  and checklist_id = (select checklist_id from audit where id = ".$idAudit." limit 1) ) t4
+										where type = 'Question' and checklist_id = (select checklist_id from audit where id = ".$idAudit." limit 1) ) t4
 							on t3.question_prefix = t4.question_prefix
 							where t3.type = 'Picklist') t2
 				on t1.checklist_item_id = t2.id
-				where t1.audit_id = ".$idAudit."  and t2.section_name NOT IN('CALIDAD DQ')
+				where t1.audit_id = ".$idAudit." 
 				order by checklist_item_id";
 		
 		$res = new Mysql;
@@ -203,6 +201,15 @@ class AppealsModel extends Mysql {
 		$query = substr($query, 0, -2) ." WHERE $condition";
 		$request = $this->update($query, $values);
 		
+		return $request;
+	}
+
+	public function previusScore($idVisit){
+		$query = "SELECT 
+					value_4
+				FROM audit_score WHERE audit_id = ".$idVisit;
+		$res = new Mysql;
+		$request = $res -> select_all($query);
 		return $request;
 	}
 

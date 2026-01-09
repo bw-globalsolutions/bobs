@@ -1,12 +1,26 @@
 <?php 
     headerTemplate($data);
     $canUpdate = ($data['permision']['u'] || isMySelfEvaluation($_GET['id'])) && ($data['status'] != 'Completed' && $data['visit_status'] == 'Visited');
+    //die($data['type']);
     getModal('modalAnswer', ['audit_id' => $_GET['id'], 'type' => $data['type'], 'update' => $canUpdate]);
+    getModal('modalCerttis',$data);
     global $fnT;
     $arrLostQuestion = [];
     $arrLostSection = [];
 ?>
-<main class="app-content">
+<style>
+    .modal-open .modal {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+</style>
+<div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
     <div class="app-title">
         <div>
             <h1>
@@ -25,12 +39,9 @@
             <div class="tile">
                 <div class="tile-body">
                     <ul class="app-menu pb-0">
-                        
-                        <? 
-                        foreach($data['section'] as $item): ?>
+                        <? foreach($data['section'] as $item): ?>
                             <li class="app-menu__item section-items flex-column align-items-start cr-pointer success" id="section<?=$item['section_number']?>" onclick="filterSection(<?=$item['section_number']?>)">
                                 <!-- <span class="badge badge-light"><?=$item['main_section']?></span> -->
-                              
                                 <a class="text-primary"><?=$fnT($item['section_name'])?></a>
                             </li>
                         <? endforeach ?>
@@ -61,10 +72,13 @@
                                         <div class="card-body">
                                             <ul class="list-group list-group-flush">
                                                 <? foreach($q['picklist'] as $p): ?>
-                                                    <li class="list-group-item list-group-item-action d-flex justify-content-between cr-pointer" onclick="openOpportunity(<?=$p['id']?>, '<?=$q['prefix']?>', '<?=$q['snumber']?>')">
+                                                    <li class="list-group-item list-group-item-action d-flex justify-content-between cr-pointer" onclick="openOpportunity(<?=$p['id']?>, '<?=$q['prefix']?>', '<?=$q['snumber']?>', <?=(!empty($p['AutoFail'])?1:0)?>)">
                                                         <p>
                                                             <? if(!empty($p['priority'])): ?>
                                                                 <b class="<?=$p['priority']=='Critical'? 'text-danger' : '' ?>"><?=$fnT($p['priority'])?>:</b>&nbsp;
+                                                            <? endif ?>
+                                                            <? if(!empty($p['AutoFail'])): ?>
+                                                                <b class="af"><?=$fnT($p['AutoFail'])?></b>&nbsp;
                                                             <? endif ?>
                                                             <?=$p['picklist_item']?>
                                                         </p>

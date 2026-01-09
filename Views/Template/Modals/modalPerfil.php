@@ -18,22 +18,22 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label class="control-label" for="profile_name"><?=$fnT('Name')?> <span class="required">*</span></label>
-                    <input class="form-control valid validText" id="profile_name" name="name" type="text" data-defvalue="<?=$_SESSION['userData']['name']?>" required>
+                    <input class="form-control valid validText input-s1" id="profile_name" name="name" type="text" data-defvalue="<?=$_SESSION['userData']['name']?>" required>
                   </div>
                   <div class="form-group col-md-6">
                     <label class="control-label" for="profile_email"><?=$fnT('Email')?> <span class="required">*</span></label>
-                    <input class="form-control valid validEmail" rows="2" id="profile_email" name="email" type="email" data-defvalue="<?=$_SESSION['userData']['email']?>" required>
+                    <input class="form-control valid validEmail input-s1" rows="2" id="profile_email" name="email" type="email" data-defvalue="<?=$_SESSION['userData']['email']?>" required>
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label class="control-label" for="profile_password"><?=$fnT('New password')?></label>
-                    <input class="form-control toggle-pass" id="profile_password" name="password" type="password" pattern="<?=$data['regExPass']?>" title="<?=$fnT('Minimum 12 characters, uppercase and lowercase, plus at least one number')?>" data-defvalue="" autocomplete="new-password">
+                    <input class="form-control toggle-pass input-s1" id="profile_password" name="password" type="password" pattern="<?=$data['regExPass']?>" title="<?=$fnT('Minimum 12 characters, uppercase and lowercase, plus at least one number')?>" data-defvalue="" autocomplete="new-password">
                   </div>
                   <div class="form-group col-md-6">
                     <label class="control-label" for="profile_cpassword"><?=$fnT('Retype new password')?></label>
-                    <input class="form-control toggle-pass" id="profile_cpassword" name="cpassword" type="password" pattern="<?=$data['regExPass']?>" title="<?=$fnT('Minimum 12 characters, uppercase and lowercase, plus at least one number')?>" data-defvalue="" autocomplete="new-password">
+                    <input class="form-control toggle-pass input-s1" id="profile_cpassword" name="cpassword" type="password" pattern="<?=$data['regExPass']?>" title="<?=$fnT('Minimum 12 characters, uppercase and lowercase, plus at least one number')?>" data-defvalue="" autocomplete="new-password">
                   </div>
                 </div>
 
@@ -47,10 +47,9 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="profile_language"><?=$fnT('Language')?></label>
-                    <select class="form-control" id="profile_language" data-defvalue="<?=$_SESSION['userData']['default_language']?>" name="language" required>
+                    <select class="input-s1 form-control" id="profile_language" data-defvalue="<?=$_SESSION['userData']['default_language']?>" name="language" required>
                       <option value="eng">English</option>
                       <option value="esp">Spanish</option>
-                      <option value="ind">Indonesian</option>
                     </select>
                   </div>  
                   <div class="form-group col-md-6">

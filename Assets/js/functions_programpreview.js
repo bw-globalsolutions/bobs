@@ -1,70 +1,3 @@
-/*** ---------------------------
- *  FILTRAR COUNTRIES POR REGION
- * --------------------------- ***/
-
-// Guardar estado inicial del select completo
-let originalOptgroups = null;
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    // Clonamos el select original antes de que Bootstrap Select lo modifique
-    const selectCountry = document.querySelector("#list_country");
-    originalOptgroups = selectCountry.cloneNode(true);
-
-    // Evento Change para regiones
-    $("#list_region").on("changed.bs.select", function () {
-        filterCountriesByRegion();
-    });
-
-    // Trigger inicial
-    filterCountriesByRegion();
-});
-
-
-function filterCountriesByRegion() {
-
-    const selectedRegions = $("#list_region").val() || [];
-
-    console.log("▶ Regiones seleccionadas:", selectedRegions);
-
-    const selectCountry = document.querySelector("#list_country");
-
-    // Reset al estado original SIN Bootstrap Select
-    selectCountry.innerHTML = "";
-    originalOptgroups.childNodes.forEach(n => {
-        selectCountry.appendChild(n.cloneNode(true));
-    });
-
-    // Si NO hay regiones seleccionadas → mostrar todo
-    if (selectedRegions.length === 0) {
-        $("#list_country").selectpicker("refresh");
-        return;
-    }
-
-    // Recorrer optgroups y ocultar los que no coinciden
-    const groups = selectCountry.querySelectorAll("optgroup");
-
-    groups.forEach(group => {
-        const region = group.getAttribute("data-region");
-
-        if (!selectedRegions.includes(region)) {
-            group.style.display = "none";
-            // quitar selección
-            group.querySelectorAll("option").forEach(opt => opt.selected = false);
-        } else {
-            group.style.display = "block";
-        }
-    });
-
-    console.log("▶ Países filtrados aplicados.");
-
-    $("#list_country").selectpicker("refresh");
-}
-
-
-
-
-
 let bgColors = [
     '007bff',
     '6c757d',
@@ -90,6 +23,51 @@ const reloadAll = async (element = false) => {
 
     genTable(dataProgramPreview);
 }
+
+/*cargarTema();
+
+function cargarTema(){
+
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUrl = base_url+'/personalization/cargarTema';
+            var strData = "id=1";
+            request.open("POST",ajaxUrl,true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(strData);
+            request.onreadystatechange = function(){
+
+                if(request.readyState == 4 && request.status == 200){
+                    //console.log(request.responseText);
+                    var objData = JSON.parse(request.responseText);
+
+                    document.documentElement.style.setProperty("--color1", objData[0].color1);
+                    document.documentElement.style.setProperty("--color2", objData[0].color2);
+                    document.documentElement.style.setProperty("--color3", objData[0].color3);
+                    document.documentElement.style.setProperty("--color4", objData[0].color4);
+
+                    if(objData[0].img2!=''){
+                        if(document.querySelector('.img-fluid')){
+                            document.querySelector('.img-fluid').src=objData[0].img2;
+                        }
+                    }
+
+                    if(objData[0].img3!=''){
+                        // Obtener el elemento del favicon (si existe)
+                        const favicon = document.querySelector('link[rel="icon"]') || 
+                        document.createElement('link');
+
+                        // Configurar sus atributos
+                        favicon.rel = 'icon';
+                        favicon.href = objData[0].img3; // Ruta del nuevo favicon
+                        favicon.type = 'image/x-icon';
+
+                        // Añadirlo al <head> si no existía
+                        document.head.appendChild(favicon);
+                    }
+
+                }
+            }
+}*/
 
 const genTable = data => {
 

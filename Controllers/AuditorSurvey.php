@@ -46,7 +46,7 @@ class AuditorSurvey extends Controllers{
 		//$aAnswers[$data['auditSurvey']['question_id']] = $data['auditSurvey']['answer'];
 		//dep($aAnswers);
 		for($i=0; $i<count($data['questions']); $i++) {
-			$data['questions'][$i]['answers'] = explode("|", $data['questions'][$i]['options_esp']);
+			$data['questions'][$i]['answers'] = explode("|", $data['questions'][$i]['options_eng']);
 			$data['questions'][$i]['answer'] = $aAnswers[$data['questions'][$i]['id']];
 		}
 		//dep($data);

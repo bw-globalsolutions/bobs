@@ -31,8 +31,8 @@
                                 <div class="form-group col-md-6">
                                     <label for="input-status"><?= $fnT('Status') ?>*</label>
                                     <select class="form-control" id="input-status" name="status" required>
-                                        <option value="Active"><?= $fnT('Active') ?></option>
-                                        <option value="Inactive"><?= $fnT('Inactive') ?></option>
+                                        <option value="1"><?= $fnT('Open') ?></option>
+                                        <option value="0"><?= $fnT('Closed') ?></option>
                                     </select>
                                 </div>
                             </div>
@@ -40,10 +40,13 @@
                                 <div class="form-group col-md-6">
                                     <label for="input-status"><?= $fnT('Shop type') ?>*</label>
                                     <select class="form-control" id="input-shop_type" name="shop_type" required>
-                                        <option value="Food Court"><?= $fnT('Food Court') ?></option>
-                                        <option value="In Line"><?= $fnT('In Line') ?></option>
-                                        <option value="Drive Thru"><?= $fnT('Drive Thru') ?></option>
+                                        <option value="Franchise"><?= $fnT('Franchise') ?></option>
+                                        <option value="Corporative"><?= $fnT('Corporative') ?></option>
                                     </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="input-email"><?= $fnT('Email') ?>*</label>
+                                    <input type="text" class="form-control" id="input-email" name="email" required>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -75,17 +78,17 @@
                                 </div>
                             </div>
 
-                            <div class="form-row border border-dark bg-light rounded p-2 my-3">
+                            <!--<div class="form-row border border-dark bg-light rounded p-2 my-3">
                                 <div class="form-group col-md-12">
                                     <label for="input-gm">Emails: Shop / GM*</label>
                                     <input type="email" multiple class="form-control" id="input-gm" name="emails_gm" required>
                                 </div>
-                            </div>
+                            </div>-->
                         </form>
                     </div>
                     <div class="tile-footer">
                         <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Closed')?></button>
-                        <button type="submit" class="btn btn-primary" form="form-location"><?=$fnT('Save changes')?></button>
+                        <button onclick="sendLocation(1);" class="btn btn-primary"><?=$fnT('Save changes')?></button>
                     </div>
                 </div>
             </div>

@@ -14,9 +14,10 @@
                         <tbody>
                             <tr><td width='717'></td></tr>
                             <tr>
-                                <td style='text-align: center; padding:10px;background:#cf0a2c; color:#ffffff; font-size:11px'>
+                                <td style='text-align: center; padding:10px;background:#eab54c; color:#ffffff; font-size:11px'>
                                 <span>Recordatorio del Plan de Acción</span></td>
-                            </tr>                            
+                            </tr>  
+                            <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-church's"></center></td></tr>                          
                             <tr>
                                 <td style='font-size:14px;padding:0px'>
                                     <div style='border:1px solid #eee;padding:10px'>

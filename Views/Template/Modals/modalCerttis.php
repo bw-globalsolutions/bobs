@@ -1,11 +1,103 @@
 <?php global $fnT; ?>
 <!-- Modal -->
-
-<div class="modal fade " id="modalCerttis" tabindex="-1" role="dialog" aria-hidden="true">
+<style>
+    .timeline>div {
+        margin-bottom: 15px;
+        margin-right: 10px;
+        position: relative;
+    }
+    .timeline>div>.timeline-item {
+        box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+        border-radius: .25rem;
+        background-color: #fff;
+        color: #495057;
+        margin-left: 60px;
+        margin-right: 15px;
+        margin-top: 0;
+        padding: 0;
+        position: relative;
+    }
+    .timeline>div>.timeline-item>.time {
+        color: #999;
+        float: right;
+        font-size: 12px;
+        padding: 10px;
+    }
+    .timeline>div>.timeline-item>.timeline-header {
+        border-bottom: 1px solid rgba(0, 0, 0, .125);
+        color: #495057;
+        font-size: 16px;
+        line-height: 1.1;
+        margin: 0;
+        padding: 10px;
+    }
+    .timeline>div>.timeline-item>.timeline-body, .timeline>div>.timeline-item>.timeline-footer {
+        padding: 10px;
+    }
+    .timeline::before {
+        border-radius: .25rem;
+        background-color: #dee2e6;
+        bottom: 0;
+        content: "";
+        left: 31px;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        width: 4px;
+    }
+    .timeline>div::after, .timeline>div::before {
+        content: "";
+        display: table;
+    }
+    .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+        width: 100%;
+        padding-right: 7.5px;
+        padding-left: 7.5px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    .content-header {
+        padding: 15px .5rem;
+    }
+    *, ::after, ::before {
+        box-sizing: border-box;
+    }
+    .timeline {
+        margin: 0 0 45px;
+        padding: 0;
+        position: relative;
+    }
+    .timeline>.time-label>span {
+        border-radius: 4px;
+        background-color: #fff;
+        display: inline-block;
+        font-weight: 600;
+        padding: 5px;
+    }
+    .modal-open .modal {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1050;
+        display: none;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        outline: 0;
+    }
+    .fade {
+        transition: opacity .15s linear;
+    }
+</style>
+<div class="modal fade " style="overflow-x: hidden;overflow-y: auto;" id="modalCerttis" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content modal-lg">
             <div class="modal-header bg-dark">
-                <h5 class="modal-title" id="titleModal">Añadir Certtis</h5>
+                <h5 class="modal-title" style="color:#fff" id="titleModal">Add Certtis</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -20,16 +112,16 @@
                                     <label for="action" class="control-label">Certtis</label>
                                     <select class="form-control" name="selectCerttis" id="selectCerttis" >
                                         <option value = 0 disabled selected>Selecciona una opcion</option>
-                                        <option value = 1 >Redaccion    </option>
-                                        <option value = 2 >Critico      </option>
-                                        <option value = 3 >Fotografía   </option>
-                                        <option value = 4 >Ortografía   </option>
+                                        <option value = 1 >Drafting    </option>
+                                        <option value = 2 >Critical      </option>
+                                        <option value = 3 >Photograph   </option>
+                                        <option value = 4 >Spelling   </option>
                                     </select>
                                     <label for="action" class="control-label"><?=$fnT('Description')?></label>
                                     <textarea class="form-control valid validText" name="comentarioCerttis" id="comentarioCerttis" cols="40" rows="3" style="resize: both;" required></textarea>
                             </div>
                             <div class="tile-footer">
-                                <button id="btnFormAddAction" class="btn btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Añadir')?></button>
+                                <button id="btnFormAddAction" class="btn btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Add')?></button>
                                 <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Cancel')?></button>
                             </div>
                         </form>
@@ -96,7 +188,6 @@
             				                        <th># <?=$fnT('QUESTION')?></th>
             				                        <th><?=$fnT('AUDITOR ANSWER')?></th>
             				                        <th><?=$fnT('AUDITOR COMMENT')?></th>
-            				                        <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>

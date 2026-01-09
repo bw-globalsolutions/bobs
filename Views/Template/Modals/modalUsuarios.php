@@ -1,11 +1,4 @@
-<? global $fnT; 
-
-
-  $fecha = $_GET['fecha_csv'] ?? date('Y-m-d'); // Por ejemplo, usando GET
-  $link = base_url() . '/aPIBrand/downloadCSV?fecha=' . $fecha;
-
-
-?>
+<? global $fnT; ?>
 <!-- Modal -->
 <div class="modal fade" id="modalFormUser" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -25,18 +18,18 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="name" class="control-label"><?=$fnT('Name')?></label>
-                    <input class="form-control valid validText" id="user_name" name="name" type="text" required>
+                    <input class="input-s1 form-control valid validText" id="user_name" name="name" type="text" required>
                   </div>
                   <div class="form-group col-md-6">
                     <label for="user_email" class="control-label">Email</label>
-                    <input class="form-control valid validEmail" id="user_email" name="email" type="email" required>
+                    <input class="input-s1 form-control valid validEmail" id="user_email" name="email" type="email" required>
                   </div>
                 </div>
                 
                 <div class="form-row">
                   <div class="form-group col-md-6">
                       <label for="user_brand"><?=$fnT('Brand')?></label>
-                      <select class="form-control selectpicker" multiple id="user_brand" name="list_brand[]" required>
+                      <select class="form-control selectpicker" style="color:#000" multiple id="user_brand" name="list_brand[]" required>
                         <? foreach($data['brands'] AS $brand): ?>
                           <option value="<?=$brand['id']?>"><?=$brand['name']?></option>
                         <? endforeach ?>
@@ -44,7 +37,7 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label for="user_role"><?=$fnT('Role')?></label>
-                    <select class="form-control" id="user_role" name="role" onchange="country_area($('#user_role').val()); limitRole($(`#user_role [value='${this.value}']`).data('level'))" required>
+                    <select class="input-s1 form-control"  id="user_role" name="role" onchange="limitRole($(`#user_role [value='${this.value}']`).data('level'))" required>
                       <?php foreach($data['role'] AS $role){?>
                         <option value="<?=$role['id']?>" data-level=<?=$role['level']?>><?=$role['name']?></option>
                       <?php }?>
@@ -54,7 +47,7 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="user_country"><?=$fnT('Country')?></label>
-                    <select class="form-control selectpicker" multiple id="user_country" name="list_country[]" required onchange="limitCountry()" requied>
+                    <select class="form-control selectpicker" style="color:#000" multiple id="user_country" name="list_country[]" required onchange="limitCountry()" requied>
                       <? foreach($data['paises'] AS $region => $pais):?>
                         <optgroup label="<?=$region?>">
                           <? foreach($pais as $p): ?>
@@ -75,17 +68,17 @@
                 </div>
                 
                 <div class="form-row">
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-6" style="visibility:hidden;">
                     <label for="user_status"><?=$fnT('Status')?></label>
                     <select class="form-control selectpicker" id="user_status" name="status" required>
                       <option value="1">Active</option>
                       <option value="0">Inactive</option>
                     </select>
-                  </div>      
+                  </div>     
                   <div class="form-group col-md-6" id="panel_user_location">
                     <div class="d-flex justify-content-between">
                       <label for="user_location"><?=$fnT('Location')?></label>
-                      <i class="fa fa-check-square-o cr-pointer text-primary" aria-hidden="true" onclick="selectAllLocations()" id="btn-selected-all"></i>
+                      <i class="fa fa-check-square-o cr-pointer text-primary" style="color:#000" aria-hidden="true" onclick="selectAllLocations()" id="btn-selected-all"></i>
                     </div>
                     <select class="form-control selectpicker" data-live-search="true" multiple id="user_location" name="list_location[]" data-selected-text-format="count>1" required>
                       <?php foreach($data['locations'] AS $location){?>
@@ -178,57 +171,3 @@
     </div>
   </div>
 </div>
-
-
-<div class="modal fade" id="modalCSV" tabindex="-1" role="dialog" aria-labelledby="modalCSV" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="card-secondary">
-                <div class="card-header">
-                    <div class="d-sm-flex align-items-center justify-content-between " >
-                        <h4 class="card-title">Download archive csv</h4>
-                        <button type="button" class="close  d-sm-inline-block text-white" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-              
-                  
-                    
-                    <div class="card-body">
-
-   <div class="col-lg-12">
-  <div class="form-group">
-    <label><?= $fnT('Date') ?></label>
-    <!-- Al cambiar la fecha, se llama a la función JS -->
-    <input type="date" name="fecha_csv" id="fecha_csv" value="<?= $fecha ?>" class="form-control" required onchange="actualizarEnlace()">
-  </div>
-
-  <!-- El enlace con href dinámico -->
-  <a id="enlaceDescarga" href="<?= base_url() ?>/aPIBrand/downloadCSV?fecha=<?= $fecha ?>" class="btn btn-secondary mt-2">
-     <?=$fnT('Download')?> CSV
-  </a>
-</div>
-                            
-                        </div>  
-                    </div>
-            
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-  
-function actualizarEnlace() {
-
-    const fechaInput = document.getElementById('fecha_csv').value;
-    const enlace = document.getElementById('enlaceDescarga');
-    const baseUrl = '<?= base_url() ?>/aPIBrand/downloadCSV';
-
-    if (fechaInput) {
-      enlace.href = `${baseUrl}?fecha=${fechaInput}`;
-    }
-  }
-
-
-</script>

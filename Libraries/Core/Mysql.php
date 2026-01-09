@@ -98,6 +98,20 @@ class Mysql extends Conexion
 		} while ($retry && $retryCount <= 5);
 	}
 
+	//Buscar un registro
+	public function select_(string $query, array $arrValues)
+	{
+		$this->strquery = $query;
+		$this->arrValues = $arrValues;
+		$result = $this->conexion->prepare($this->strquery);
+		for($i=1; $i<=count($arrValues); $i++) {
+			$result->bindParam(':v'.$i, $arrValues[$i-1]);
+		}
+		$result->execute();
+		$data = $result->fetch(PDO::FETCH_ASSOC);
+		return $data;
+	}
+
 	//Devuelve todos los registros
 	public function select_all(string $query)
 	{
@@ -180,5 +194,17 @@ class Mysql extends Conexion
 		}
 		return false;
 	}
+
+	public function getLastError() {
+        // Si usas mysqli:
+        if(property_exists($this, 'connection') && $this->conexion instanceof mysqli) {
+            return $this->conexion->error;
+        }
+        // Si usas PDO:
+        if(property_exists($this, 'connection') && $this->conexion instanceof PDO) {
+            return $this->conexion->errorInfo();
+        }
+        return 'No se puede obtener el error';
+    }
 }
 ?>

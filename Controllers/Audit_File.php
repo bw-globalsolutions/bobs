@@ -67,7 +67,7 @@ class Audit_File extends Controllers{
 			die(http_response_code(401));	
 		}
 		
-		$this->model->deleteAudit_File("audit_id = {$_POST['audit_id']} AND name = 'Picture of the Front Door/Entrance of the Restaurant'");
+		$this->model->deleteAudit_File("audit_id = {$_POST['audit_id']} AND (name = 'Picture of the Front Door/Entrance of the Restaurant' OR name = 'Foto de entrada principal del restaurante')");
 		$request = $this->model->insertFrontDoorPic($_POST['audit_id'], $_POST['url']);
 		die(json_encode(['status' => $request? 1 : 0], JSON_UNESCAPED_UNICODE));
 	}

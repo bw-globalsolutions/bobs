@@ -18,6 +18,22 @@ class AuditoriaModel extends Mysql {
 		
 		return $request;
 	}
+
+	public function getAuditAce($columns = [], $condition = NULL)
+	{
+
+		$query = "SELECT " . (count($columns) ? implode(',', $columns) : "*") . " 
+				  FROM audit 
+				  " . ($condition ? " WHERE $condition " : '') . " 
+				  ORDER BY id DESC LIMIT 1";
+
+		// echo $query;
+
+		$res = new Mysql;
+		$request = $res->select_all($query);
+
+		return $request;
+	}
 	
 	//Nueva auditoria
 	public function insertAudit($args){
@@ -52,6 +68,44 @@ class AuditoriaModel extends Mysql {
 		$res = new Mysql;
 		$request = $res -> update($query, $values);
 		
+		return $request;
+	}
+
+	public function updateDataStartActionPlan($fechaActual, $condition = "id=0"){
+		$sql = "SELECT date_start_action_plan as fecha FROM audit WHERE $condition LIMIT 1";
+		$res = new Mysql;
+		$request = $res->select_all($sql);
+		if($request[0]['fecha']=='' || $request[0]['fecha']==NULL){
+			$sql = "UPDATE audit SET date_start_action_plan = '".$fechaActual."' WHERE $condition ";
+			$request = $res->query($sql);
+
+			return $request;
+		}
+	}
+
+	public function updateDateFinishActionPlan($fechaActual, $condition = "id=0"){
+		$sql = "SELECT date_finish_action_plan as fecha FROM audit WHERE $condition LIMIT 1";
+		$res = new Mysql;
+		$request = $res->select_all($sql);
+		if($request[0]['fecha']=='' || $request[0]['fecha']==NULL){
+			$sql = "UPDATE audit SET date_finish_action_plan = '".$fechaActual."' WHERE $condition ";
+			$request = $res->query($sql);
+
+			return $request;
+		}
+	}
+
+	public function getPlanActionNotStarted(){
+		$query = "SELECT * FROM audit where date_release is not null and date_start_action_plan is null AND action_plan_status = 'Pending'";
+		$res = new Mysql;
+		$request = $res -> select_all($query);
+		return $request;
+	}
+
+	public function getPlanActionNotRevised(){
+		$query = "SELECT * FROM audit where date_finish_action_plan is not null AND date_revised_action_plan is null";
+		$res = new Mysql;
+		$request = $res -> select_all($query);
 		return $request;
 	}
 
@@ -123,15 +177,13 @@ class AuditoriaModel extends Mysql {
     				report_layout_id,
     				manager_email,
     				email_store_manager,
-					al.email_franchisee,
-					al.email_area_manager,
-                    country_language,
-					region
+					email_franchisee,
+					email_area_manager
 				  FROM
 				      audit_list al
 				  INNER JOIN location a ON al.location_id = a.id
-				  WHERE TYPE IN('Standard', 'Re-Audit', '2nd Re-Audit')  AND al.status = 'In Process' AND TIMESTAMPDIFF(HOUR, (SELECT date FROM audit_log WHERE  audit_id = al.id ORDER BY id DESC LIMIT 1), NOW()) > 11 AND date_visit > '2024-01-01 00:00:00'";
-		//echo $query;
+				  WHERE TYPE IN('Standard', 'Re-Audit', '2nd Re-Audit')  AND al.status = 'In Process' AND TIMESTAMPDIFF(HOUR, (SELECT date FROM audit_log WHERE details = 'Audit Received trough receiveInfo() and all previous info was deleted' AND audit_id = al.id ORDER BY id DESC LIMIT 1), NOW()) > 11 AND date_visit > '2024-01-01 00:00:00'";
+		
 		$res = new Mysql;
 		$request = $res->select_all($query);
 		return $request;
@@ -200,7 +252,12 @@ class AuditoriaModel extends Mysql {
 								  string $auditor_email,
 								  string $local_foranea){
 
+
+
+									
+
  
+
 			$query = "INSERT INTO audit (round_id,
 										 checklist_id,
 										 scoring_id,
@@ -217,7 +274,7 @@ class AuditoriaModel extends Mysql {
 
 			$values = array($round_id, $checklist_id, $scoring_id, $additional_question_id,$location_id,$report_layout_id,$auditor_name,$auditor_email,$local_foranea,'Pending');
 			$res = new Mysql;
-			$request = $res -> insert($query, $values);
+		$request = $res -> insert($query, $values);
 		
 		return $request;
 		}

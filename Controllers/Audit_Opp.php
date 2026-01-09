@@ -31,6 +31,7 @@ class Audit_Opp extends Controllers{
 			// die();
 			$tmp = selectAudit(['scoring_id'], 'id ='. $_POST['audit_id']);
 			$scoring_id = $tmp[0]['scoring_id'];
+			//die('audit_id:'.$_POST['audit_id'].' checklist_item_id:'.$_POST['checklist_item_id'].' opp_answers:'.$_POST['opp_answers'].' opp_comment:'.$_POST['opp_comment']);
 			$opp = $this->model->newOpportunity($_POST['audit_id'], $_POST['checklist_item_id'], $_POST['opp_answers'], $_POST['opp_comment']);
 			if(!empty($opp)){
 				$score = setScore($_POST['audit_id'], $scoring_id);
@@ -49,8 +50,13 @@ class Audit_Opp extends Controllers{
 	
 			$response = [
 				'status'	=> $res? 1 : 0,
-				'opp_id'	=> $_POST['opp_id']
-			];			
+				'opp_id'	=> $_POST['opp_id'],
+				'sql'       => $res
+			];	
+			if($_POST['isAutoFail']==1){
+				$af = $this->model->setAutoFail();
+				$response['refresh'] = 1;
+			}		
 		}
 
 		die(json_encode($response, JSON_UNESCAPED_UNICODE));

@@ -11,17 +11,14 @@ class ModuloComunicacionModel extends Mysql{
 
 	
 
-public function selectManuales($where){
+public function selectManuales(){
 	
 	$query = "SELECT id_manual,
 				   	 ruta_manual,
 				   	 categoria,
 				   	 descripcion_manual,
-				   	 nombre_manual,
-					 lang
-			 	FROM manuales 
-                $where";
-				
+				   	 nombre_manual
+			 	FROM manuales";
 
 	$res = new Mysql;
 	$request = $res -> select_all($query);
@@ -29,21 +26,27 @@ public function selectManuales($where){
 
 }
 
+public function getPeriods(){
+	$query = "SELECT DISTINCT name FROM round";
+
+	$res = new Mysql;
+	$request = $res -> select_all($query);
+	return $request;
+}
 
 
 
-public function insertManual( $txtCategoria, $txtDescripcion, $txtNombre, $txtArchivo,$txtLang){
+
+public function insertManual( $txtCategoria, $txtDescripcion, $txtNombre, $txtArchivo){
 	
 	$query = "INSERT INTO manuales(ruta_manual,
 								   nombre_manual,
 								   descripcion_manual,
-								   categoria,
-								   lang) 
+								   categoria) 
 						  VALUES ('$txtArchivo',
 						  		  '$txtNombre',
 								  '$txtDescripcion',
-								  '$txtCategoria',
-								  '$txtLang')";
+								  '$txtCategoria')";
 
 
 
@@ -56,24 +59,6 @@ public function insertManual( $txtCategoria, $txtDescripcion, $txtNombre, $txtAr
 
 }
 
-public function eliminarManual($id_manual) {
-    $query = "DELETE FROM manuales WHERE id_manual = '$id_manual'";
-
-    $res = new Mysql;
-    $request = $res->select_all($query);
-
-    return $request; // true o false
-}
-
-public function editarManual($id_manual, $nombre, $categoria, $txtLang) {
-    $query = "UPDATE manuales 
-              SET nombre_manual = '$nombre', categoria = '$categoria' , lang = '$txtLang'
-              WHERE id_manual = '$id_manual'";
-
-    $res = new Mysql;
-    $request = $res->select_all($query);
-    return $request;
-}
 
 
 

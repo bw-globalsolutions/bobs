@@ -9,8 +9,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Erick P.">
-    <link rel="shortcut icon" href="<?=media()?>/images/favicon.ico">
+    <link rel="shortcut icon" href="<?=media()?>/images/icono.png?<?=rand(1, 15)?>">
     <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="<?=media()?>/css/colors.css">
     <link rel="stylesheet" type="text/css" href="<?=media()?>/css/main.css">
     <link rel="stylesheet" type="text/css" href="<?=media()?>/css/login.css">
     <!-- Font-icon css-->

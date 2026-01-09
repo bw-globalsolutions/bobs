@@ -3,7 +3,6 @@ require_once 'Models/UsuariosModel.php';
 class Statistics extends Controllers{
 
 	private $permission;
-	public $model;
 
 	public function __construct()
 	{
@@ -23,6 +22,12 @@ class Statistics extends Controllers{
 
     public function statistics()
 	{
+		require_once 'Models/CountryModel.php';
+		require_once 'Models/UsuariosModel.php';
+		require_once 'Models/LocationModel.php';
+		$objData = new CountryModel();
+		$obj2 = new UsuariosModel();
+		$obj3 = new LocationModel();
 		$data['page_tag'] = "Statistics";
 		$data['page_title'] = "Statistics";
 		$data['page_name'] = "statistics";
@@ -30,75 +35,23 @@ class Statistics extends Controllers{
 		
 		$data['audit_types'] = listAuditTypes();
 		$data['franchissees'] = $this->model->getFranchissees();
-		$data['periods'] = $this->getPeriods('2024-01');
-		$data['auditor_email'] = $this->model->getAuditors();
-		$data['audit_list'] = $this->model->getAuditList(['id', 'checklist_id', 'location_id', 'round_name', 'period', 'auditor_name', 'auditor_email', 'status', 'date_visit', 'local_foranea', 'location_number', 'location_name', 'location_address','country_id', 'country_name', 'region', 'brand_id', 'brand_name', 'brand_prefix' ,'email_ops_director','email_ops_leader','email_area_manager','email_franchisee','concept','shop_type','area','franchissees_name'], "", true);
-		//Nuevos filtros
-		/*$data['area'] = $this->model->getArea();
-		$data['shop_type'] = $this->model->getShopType();
-		$data['country'] = $this->model->getCountry();
-		$data['concept'] = $this->model->getConcept();
-		$data['franchissees_name'] = $this->model->getEmailFranchisee();
-		$data['email_area_manager'] = $this->model->getEmailAreaManager();
-		$data['email_ops_leader'] = $this->model->getEmailOpsLeader();
-		$data['email_ops_director'] = $this->model->getEmailOpsDirector();*/
-		$data['area'] = [];
-		$data['shop_type'] = [];
-		$data['country'] = [];
-		$data['concept'] = [];
-		$data['franchissees_name'] = [];
-		$data['email_area_manager'] = [];
-		$data['email_ops_leader'] = [];
-		$data['email_ops_director'] = [];
-		$data['regions_with_countries'] = []; // NUEVO: Estructura para agrupar
-
-
-		foreach($data['audit_list'] as $item){
-			
 		
-			if(!in_array($item['area'], $data['area'])){
-				array_push($data['area'], $item['area']);
-			}
-			if (!in_array($item['shop_type'], $data['shop_type'])) {
-				array_push($data['shop_type'], $item['shop_type']);
-			}
-			if (!in_array($item['country_name'], $data['country'])) {
-				array_push($data['country'], $item['country_name']);
-			}
-			if (!in_array($item['concept'], $data['concept'])) {
-				array_push($data['concept'], $item['concept']);
-			}
-			if (!in_array($item['franchissees_name'], $data['franchissees_name'])) {
-				array_push($data['franchissees_name'], $item['franchissees_name']);
-			}
-			if (!in_array($item['email_area_manager'], $data['email_area_manager'])) {
-				array_push($data['email_area_manager'], $item['email_area_manager']);
-			}
-			if (!in_array($item['email_ops_leader'], $data['email_ops_leader'])) {
-				array_push($data['email_ops_leader'], $item['email_ops_leader']);
-			}
-			if (!in_array($item['email_ops_director'], $data['email_ops_director'])) {
-				array_push($data['email_ops_director'], $item['email_ops_director']);
-			}
-
-			 
-        // NUEVO: Agrupar países por región
-        $region = !empty($item['region']) ? $item['region'] : 'Sin Región';
-        $country = !empty($item['country_name']) ? $item['country_name'] : 'N/A';
-        
-        if (!isset($data['regions_with_countries'][$region])) {
-            $data['regions_with_countries'][$region] = [];
-        }
-        
-        if (!in_array($country, $data['regions_with_countries'][$region])) {
-            $data['regions_with_countries'][$region][] = $country;
-        }
-			
-
-		}
+		$data['periods'] = $this->getPeriods('2025-01');
+		$data['auditor_email'] = $this->model->getAuditors();
+		$data['countrys'] = $objData->getCountry([], "active=1 AND id IN (".$_SESSION['userData']['country_id'].")");
+		$data['ml'] = $obj2->getUsers('role_id = 19 AND status=1');
+		$data['subF'] = $obj3->getSubF();
+		//die(var_dump($data['ml']));
 
 		$this->views->getView($this, "statistics", $data);
-		
+	}
+
+	public function actualizarTiendasFiltro(){
+		$stores = $this->model->getFranchissees(($_POST['countrys']!=''?$_POST['countrys']:'no country'), ($_POST['ml']!=''?$_POST['ml']:'no ml'), ($_POST['subF']!=''?$_POST['subF']:'no subF'));
+		echo json_encode(array(
+			'status' => true,
+			'stores' => $stores
+		));
 	}
 
 	private function getPeriods($endDate) {
@@ -132,7 +85,7 @@ class Statistics extends Controllers{
 		$headerStyle = [
 			'fill' => [
 				'type' => PHPExcel_Style_Fill::FILL_SOLID,
-				'color' => ['rgb'=>'124DD5']	
+				'color' => ['rgb'=>'EAB54C']	
 			],
 			'font' => [
 				'bold' => true,
@@ -191,20 +144,16 @@ class Statistics extends Controllers{
 	}
 
     public function exportAuditGeneal(){
-		$general = $this->model->getAuditMain(implode("','", $_POST['list_franchise']), 
-											  implode("','", $_POST['list_period']), 
-											  implode("','", $_POST['list_type']), 
-											  implode("','", $_POST['list_auditor']), 
-											  implode("','", $_POST['list_shop_type']),
-											  implode("','", $_POST['list_country']),
-											  implode("','", $_POST['list_area']),
-											  implode("','", $_POST['list_concept']),
-											  implode("','", $_POST['list_area_manager']),
-											  implode("','", $_POST['list_escalation1']),
-											  implode("','", $_POST['list_escalation2']));
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$general = $this->model->getAuditMain(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
+		for($i=0; $i<count($general); $i++){ //para poner los puntos perdidos y no los ganados
+			$general[$i]['food_safety'] = 100-$general[$i]['food_safety'];
+			if($general[$i]['food_safety']<0)$general[$i]['food_safety']=0;
+			$general[$i]['operations_excellence'] = 100-$general[$i]['operations_excellence'];
+			if($general[$i]['operations_excellence']<0)$general[$i]['operations_excellence']=0;
+		}
 
-		$table = [['AUDITOR EMAIL', 'ID','ROUND','LOCATION NUMBER','LOCATION NAME','AUDITA FOLIO',['TYPE', 'translate'],'LOCAL/FORANEA',['STATUS', 'translate'],['VISIT STATUS', 'translate'],['DAYPART', 'translate'],['WEEKDAY', 'translate'], ['DATE VISIT', 'date_time'], ['DATE VISIT END', 'date_time'],['VISIT DURATION', 'time_dif'], ['RELEASED DURATION', 'time_dif'],'CRITICS','NO CRITICS','YELLOW','RED','MAINTENANCE', ['ACTION PLAN STATUS', 'translate'], 'OPORTUNITIES', 'IN PROCESS ACTIONS', 'COMPLETED ACTIONS']];
-		
+		$table = [['AUDITOR EMAIL', 'ID','ROUND','LOCATION NUMBER','LOCATION NAME','COUNTRY',['TYPE', 'translate'],'LOCAL/FORANEA',['STATUS', 'translate'],['VISIT STATUS', 'translate'],['DAYPART', 'translate'],['WEEKDAY', 'translate'], ['DATE VISIT', 'date_time'], ['DATE VISIT END', 'date_time'],['VISIT DURATION', 'time_dif'], ['RELEASED DURATION', 'time_dif'],'FOOD SAFETY(LOST POINTS)','OPERATIONS EXCELLENCE(LOST POINTS)','OVERALL SCORE', 'VISIT RESULT', ['ACTION PLAN STATUS', 'translate'], 'OPORTUNITIES', 'IN PROCESS ACTIONS', 'COMPLETED ACTIONS']];
 		array_push($table, ...array_map(function ($item){ return array_values($item); }, $general));
 
 		$this->genTable($table, 'General information');
@@ -212,19 +161,16 @@ class Statistics extends Controllers{
 	}
     
 	public function exportCompletedAudits(){
-		$completed = $this->model->getAuditMain(implode("','", $_POST['list_franchise']), 
-											  implode("','", $_POST['list_period']), 
-											  implode("','", $_POST['list_type']), 
-											  implode("','", $_POST['list_auditor']), 
-											  implode("','", $_POST['list_shop_type']),
-											  implode("','", $_POST['list_country']),
-											  implode("','", $_POST['list_area']),
-											  implode("','", $_POST['list_concept']),
-											  implode("','", $_POST['list_area_manager']),
-											  implode("','", $_POST['list_escalation1']),
-											  implode("','", $_POST['list_escalation2']), 'completed');
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$completed = $this->model->getAuditMain(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), 'completed');
+		for($i=0; $i<count($completed); $i++){ //para poner los puntos perdidos y no los ganados
+			$completed[$i]['food_safety'] = 100-$completed[$i]['food_safety'];
+			if($completed[$i]['food_safety']<0)$completed[$i]['food_safety']=0;
+			$completed[$i]['operations_excellence'] = 100-$completed[$i]['operations_excellence'];
+			if($completed[$i]['operations_excellence']<0)$completed[$i]['operations_excellence']=0;
+		}
 
-		$table = [['AUDITOR EMAIL', 'ID','ROUND','COUNTRY','LOCATION NUMBER','LOCATION NAME','TYPE','AREA','FRANCHISSES NAME','CORE MENU','COUNTRY','AUDITA FOLIO',['TYPE', 'translate'],'LOCAL/FORANEA',['STATUS', 'translate'],['VISIT STATUS', 'translate'],['DAYPART', 'translate'],['WEEKDAY', 'translate'], ['DATE VISIT', 'date_time'], ['DATE VISIT END', 'date_time'],['VISIT DURATION', 'time_dif'], ['RELEASED DURATION', 'time_dif'],'CRITICS','NO CRITICS','YELLOW','RED','MAINTENANCE','ZERO TOLERANCE','VISIT RESULT', ['ACTION PLAN STATUS', 'translate'], 'OPORTUNITIES', 'IN PROCESS ACTIONS', 'COMPLETED ACTIONS']];
+		$table = [['AUDITOR EMAIL', 'ID','ROUND','LOCATION NUMBER','LOCATION NAME','COUNTRY',['TYPE', 'translate'],'LOCAL/FORANEA',['STATUS', 'translate'],['VISIT STATUS', 'translate'],['DAYPART', 'translate'],['WEEKDAY', 'translate'], ['DATE VISIT', 'date_time'], ['DATE VISIT END', 'date_time'],['VISIT DURATION', 'time_dif'], ['RELEASED DURATION', 'time_dif'],'FOOD SAFETY(LOST POINTS)','OPERATIONS EXCELLENCE(LOST POINTS)','OVERALL SCORE','VISIT RESULT', ['ACTION PLAN STATUS', 'translate'], 'OPORTUNITIES', 'IN PROCESS ACTIONS', 'COMPLETED ACTIONS']];
 		array_push($table, ...array_map(function ($item){ return array_values($item); }, $completed));
 
 		$this->genTable($table, 'General information');
@@ -232,20 +178,10 @@ class Statistics extends Controllers{
 	}
 	
 	public function exportFrequencyOpp(){
-		$frequency = $this->model->frequencyOpp(implode("','", $_POST['list_franchise']), 
-											  implode("','", $_POST['list_period']), 
-											  implode("','", $_POST['list_type']), 
-											  implode("','", $_POST['list_auditor']), 
-											  implode("','", $_POST['list_shop_type']),
-											  implode("','", $_POST['list_country']),
-											  implode("','", $_POST['list_area']),
-											  implode("','", $_POST['list_concept']),
-											  implode("','", $_POST['list_area_manager']),
-											  implode("','", $_POST['list_escalation1']),
-											  implode("','", $_POST['list_escalation2'])
-											  , $_SESSION['userData']['default_language']);
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$frequency = $this->model->frequencyOpp(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), $_SESSION['userData']['default_language']);
 
-		$table = [[['SECTION NAME', 'translate'], 'PREFIX', 'QUESTION', 'PENALIZED', 'FREQUENCY', 'CRITICS', 'NO CRITICS', 'POINTS']];
+		$table = [[['SECTION NAME', 'translate'], 'PREFIX', 'QUESTION', 'PENALIZED', 'FREQUENCY']];
 		array_push($table, ...array_map(function ($item){ return array_values($item); }, $frequency));
 
 		$this->genTable($table, 'General information');
@@ -253,20 +189,10 @@ class Statistics extends Controllers{
 	}
 
 	public function exportActionPlan(){
-		$certificate = $this->model->getActionPlan(implode("','", $_POST['list_franchise']), 
-											 	   implode("','", $_POST['list_period']), 
-											 	   implode("','", $_POST['list_type']), 
-											 	   implode("','", $_POST['list_auditor']), 
-											 	   implode("','", $_POST['list_shop_type']),
-											 	   implode("','", $_POST['list_country']),
-											 	   implode("','", $_POST['list_area']),
-											 	   implode("','", $_POST['list_concept']),
-											 	   implode("','", $_POST['list_area_manager']),
-											 	   implode("','", $_POST['list_escalation1']),
-											 	   implode("','", $_POST['list_escalation2']), 
-												   $_SESSION['userData']['default_language']);
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$certificate = $this->model->getActionPlan(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), $_SESSION['userData']['default_language']);
 
-		$table = [['ID','ROUND',['TYPE', 'translate'],'AUDITOR NAME','LOCATION NUMBER','LOCATION NAME',['DATE VISIT', 'date_time'], ['DATE VISIT END', 'date_time'],'DATE ACTION PLAN','HOURS',['MAIN SECTION', 'translate'],['SECTION NAME', 'translate'],'PREFIX','TEXT',['STATUS', 'translate'], 'COMMENT']];
+		$table = [['ID','ROUND',['TYPE', 'translate'],'AUDITOR NAME','LOCATION NUMBER','LOCATION NAME',['DATE VISIT', 'date_time'], ['DATE VISIT END', 'date_time'],['MAIN SECTION', 'translate'],['SECTION NAME', 'translate'],'PREFIX','TEXT',['STATUS', 'translate'],'DATE', 'COMMENT']];
 		array_push($table, ...array_map(function ($item){ return array_values($item); }, $certificate));
 
 		$this->genTable($table, 'Action Plan');
@@ -274,14 +200,15 @@ class Statistics extends Controllers{
 	}
 
 	public function exportTopOppDetails($qprefix){
-		$oppDetails = $this->model->topOppDetails(implode("','", $_POST['list_franchise']), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), $_SESSION['userData']['default_language'], $qprefix);
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$oppDetails = $this->model->topOppDetails(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), $_SESSION['userData']['default_language'], $qprefix);
 
 		$total =  array_sum(array_column($oppDetails, 'count'));
 		$oppDetails = array_map(function($item) use($total){
-			return [$item['question_prefix'], $item['txt'],$item['auditor_answer'], $item['count'], round($item['count'] / $total * 100, 2) . '%' ];
+			return [$item['question_prefix'], $item['txt'], $item['count'], round($item['count'] / $total * 100, 2) . '%' ];
 		}, $oppDetails);
 
-		$table = [['QUESTION', 'TEXT','ANSWER', 'COUNT', 'PERCENT']];
+		$table = [['QUESTION', 'TEXT', 'COUNT', 'PERCENT']];
 		array_push($table, ...array_map(function ($item){ return array_values($item); }, $oppDetails));
 
 		$this->genTable($table, 'Top opp details');
@@ -299,17 +226,11 @@ class Statistics extends Controllers{
 	}
     
 	public function getLeadership(){
-		$leadership = $this->model->leadership(implode("','", $_POST['list_franchise']), 
-										       implode("','", $_POST['list_period']), 
-										       implode("','", $_POST['list_type']), 
-										       implode("','", $_POST['list_auditor']), 
-										       implode("','", $_POST['list_shop_type']),
-										       implode("','", $_POST['list_country']),
-										       implode("','", $_POST['list_area']),
-										       implode("','", $_POST['list_concept']),
-										       implode("','", $_POST['list_area_manager']),
-										       implode("','", $_POST['list_escalation1']),
-										       implode("','", $_POST['list_escalation2']));
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$leadership = $this->model->leadership(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
+		for($i=0; $i<count($leadership); $i++){
+			$leadership[$i]['af'] = $this->model->getAutofails($leadership[$i]['name'], implode("','", $_POST['list_period']), implode("','", $_POST['list_type']));
+		}
 		die(json_encode($leadership, JSON_UNESCAPED_UNICODE));
 	}
 
@@ -324,92 +245,38 @@ class Statistics extends Controllers{
 	}
 	
 	public function getTopOpp(){
- 
-
-		$topOppBs = $this->model->topOpp($_SESSION['userData']['default_language'], 
-										 implode("','", $_POST['list_franchise']), 
-										 implode("','", $_POST['list_period']), 
-										 implode("','", $_POST['list_type']), 
-										 implode("','", $_POST['list_auditor']), 
-										 implode("','", $_POST['list_shop_type']),
-										 implode("','", $_POST['list_country']),
-										 implode("','", $_POST['list_area']),
-										 implode("','", $_POST['list_concept']),
-										 implode("','", $_POST['list_area_manager']),
-										 implode("','", $_POST['list_escalation1']),
-										 implode("','", $_POST['list_escalation2']));
-										 
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$topOppBs = $this->model->topOpp($_SESSION['userData']['default_language'], "'".implode("','", $franchise)."'", implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($topOppBs, JSON_UNESCAPED_UNICODE));
 	}
 	
 	public function getActionPlanStatus(){
-		$ActionPlanStatus = $this->model->actionPlanStatus(implode("','", $_POST['list_franchise']), 
-														   implode("','", $_POST['list_period']), 
-														   implode("','", $_POST['list_type']), 
-														   implode("','", $_POST['list_auditor']), 
-										 				   implode("','", $_POST['list_shop_type']),
-										 				   implode("','", $_POST['list_country']),
-										 				   implode("','", $_POST['list_area']),
-										 				   implode("','", $_POST['list_concept']),
-										 				   implode("','", $_POST['list_area_manager']),
-										 				   implode("','", $_POST['list_escalation1']),
-										 				   implode("','", $_POST['list_escalation2']));
-														   
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$ActionPlanStatus = $this->model->actionPlanStatus(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($ActionPlanStatus, JSON_UNESCAPED_UNICODE));
 	}
 	
 	public function getDaypart(){
-		$daypart = $this->model->daypart(implode("','", $_POST['list_franchise']), 
-									     implode("','", $_POST['list_period']), 
-									     implode("','", $_POST['list_type']), 
-									     implode("','", $_POST['list_auditor']), 
-									     implode("','", $_POST['list_shop_type']),
-									     implode("','", $_POST['list_country']),
-									     implode("','", $_POST['list_area']),
-									     implode("','", $_POST['list_concept']),
-									     implode("','", $_POST['list_area_manager']),
-									     implode("','", $_POST['list_escalation1']),
-									     implode("','", $_POST['list_escalation2']));
-
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$daypart = $this->model->daypart(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($daypart, JSON_UNESCAPED_UNICODE));
 	}
 
 	public function getWeekday(){
-		$weekday = $this->model->weekday(implode("','", $_POST['list_franchise']), 
-										 implode("','", $_POST['list_period']), 
-										 implode("','", $_POST['list_type']), 
-										 implode("','", $_POST['list_auditor']), 
-										 implode("','", $_POST['list_shop_type']),
-										 implode("','", $_POST['list_country']),
-										 implode("','", $_POST['list_area']),
-										 implode("','", $_POST['list_concept']),
-										 implode("','", $_POST['list_area_manager']),
-										 implode("','", $_POST['list_escalation1']),
-										 implode("','", $_POST['list_escalation2']));
-										 
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$weekday = $this->model->weekday(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($weekday, JSON_UNESCAPED_UNICODE));
 	}
 	
 	public function getDuration(){
-
-		$hours = $this->model->duration(implode("','", $_POST['list_franchise']), 
-										implode("','", $_POST['list_period']), 
-										implode("','", $_POST['list_type']), 
-										implode("','", $_POST['list_auditor']), 
-										implode("','", $_POST['list_shop_type']),
-										implode("','", $_POST['list_country']),
-										implode("','", $_POST['list_area']),
-										implode("','", $_POST['list_concept']),
-										implode("','", $_POST['list_area_manager']),
-										implode("','", $_POST['list_escalation1']),
-										implode("','", $_POST['list_escalation2']));
-
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$hours = $this->model->duration(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($hours, JSON_UNESCAPED_UNICODE));
 	}
 	
 	public function exportAddQuestions(){
-
-		$addQuestions = $this->model->addQuestions(implode("','", $_POST['list_franchise']), 
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$addQuestions = $this->model->addQuestions(implode("','", $franchise), 
 												   implode("','", $_POST['list_period']), 
 												   implode("','", $_POST['list_type']), 
 												   implode("','", $_POST['list_auditor']), 
@@ -423,19 +290,8 @@ class Statistics extends Controllers{
 	}
 	
 	public function exportReportOpp(){
-		$reportOpp = $this->model->reportOpp(implode("','", $_POST['list_franchise']), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), $_SESSION['userData']['default_language']);
-
-		$table = [['ID VISIT','ID CHECKLIST','LOCATION NUMBER','LOCATION NAME','COUNTRY','AREA MANAGER', 'FRANCHISSE',['MAIN SECTION', 'translate'],['SECTION NAME', 'translate'],'PREFIX','QUESTION', 'PICKLIST', 'OPPORTUNITY', 'COMMENT','AUDITOR NAME','AUDITOR EMAIL', ['DATE VISIT', 'date_time'], ['DATE VISIT END', 'date_time'],['VISIT DURATION', 'time_dif']]];
-		array_push($table, ...array_map(function ($item){ return array_values($item); }, $reportOpp));
-
-		$this->genTable($table, 'General information');
-		exit;
-	}
-
-
-
-	public function exportCalidadDq(){
-		$reportOpp = $this->model->reportCalidadDq(implode("','", $_POST['list_franchise']), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), $_SESSION['userData']['default_language']);
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$reportOpp = $this->model->reportOpp(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), $_SESSION['userData']['default_language']);
 
 		$table = [['ID VISIT','ID CHECKLIST','LOCATION NUMBER','LOCATION NAME',['MAIN SECTION', 'translate'],['SECTION NAME', 'translate'],'PREFIX','QUESTION', 'PICKLIST', 'OPPORTUNITY', 'COMMENT','AUDITOR NAME','AUDITOR EMAIL', ['DATE VISIT', 'date_time'], ['DATE VISIT END', 'date_time'],['VISIT DURATION', 'time_dif']]];
 		array_push($table, ...array_map(function ($item){ return array_values($item); }, $reportOpp));
@@ -465,7 +321,8 @@ class Statistics extends Controllers{
 	}
 	
 	public function exportAppealItems(){
-		$general = $this->model->appealItems(implode("','", $_POST['list_franchise']), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), $_SESSION['userData']['default_language']);
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$general = $this->model->appealItems(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), $_SESSION['userData']['default_language']);
 
 		$table = [['ID VISIT', 'LOCATION NUMBER', 'LOCATION NAME', ['MAIN SECTION', 'translate'], ['SECTION NAME', 'translate'], 'PREFIX', 'QUESTION', 'PICKLIST', 'AUTHOR COMMENT', 'AUDITOR NAME', 'AUDITOR EMAIL', 'GENERAL STATUS', 'APPEAL STATUS', 'DECISION COMMENT']];
 		array_push($table, ...array_map(function ($item){ return array_values($item); }, $general));
@@ -475,7 +332,8 @@ class Statistics extends Controllers{
 	}
 	
 	public function exportOppPerSection(){
-		$general = $this->model->oppPerSection(implode("','", $_POST['list_franchise']), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$general = $this->model->oppPerSection(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 
 		$table = [[['MAIN SECTION', 'translate'], ['SECTION NAME', 'translate'], 'QUESTION', 'OPPORTUNITIES', 'AUDITS', 'PERCENTAGE PER AUDIT']];
 		array_push($table, ...array_map(function ($item){ return array_values($item); }, $general));
@@ -485,7 +343,8 @@ class Statistics extends Controllers{
 	}
 	
 	public function exportOppPerAuditor(){
-		$general = $this->model->oppPerAuditor(implode("','", $_POST['list_franchise']), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$general = $this->model->oppPerAuditor(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 
 		$table = [['AUDITOR EMAIL', ['MAIN SECTION', 'translate'], ['SECTION NAME', 'translate'], 'QUESTION', 'OPPORTUNITIES', 'AUDITS', 'PERCENTAGE PER AUDIT']];
 		array_push($table, ...array_map(function ($item){ return array_values($item); }, $general));
@@ -495,7 +354,8 @@ class Statistics extends Controllers{
 	}
 	
 	public function exportAuditorSurvey(){
-		$general = $this->model->auditorSurvey(implode("','", $_POST['list_franchise']), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$general = $this->model->auditorSurvey(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 
 		$table = [['LOCATION NUMBER', 'LOCATION NAME', 'AUDITOR NAME', 'AUDITOR EMAIL', 'DATE VISIT', 'CALIFICATION']];
 		array_push($table, ...array_map(function ($item){ return array_values($item); }, $general));
@@ -543,44 +403,19 @@ class Statistics extends Controllers{
 		$data['checklist'] = $this->model->getChecklist();
 
 		$data['checklist_item'] = $this->model->getChecklistItem();
-		$data['auditFile'] = $this->model->getAuditFile();
 		
-		$data['audit_list'] = $this->model->getAuditList(['id', 'checklist_id', 'location_id', 'round_name', 'period', 'auditor_name', 'auditor_email', 'status', 'date_visit', 'local_foranea', 'location_number', 'location_name', 'location_address','country_id', 'country_name', 'region', 'brand_id', 'brand_name', 'brand_prefix' ,'email_ops_director','email_ops_leader','email_area_manager','email_franchisee','concept','shop_type','area','franchissees_name'], "", true);
-		//Nuevos filtros
-		$data['country'] = [];
-		$data['region'] = [];
-		
-
-			foreach($data['audit_list'] as $item){
-			
-		
-			if (!in_array($item['country_name'], $data['country'])) {
-				array_push($data['country'], $item['country_name']);
-			}
-
-				if (!in_array($item['region'], $data['region'])) {
-				array_push($data['region'], $item['region']);
-			}
-			
-			
-
-		}
-
 		$this->views->getView($this, "statistics_gallery", $data);
 	}
 
 	
 
 	public function getGallery(){
-
-		$gallery = $this->model->gallery(implode("','", $_POST['list_franchise']), 
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$gallery = $this->model->gallery(implode("','", $franchise), 
 										 implode("','", $_POST['list_period']), 
-										 implode("','", $_POST['list_country']), 
-										 implode("','", $_POST['list_region']), 
 										 $_POST['list_type'], 
 										 implode("','", $_POST['list_auditor']),
-										 implode('","', $_POST['list_checklist']),
-										 implode('","', $_POST['audit_file']),
+										 implode("','", $_POST['list_checklist']),
 										 implode('","', $_POST['list_checklist_item']));
 
 		die(json_encode($gallery, JSON_UNESCAPED_UNICODE));
@@ -588,50 +423,21 @@ class Statistics extends Controllers{
 	}
 
 
-public function programPreview()
-{
-    $data['page_tag'] = "Program preview";
-    $data['page_title'] = "Program preview";
-    $data['page_name'] = "programPreview";
-    $data['page-functions_js'] = "functions_programpreview.js";
-    $data['audit_types'] = listAuditTypes();
-    $data['franchissees'] = $this->model->getFranchissees();
+	public function programPreview()
+	{
+		$data['page_tag'] = "Program preview";
+		$data['page_title'] = "Program preview";
+		$data['page_name'] = "programPreview";
+        $data['page-functions_js'] = "functions_programpreview.js";
+		$data['audit_types'] = listAuditTypes();
+		$data['franchissees'] = $this->model->getFranchissees();
 
-    $data['periods'] = array_unique(array_column(selectRound(['name']), 'name'));
-    $data['auditor_email'] = $this->model->getAuditors();
+		$data['periods'] = array_unique(array_column(selectRound(['name']), 'name'));
+		$data['auditor_email'] = $this->model->getAuditors();
+		
+		$this->views->getView($this, "statistics_program_preview", $data);
+	}
 
-    $data['audit_list'] = $this->model->getAuditList(['id', 'checklist_id', 'location_id', 'round_name', 'period', 'auditor_name', 'auditor_email', 'status', 'date_visit', 'local_foranea', 'location_number', 'location_name', 'location_address','country_id', 'country_name', 'region', 'brand_id', 'brand_name', 'brand_prefix' ,'email_ops_director','email_ops_leader','email_area_manager','email_franchisee','concept','shop_type','area','franchissees_name'], "", true);
-    
-    $data['country'] = [];
-    $data['region'] = [];
-    $data['regions_with_countries'] = []; // NUEVO: Estructura para agrupar
-    
-    foreach($data['audit_list'] as $item){
-        // Países
-        if (!in_array($item['country_name'], $data['country'])) {
-            array_push($data['country'], $item['country_name']);
-        }
-        
-        // Regiones
-        if (!in_array($item['region'], $data['region'])) {
-            array_push($data['region'], $item['region']);
-        }
-        
-        // NUEVO: Agrupar países por región
-        $region = !empty($item['region']) ? $item['region'] : 'Sin Región';
-        $country = !empty($item['country_name']) ? $item['country_name'] : 'N/A';
-        
-        if (!isset($data['regions_with_countries'][$region])) {
-            $data['regions_with_countries'][$region] = [];
-        }
-        
-        if (!in_array($country, $data['regions_with_countries'][$region])) {
-            $data['regions_with_countries'][$region][] = $country;
-        }
-    }
-    
-    $this->views->getView($this, "statistics_program_preview", $data);
-}
 	public function getProgramPreview(){
 		$rounds = [
 			'Round 1' => ['01','02','03','04','05','06'],
@@ -641,17 +447,8 @@ public function programPreview()
 		$round = $rounds[substr($_POST['list_period'], 0, 7)];
 		$months = array_map(function($item){ return substr($_POST['list_period'], 8, 12) . '-' . $item; }, $round);
 
-
-
-		
-
-
-		$programPreview = $this->model->programPreview(implode("','", $_POST['list_franchise']), 
-													   implode("','", $_POST['list_type']), 
-													   implode("','", $_POST['list_auditor']), 
-													   implode("','", $_POST['list_country']), 
-													   implode("','", $_POST['list_region']), 
-													   $months);
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$programPreview = $this->model->programPreview(implode("','", $franchise), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']), $months);
 		$response = array_map(function($item) use($months){
 			$m = [];
 			foreach($item as $key => $val){
@@ -670,63 +467,33 @@ public function programPreview()
 	}
 	
 	public function getCategoryTrend(){
-		$categoryTrend = $this->model->categoryTrend(implode("','", $_POST['list_franchise']), 
-													 implode("','", $_POST['list_period']), 
-													 implode("','", $_POST['list_type']), 
-													 implode("','", $_POST['list_auditor']), 
-													 implode("','", $_POST['list_shop_type']),
-													 implode("','", $_POST['list_country']),
-													 implode("','", $_POST['list_area']),
-													 implode("','", $_POST['list_concept']),
-													 implode("','", $_POST['list_area_manager']),
-													 implode("','", $_POST['list_escalation1']),
-													 implode("','", $_POST['list_escalation2']));
-
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$categoryTrend = $this->model->categoryTrend(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($categoryTrend, JSON_UNESCAPED_UNICODE));
 	}
 
 	public function getQuestionTrend(){
-		$questionTrend = $this->model->questionTrend($_SESSION['userData']['default_language'],
-													implode("','", $_POST['list_franchise']), 
-													implode("','", $_POST['list_period']), 
-													implode("','", $_POST['list_type']), 
-													implode("','", $_POST['list_auditor']), 
-													implode("','", $_POST['list_shop_type']),
-													implode("','", $_POST['list_country']),
-													implode("','", $_POST['list_area']),
-													implode("','", $_POST['list_concept']),
-													implode("','", $_POST['list_area_manager']),
-													implode("','", $_POST['list_escalation1']),
-													implode("','", $_POST['list_escalation2']) );
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$questionTrend = $this->model->questionTrend($_SESSION['userData']['default_language'], implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($questionTrend, JSON_UNESCAPED_UNICODE));
 	}
 		
 	public function getProgressStatus(){
-
-		$progressStatus = $this->model->progressStatus(implode("','", $_POST['list_franchise']), 
-													   implode("','", $_POST['list_period']), 
-													   implode("','", $_POST['list_type']), 
-													   implode("','", $_POST['list_auditor']), 
-													   implode("','", $_POST['list_shop_type']),
-													   implode("','", $_POST['list_country']),
-													   implode("','", $_POST['list_area']),
-													   implode("','", $_POST['list_concept']),
-													   implode("','", $_POST['list_area_manager']),
-													   implode("','", $_POST['list_escalation1']),
-													   implode("','", $_POST['list_escalation2']));
-
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$progressStatus = $this->model->progressStatus(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($progressStatus, JSON_UNESCAPED_UNICODE));
-
 	}
 	
 	public function getFailureRate(){
-		$failureRate = $this->model->failureRate(implode("','", $_POST['list_franchise']), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$failureRate = $this->model->failureRate(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($failureRate, JSON_UNESCAPED_UNICODE));
 	}
 	
 	public function getRatingByGroup(){
-		$ratingByDP = $this->model->ratingByDP(implode("','", $_POST['list_franchise']), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
-		$ratingByPeriod = $this->model->ratingByPeriod(implode("','", $_POST['list_franchise']), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$ratingByDP = $this->model->ratingByDP(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
+		$ratingByPeriod = $this->model->ratingByPeriod(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		
 		$response = [
 			'Distribution of grades by part of the day'	=> $ratingByDP, 
@@ -736,18 +503,8 @@ public function programPreview()
 	}
 	
 	public function getActionCompletion(){
-		$actionCompletion = $this->model->actionCompletion(implode("','", $_POST['list_franchise']), 
-														   implode("','", $_POST['list_period']), 
-														   implode("','", $_POST['list_type']), 
-														   implode("','", $_POST['list_auditor']), 
-														   implode("','", $_POST['list_shop_type']),
-														   implode("','", $_POST['list_country']),
-														   implode("','", $_POST['list_area']),
-														   implode("','", $_POST['list_concept']),
-														   implode("','", $_POST['list_area_manager']),
-														   implode("','", $_POST['list_escalation1']),
-														   implode("','", $_POST['list_escalation2']));
-
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$actionCompletion = $this->model->actionCompletion(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($actionCompletion, JSON_UNESCAPED_UNICODE));
 	}
 
@@ -762,17 +519,8 @@ public function programPreview()
 	}
 
 	public function getScoreTopBottom(){
-		$data = $this->model->getScoreTopBottom(implode("','", $_POST['list_franchise']), 
-											    implode("','", $_POST['list_period']), 
-											    implode("','", $_POST['list_type']), 
-											    implode("','", $_POST['list_auditor']), 
-											    implode("','", $_POST['list_shop_type']),
-											    implode("','", $_POST['list_country']),
-											    implode("','", $_POST['list_area']),
-											    implode("','", $_POST['list_concept']),
-											    implode("','", $_POST['list_area_manager']),
-											    implode("','", $_POST['list_escalation1']),
-											    implode("','", $_POST['list_escalation2']));
+		$franchise = str_replace("'", "\\'", $_POST['list_franchise']);
+		$data = $this->model->getScoreTopBottom(implode("','", $franchise), implode("','", $_POST['list_period']), implode("','", $_POST['list_type']), implode("','", $_POST['list_auditor']));
 		die(json_encode($data));
 	}
 	public function exportUserPass(){
@@ -864,356 +612,6 @@ $this->genTable($table, 'Points details');
 exit;
 
 }
-
-
-//ACTION PLAN VIEW
-	public function actionPlan()
-	{
-		$data['page_tag'] = "Action plan";
-		$data['page_title'] = "Action plan";
-		$data['page_name'] = "Action plan";
-        $data['page-functions_js'] = "funtions_stadistics_action_plan.js";
-
-		$data['countries'] = selectCountries(['id', 'name', 'region'], "name IN('Mexico',
-'Indonesia',
-'Bahrain',
-'Kuwait',
-'Panama',
-'Philippines',
-'Qatar')");
-		$data['typeVisit'] = $this->model->selectTypeVisits();
-		
-		
-		$data['audit_types'] = listAuditTypes();
-
-		$data['periods'] = array_unique(array_column(selectRound(['name']), 'name'));
-		usort($data['periods'], function($a, $b) {
-			$yearA = substr($a, -4);
-			$yearB = substr($b, -4);
-			if ($yearA != $yearB) {
-				return $yearB - $yearA;
-			}
-		
-			$roundA = substr($a, 6, 1);
-			$roundB = substr($b, 6, 1);
-			return $roundB - $roundA;
-		});
-		$data['franchissees'] = $this->model->getFranchissees();
-		$data['audit_list'] = $this->model->getAuditList(['id', 'checklist_id', 'location_id', 'round_name', 'period', 'auditor_name', 'auditor_email', 'status', 'date_visit', 'local_foranea', 'location_number', 'location_name', 'location_address','country_id', 'country_name', 'region', 'brand_id', 'brand_name', 'brand_prefix' ,'email_ops_director','email_ops_leader','email_area_manager','email_franchisee','concept','shop_type','area','franchissees_name'], "", true);
-		//Nuevos filtros
-	
-		$data['email_area_manager'] = [];
-
-
-
-		foreach($data['audit_list'] as $item){
-			
-			if (!in_array($item['email_area_manager'], $data['email_area_manager'])) {
-				array_push($data['email_area_manager'], $item['email_area_manager']);
-			}
-
-		}
-
-
-
-
-
-		$this->views->getView($this, "actionPlan", $data);
-	}
-//MOSTRAR DATATABLE ACTION PLAN
-    public function actionPlanTable()
-    {
-    $fnT = translate($_SESSION['userData']['default_language']);
-    $idi = $_SESSION['userData']['default_language'];
-
-   //VARIABLES DE FILTROS
-	$f_type = "'" . implode("','", $_POST['f_type']) . "'";
-	$f_status = "'" . implode("','", $_POST['f_status']) . "'";
-
-	 // Obtiene los datos de la tabla
-    $data = $this->model->actionPlanTable( implode(",", $_POST['f_country']), 
-										   $_POST['f_period'], 
-										   $f_type, 
-										   $f_status,
-										   implode("','", $_POST['list_franchise']),
-										   implode("','", $_POST['list_area_manager'])
-										    );
-	$dataActionPlan = array();
-	if (!empty($data)) {
-		foreach ($data as $visit) {
-			$datas['id'] = $visit['id'];
-
-			//COLUMNA STORE
-			$datas['store'] = '<b>'.$visit['brand_prefix'].' #'.$visit['location_number'].'- '.$visit['country_name'].'<br>'.$visit['location_name'].'</b>
-			<br>
-			<b>'.$visit['type'].' - '.$visit['round_name'].'</b>
-			<br>
-			<b><span class="badge badge-success">'.date("Y-m-d", strtotime( $visit['date_visit'] )).'</span></b><br>
-			<b><span class="badge badge-info">'.$fnT('Action plan status').': '.$visit['action_plan_status'].'</span></b>';
-
-			//COLUMNA LINKS
-			$datas['visit'] = '
-			<a target="_blank" href="'.getURLReport($visit['id'], $visit['report_layout_id'], $_SESSION['userData']['default_language']).'">
-				<button type="button" class="btn btn-success btn-sm">'.$fnT('View report').'</button>
-			</a>
-			<br>
-			<a target="_blank" href="'.base_url().'/actionPlan/auditPlan?id='.$visit['id'].'">
-                <button type="button" class="btn btn-warning btn-sm">'.$fnT('Action Plan').'</button>
-            </a>';
-
-			array_push($dataActionPlan,$datas);
-		}
-	}
-	// Devuelve los datos en formato JSON
-	echo json_encode($dataActionPlan, JSON_UNESCAPED_UNICODE);
-	die();
-    }
-
-
-//DISTRICT REPORT VIEW
-	public function districtReport()
-	{
-		$data['page_tag'] = "District report";
-		$data['page_title'] = "District report";
-		$data['page_name'] = "District report";
-        $data['page-functions_js'] = "funtions_stadistics_district_report.js";
-
-		$data['countries'] = selectCountries(['id', 'name', 'region'], "name IN('Mexico',
-'Indonesia',
-'Bahrain',
-'Kuwait',
-'Panama',
-'Philippines',
-'Qatar')");
-
-
-		$data['franchissees'] = $this->model->getFranchissees();
-		$data['audit_list'] = $this->model->getAuditList(['id', 'checklist_id', 'location_id', 'round_name', 'period', 'auditor_name', 'auditor_email', 'status', 'date_visit', 'local_foranea', 'location_number', 'location_name', 'location_address','country_id', 'country_name', 'region', 'brand_id', 'brand_name', 'brand_prefix' ,'email_ops_director','email_ops_leader','email_area_manager','email_franchisee','concept','shop_type','area','franchissees_name'], "", true);
-		//Nuevos filtros
-	
-		$data['email_area_manager'] = [];
-
-
-
-		foreach($data['audit_list'] as $item){
-			
-			if (!in_array($item['email_area_manager'], $data['email_area_manager'])) {
-				array_push($data['email_area_manager'], $item['email_area_manager']);
-			}
-
-		}
-
-
-		$this->views->getView($this, "districtReport", $data);
-	}
-
-	 //MOSTRAR DATATABLE DISTRICT REPORT GLOBAL
-	 public function districtReportGlobalTable()
-	 {
-	 $fnT = translate($_SESSION['userData']['default_language']);
-	 $idi = $_SESSION['userData']['default_language'];
-	 $f_country = "'" . implode("','", $_POST['f_country']) . "'";
-	 $data = $this->model->districtReportGlobalTable($f_country,$_POST['f_years'],
-										   implode("','", $_POST['list_franchise']),
-										   implode("','", $_POST['list_area_manager']));
-	 echo json_encode($data, JSON_UNESCAPED_UNICODE);
-	 die();
-	 }
-
-	 //MOSTRAR TOTALES DATATABLE DISTRICT REPORT GLOBAL
-	 public function districtReportTotal()
-	 {
-	 $fnT = translate($_SESSION['userData']['default_language']);
-	 $idi = $_SESSION['userData']['default_language'];
-	 $f_country = "'" . implode("','", $_POST['f_country']) . "'";
-	 $data = $this->model->districtReportTotal($f_country,$_POST['f_years'],
-										   implode("','", $_POST['list_franchise']),
-										   implode("','", $_POST['list_area_manager']));
-	 echo json_encode($data, JSON_UNESCAPED_UNICODE);
-	 die();
-	 }
-
-	 //MOSTRAR DATATABLE DISTRICT REPORT TIENDAS
-	 public function districtReportStoreTable()
-	 {
-	 $fnT = translate($_SESSION['userData']['default_language']);
-	 $idi = $_SESSION['userData']['default_language'];
-	 $f_country = "'" . implode("','", $_POST['f_country']) . "'";
-	 $data = $this->model->districtReportStoreTable($f_country,$_POST['f_years'],
-										   implode("','", $_POST['list_franchise']),
-										   implode("','", $_POST['list_area_manager']));
-	 echo json_encode($data, JSON_UNESCAPED_UNICODE);
-	 die();
-	 }
-
-
-
-
-
-
-
-	 	public function revisitsProgress()
-	{
-		$data['page_tag'] = "Revisits progress";
-		$data['page_title'] = "Revisits progress";
-		$data['page_name'] = "revisits progress";
-        $data['page-functions_js'] = "functions_revisits_progress.js?16022024";
-
-		$data['countries'] = $this->model->selectCountriesValidates();
-
-		$data['audits_types'] = $this->model->selectAuditTypes();
-		
-		
-		$data['audit_types'] = listAuditTypes();
-
-		$data['periods'] = array_unique(array_column(selectRound(['name']), 'name'));
-		usort($data['periods'], function($a, $b) {
-			$yearA = substr($a, -4);
-			$yearB = substr($b, -4);
-			if ($yearA != $yearB) {
-				return $yearB - $yearA;
-			}
-		
-			$roundA = substr($a, 6, 1);
-			$roundB = substr($b, 6, 1);
-			return $roundB - $roundA;
-		});
-
-
-		$data['franchissees'] = $this->model->getFranchissees();
-		$data['audit_list'] = $this->model->getAuditList(['id', 'checklist_id', 'location_id', 'round_name', 'period', 'auditor_name', 'auditor_email', 'status', 'date_visit', 'local_foranea', 'location_number', 'location_name', 'location_address','country_id', 'country_name', 'region', 'brand_id', 'brand_name', 'brand_prefix' ,'email_ops_director','email_ops_leader','email_area_manager','email_franchisee','concept','shop_type','area','franchissees_name'], "", true);
-		//Nuevos filtros
-	
-		$data['email_area_manager'] = [];
-
-
-
-		foreach($data['audit_list'] as $item){
-			
-			if (!in_array($item['email_area_manager'], $data['email_area_manager'])) {
-				array_push($data['email_area_manager'], $item['email_area_manager']);
-			}
-
-		}
-
-
-		// dep($data);
-		// die();
-
-		$this->views->getView($this, "revisitsProgress", $data);
-	}
-
-	public function getRevisitsProgress() {
-		// dep($_POST);
-		//die();
-
-		global $fnT;
-		$fnT = translate($_SESSION['userData']['default_language']);
-
-		//$f_status = "'" . implode("','", $_POST['f_status']) . "'";
-		$f_type = "'" . implode("','", $_POST['f_type']) . "'";
-
-		$data = $this->model->getRevisitsStatus( implode(",", $_POST['f_country']), $_POST['f_period'], $f_type,
-										   implode("','", $_POST['list_franchise']),
-										   implode("','", $_POST['list_area_manager']));
-		$dataRevisits = array();
-		if (!empty($data)) {
-			foreach ($data as $visit) {		
-			
-				
-				$datas['id'] = $visit['id'];
-
-				$data['score'] = getScore($datas['id'] );
-
-
-
-
-
-				
-				$datas['store'] = '<b>'.$visit['brand_prefix'].' #'.$visit['location_number'].'- '.$visit['country_name'].'
-									<br>'.$visit['location_name'].'</b>
-									
-									<br><b>'.$visit['type'].' - '.$visit['round_name'].'</b>
-									<br><b>'.$fnT("Auditor name").': '.$visit['auditor_name'].'</b>
-									<br><b><span class="badge badge-success">'.$fnT('Date visit').': '.date("Y-m-d h:i:s", strtotime( $visit['date_visit'] )).'</span></b>
-									<br><a target="_blank" href="'.getURLReport($visit['id'], $visit['report_layout_id'], $_SESSION['userData']['default_language']).'">
-											<button type="button" class="btn btn-primary btn-sm">'.$fnT('View report').'</button>
-										</a>';
-			
-				$datas['visit'] = '<button type="button" class="btn btn-info btn-sm">
-										'.$fnT('Criticals').': <span id="score-bs">'.$data['score']['Criticos'].'</span>
-									</button>
-									<br><button type="button" class="btn btn-info btn-sm">
-										'.$fnT('Red').': <span id="score-fs">'.$data['score']['Rojos'].'</span>
-									</button>
-
-							
-									<br><button type="button" class="btn btn-sm btn-secondary text-light" id="btn-score-oa">
-										'.$fnT('Overall score').': <span id="score-oa">'.$data['score']['Result'].'</span>
-									</button>';
-		
-				$datas['end_time'] = '<b><span class="badge badge-info">N/A</span></b>';
-
-			
-
-				$dataProgressHistorical = $this->model->getInfoHistorical( $visit['location_id'], $visit['date_visit'], $_POST['f_number'] );
-				
-				if (empty($dataProgressHistorical)) {
-					$datas['historical'] = '<b><span class="badge badge-warning">No historical</span></b>';
-				} else {
-					$bodyHistorical = '';
-					foreach ($dataProgressHistorical as $visitHistorical) {
-
-
-						
-				$score['score'] = getScore($visitHistorical['id'] );
-
-				
-
-
-						$bodyHistorical .= '<tr>
-												<th><b><span class="badge badge-info">'.date("Y-m-d", strtotime( $visitHistorical['date_visit_end'] )).'</span></b>
-													<br><a target="_blank" href="'.getURLReport($visitHistorical['id'], $visit['report_layout_id'], $_SESSION['userData']['default_language']).'">
-														<span class="badge badge-success">'.$fnT('View report').'</span></a>
-												</th>
-												<th>'.$visitHistorical['type'].'</th>
-												<th>'.$score['score']['Criticos'].'</th>
-												<th>'.$score['score']['Rojos'].'</th>
-												<th>'.$score['score']['Result'].'</th>
-											</tr>';
-					}
-					
-					$datas['historical'] = '<div class="form-row">
-												<div class="col">
-													<div class="bg-info text-center text-white">'.$fnT('Historical').'</div>
-													<hr class="border border-primary">
-													<div class="table-responsive">
-													<table class="table table-hover table-bordered">
-														<thead>
-														<tr>
-															<th>'.$fnT('Previous visits').'</th>
-															<th>'.$fnT('Type').'</th>
-															<th>'.$fnT('Criticals').'</th>
-															<th>'.$fnT('Red').'</th>
-															<th>'.$fnT('Overall score').'</th>
-														</tr>
-														</thead>
-														<tbody>'.$bodyHistorical.'</tbody>
-													</table>
-													</div>
-												</div>
-											</div>';
-				}
-
-		
-
-				array_push($dataRevisits,$datas);
-			}
-		}
-
-		echo json_encode($dataRevisits,JSON_UNESCAPED_UNICODE);
-		die();
-	}
 
 }
 ?>

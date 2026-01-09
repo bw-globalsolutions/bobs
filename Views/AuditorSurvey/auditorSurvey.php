@@ -9,9 +9,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Miguel O.">
-        <link rel="shortcut icon" href="<?=media()?>/imagenes/favicon.ico">
+        <link rel="shortcut icon" href="<?=media()?>/imagenes/icono.png?<?=rand(1, 15)?>">
 
         <!-- Main CSS-->
+        <link rel="stylesheet" type="text/css" href="<?=media()?>/css/colors.css">
         <link rel="stylesheet" type="text/css" href="<?=media()?>/css/main.css">
         <link rel="stylesheet" type="text/css" href="<?=media()?>/css/audit_report.css">
         <link rel="stylesheet" type="text/css" href="<?=media()?>/css/style2.css">
@@ -26,7 +27,7 @@
         </div>
         <div class="container">
             <div class="d-flex justify-content-center mt-3 mb-1">
-                <img class="img-fluid" src="<?=media()?>/images/logo.png" alt="Logo" id="img-main">
+                <img class="img-fluid" src="<?=media()?>/images/logo.png?<?=rand(1, 15)?>" alt="Logo" id="img-main">
             </div>
             <br>
             <div class="bg-white rounded p-3 mb-5">
@@ -40,14 +41,14 @@
 
 
                                 <div class="card mb-3">
-                                    <h5 class="card-header bg-ws"><?=$q['question_esp']?></h5>
+                                    <h5 class="card-header bg-ws"><?=$lan!='eng'?$q['question_esp']:$q['question_eng']?></h5>
                                     <div class="card-body p-2">
                                         <? foreach($q['answers'] as $a): ?>
 
                                             <? if($data['ok']): ?>
-                                                <label class="btn <?=$q['answer']==$a?'btn-dark':'btn-info'?> optRespuesta" onclick="setAns(this)"><?=$a?></label>
+                                                <label class="btn <?=$q['answer']==$a?'btn-dark':'btn-info'?> optRespuesta" onclick="setAns(this)"><?=$fnT($a)?></label>
                                             <? else: ?>
-                                                <label class="btn <?=$q['answer']==$a?'btn-dark':'btn-info'?> optRespuesta"><?=$a?></label>
+                                                <label class="btn <?=$q['answer']==$a?'btn-dark':'btn-info'?> optRespuesta"><?=$fnT($a)?></label>
                                             <? endif ?>
 
                                         <? endforeach ?>
@@ -58,12 +59,12 @@
                                 
                             <? endforeach ?>
                             
-                            <div class="card mb-3">
+                            <!--<div class="card mb-3">
                                 <h5 class="card-header bg-ws"><?=$fnT('AUDITOR COMMENT')?></h5>
                                 <div class="card-body p-2">        
                                     <textarea class="form-control comentario_auditor" name="comentario_auditor" ><?=$q['answer']?></textarea>
                                 </div>
-                            </div>
+                            </div>-->
 
 
 

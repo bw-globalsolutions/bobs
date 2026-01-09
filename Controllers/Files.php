@@ -13,12 +13,30 @@ class Files extends Controllers{
 		{
 			header('location: '.base_url().'/login');
 		}
-        $this->permission = $_SESSION['userData']['permission']['Documentos'];
+        $this->permission = $_SESSION['userData']['permission']['Archivos'];
+	}
+
+    public function files()
+	{
+        require_once("Models/CountryModel.php");
+        require_once("Models/RolesModel.php");
+		$objData = new CountryModel();
+        $obj2 = new RolesModel();
+        $this->model->inactivarFechasCad();
+		$data['page_tag'] = 'Files';
+		$data['page_title'] = "Files";
+		$data['page_name'] = "Files";
+        $data['page-functions_js'] = "functions_files.js";
+        $data['permissionDoc'] = $_SESSION['userData']['permission']['Archivos'];
+        $data['paises'] = $objData->getCountry(['id','name'], "id IN (".$_SESSION['userData']['country_id'].")");
+        $data['roles'] = $obj2->getRole([]);
+        $data['rol'] = $_SESSION['userData']['role']['id'];
+		
+		$this->views->getView($this, "files", $data);
 	}
 
     public function addFile()
 	{
-
         if((!$this->permission['u'] && !empty($_POST['id'])) || (!$this->permission['w'] && empty($_POST['id']))){
 			die(http_response_code(401));
 		}
@@ -29,10 +47,10 @@ class Files extends Controllers{
             !empty($_POST['title'])
         ){
             if(!empty($_POST['id'])){
-                $request = $this->model->updFile($_POST['title'], $_POST['description'], $_POST['jfiles'], $_POST['id']);
+                $request = $this->model->updFile($_POST['title'], $_POST['description'], $_POST['jfiles'], $_POST['id'], $_POST['countrys'], $_POST['roles'], $_POST['statusF'], $_POST['expirationDate']);
                 die(json_encode(['status' => $request? 1 : 0])); 
             } else{
-                $request = $this->model->addFile($_POST['title'], $_POST['description'], $_POST['jfiles'], $_SESSION['userData']['id']);
+                $request = $this->model->addFile($_POST['title'], $_POST['description'], $_POST['jfiles'], $_SESSION['userData']['id'], $_POST['countrys'], $_POST['roles'], $_POST['statusF'], $_POST['expirationDate']);
                 die(json_encode(['status' => $request]));  
             }
 

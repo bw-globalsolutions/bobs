@@ -15,7 +15,7 @@ $sqlFS = "SELECT SUM(points) AS total FROM checklist_item WHERE type='Question' 
 $foodSafetyTotal = $res->select($sqlFS);
 //$foodSafety = $this->select($sqlFS);
 
-$sqlBS = "SELECT SUM(lost_point) AS total FROM audit_point WHERE audit_id = $audit_id AND section_number>10 AND section_number<21 ";
+$sqlBS = "SELECT SUM(lost_point) AS total FROM audit_point WHERE audit_id = $audit_id AND section_number>10 AND section_number<20 ";
 $brandStandards = $res->select($sqlBS);
 $sqlFS = "SELECT SUM(points) AS total FROM checklist_item WHERE type='Question' AND section_number>10 AND section_number<21 AND checklist_id = ".$audit['checklist_id'];
 $brandStandardsTotal = $res->select($sqlFS);
@@ -75,16 +75,17 @@ $overallFS = ((($foodSafetyTotal['total']-$ptsNA['totalFS'])-$foodSafety['total'
 $overallFS = number_format($overallFS, 2);
 $brandStandardsE = ((($brandStandardsTotal['total']-$ptsNA['totalBS'])-$brandStandards['total'])/($brandStandardsTotal['total']-$ptsNA['totalBS']))*100;
 $brandStandardsE = number_format($brandStandardsE, 2);
-$overallScore = ((($totalTotal['total']-$totalNA)-$totalPerdidos)/($totalTotal['total']-$totalNA))*100;
+/*$overallScore = ((($totalTotal['total']-$totalNA)-$totalPerdidos)/($totalTotal['total']-$totalNA))*100;
+$overallScore = number_format($overallScore, 2);*/
+$overallScore = ($overallFS+$brandStandardsE)/2;
 $overallScore = number_format($overallScore, 2);
 
 if($autoFail>0) $overallScore = 0;
 
-if($overallScore >= 93){ $letra = 'A'; $color='#3f6320'; }
-if($overallScore >= 85 && $overallScore <93){ $letra = 'B'; $color='#5e8d35'; }
-if($overallScore >= 77 && $overallScore <85){ $letra = 'C'; $color='#d0a113'; }
-if($overallScore >= 70 && $overallScore <77){ $letra = 'D'; $color='#fc1f1f'; }
-if($overallScore <=69){ $letra = 'F'; $color='#a51111'; }
+if($overallScore >= 90){ $letra = 'ZONA DE EXCELÊNCIA'; $color='#3f6320'; }
+if($overallScore >= 80 && $overallScore <90){ $letra = 'ZONA DE CUALIDADE'; $color='#5e8d35'; }
+if($overallScore >= 70 && $overallScore <80){ $letra = 'ZONA DE ATENÇÃO'; $color='#d0a113'; }
+if($overallScore <70){ $letra = 'ZONA CRÍTICA'; $color='#a51111'; }
 //if($criticos > 0) $letra = 'F';
 
 $sqlScore = "SELECT id FROM audit_score WHERE audit_id = $audit_id AND type='General' AND name='OVERALL SCORE' LIMIT 1";

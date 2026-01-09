@@ -4,7 +4,13 @@
     global $fnT;
 ?>
 <link rel="stylesheet" type="text/css" href="<?=media()?>/css/statistics.css">
-<main class="app-content">
+<div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
     <div class="app-title">
         <div>
             <h1>
@@ -45,55 +51,6 @@
                             </select>
                         </div>
                     </div>
-
-
-<!-- COUNTRY -->
-<div class="col-lg-3 my-1 ">
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text border-0"><?=$fnT('Region')?></span>
-        </div>
-        <select class="form-control selectpicker" id="list_region" name="list_region[]" multiple data-actions-box="true" data-selected-text-format="count>2" required  >
-            <? foreach($data['region'] as $region): ?>
-                <? $val = !empty($region) ? $region : 'N/A'; ?>
-                <option value="<?= $val ?>" selected><?= $val ?></option>
-            <? endforeach ?>
-        </select>
-    </div>
-</div>
-
-<!-- COUNTRY (agrupado por región, NUEVO ID) -->
-<div class="col-lg-3 my-1 ">
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text border-0"><?=$fnT('Country')?></span>
-        </div>
-
-        <select class="form-control selectpicker" 
-            id="list_country" 
-            name="list_country[]" 
-            multiple 
-            data-actions-box="true" 
-            data-selected-text-format="count>2" 
-            title="Todos seleccionados" 
-            required>
-
-            <?php foreach ($data['regions_with_countries'] as $region => $countries): ?>
-                <optgroup label="<?= $region ?>" data-region="<?= $region ?>">
-                    <?php foreach ($countries as $country): ?>
-                        <?php $val = !empty($country) ? $country : 'N/A'; ?>
-                        <option value="<?= $val ?>" selected><?= $val ?></option>
-                    <?php endforeach; ?>
-                </optgroup>
-            <?php endforeach; ?>
-
-        </select>
-    </div>
-</div>
-
-
-
-
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">

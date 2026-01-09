@@ -1,6 +1,5 @@
 <?php
-require_once 'Models/RoundModel.php';
-require_once 'Models/AuditoriaModel.php';
+
 class Audits extends Controllers{
 
 	private $permission;
@@ -31,20 +30,9 @@ class Audits extends Controllers{
 		
         $data['types'] = $this->model->getTypes();
         $data['type'] =  empty($_GET['type'])? $data['types'][0]['type'] : base64_decode($_GET['type']);
-        
-		$data['country_name'] = base64_decode($_GET['country']);
-		$data['country_where'] = "";
-
-if (!empty($_GET['country'])) {
-    $countryDecoded = base64_decode($_GET['country']);
-    $data['country_where'] = "AND country_name = '" . $countryDecoded . "'";
-}
 		
-		$data['audit_list'] = $this->model->getAuditList(['id', 'checklist_id', 'location_id', 'round_name', 'period', 'auditor_name', 'auditor_email', 'status', 'date_visit', 'local_foranea', 'location_number', 'location_name', 'location_address','country_id', 'country_name', 'region', 'brand_id', 'brand_name', 'brand_prefix' ,'email_ops_director','email_ops_leader','email_area_manager','email_franchisee','concept','shop_type','area','franchissees_name','audit_result','audit_criticos','audit_rojo'], 
-														  "type='{$data['type']}' ".$data['country_where'], 
-														  true);
-     
-    
+		$data['audit_list'] = $this->model->getAuditList(['id', 'checklist_id', 'location_id', 'round_name', 'period', 'auditor_name', 'auditor_email', 'status', 'date_visit', 'local_foranea', 'location_number', 'location_name', 'location_address','country_id', 'country_name', 'region', 'brand_id', 'brand_name', 'brand_prefix'], "type='{$data['type']}'", true);
+		$totales = $this->model->getAuditList(['type']);
 		// dep ($data['audit_list']);
 		// die();
 		$data['locations'] = selectLocation(['id', 'number', 'country_id', 'name'], "id IN({$_SESSION['userData']['location_id']}) OR ('{$_SESSION['userData']['location_id']}' = 0 AND country_id IN({$_SESSION['userData']['country_id']}))");
@@ -53,117 +41,91 @@ if (!empty($_GET['country'])) {
 		$data['round_name'] = [];
         $data['status'] = [];
         $data['region'] = [];
-        
+        $data['country'] = [];
 		$data['brand'] = [];
 		$data['audit_location'] = [];
 		$data['master'] = [];
 		$data['result'] = [];
+		$data['autofails'] = [];
+		$data['Calibration Audit'] = 0;
+		$data['Training-visits'] = 0;
+		$data['Standard'] = 0;
+		$data['Self-Evaluation'] = 0;
+		$data['Re-Audit'] = 0;
 
-		$data['area'] = [];
-		$data['shop_type'] = [];
-		$data['country'] = [];
-		$data['concept'] = [];
-		$data['franchissees_name'] = [];
-		$data['email_area_manager'] = [];
-		$data['email_ops_leader'] = [];
-		$data['email_ops_director'] = [];
-		$data['audit_result'] = [];
-		$data['audit_criticos'] = [];
-		$data['audit_rojo'] = [];
-
-		
-
-
-
-		/*$data['area'] = $this->model->getArea();
-		$data['shop_type'] = $this->model->getShopType();
-		$data['country'] = $this->model->getCountry();
-		$data['concept'] = $this->model->getConcept();
-		$data['franchissees_name'] = $this->model->getEmailFranchisee();
-		$data['email_area_manager'] = $this->model->getEmailAreaManager();
-		$data['email_ops_leader'] = $this->model->getEmailOpsLeader();
-		$data['email_ops_director'] = $this->model->getEmailOpsDirector();*/
-
-
-		foreach($data['audit_list'] as $item){
-			
-			if(!in_array($item['auditor_email'], $data['auditor_email'])){
-				array_push($data['auditor_email'], $item['auditor_email']);
+		if($totales){
+			foreach($totales as $t){
+				switch($t['type']){
+					case 'Calibration Audit':
+						$data['Calibration Audit']++;
+						break;
+					case 'Training-visits':
+						$data['Training-visits']++;
+						break;
+					case 'Standard':
+						$data['Standard']++;
+						break;
+					case 'Self-Evaluation':
+						$data['Self-Evaluation']++;
+						break;
+					case 'Re-Audit':
+						$data['Re-Audit']++;
+						break;
+				}
 			}
-			if(!in_array($item['round_name'], $data['round_name'])){
-				array_push($data['round_name'], $item['round_name']);
-			}
-			if(!array_key_exists($item['location_number'], $data['audit_location'])){
-				$data['audit_location'][$item['location_number']] = $item['location_name'];
-			}
-
-			if(!in_array($item['area'], $data['area'])){
-				array_push($data['area'], $item['area']);
-			}
-			if (!in_array($item['shop_type'], $data['shop_type'])) {
-				array_push($data['shop_type'], $item['shop_type']);
-			}
-			if (!in_array($item['country_name'], $data['country'])) {
-				array_push($data['country'], $item['country_name']);
-			}
-			if (!in_array($item['concept'], $data['concept'])) {
-				array_push($data['concept'], $item['concept']);
-			}
-			if (!in_array($item['franchissees_name'], $data['franchissees_name'])) {
-				array_push($data['franchissees_name'], $item['franchissees_name']);
-			}
-			if (!in_array($item['email_area_manager'], $data['email_area_manager'])) {
-				array_push($data['email_area_manager'], $item['email_area_manager']);
-			}
-			if (!in_array($item['email_ops_leader'], $data['email_ops_leader'])) {
-				array_push($data['email_ops_leader'], $item['email_ops_leader']);
-			}
-			if (!in_array($item['email_ops_director'], $data['email_ops_director'])) {
-				array_push($data['email_ops_director'], $item['email_ops_director']);
-			}
-			if (!in_array($item['audit_result'], $data['audit_result'])) {
-				array_push($data['audit_result'], $item['audit_result']);
-			}
-			if (!in_array($item['audit_criticos'], $data['audit_criticos'])) {
-				array_push($data['audit_criticos'], $item['audit_criticos']);
-			}
-			if (!in_array($item['audit_rojo'], $data['audit_rojo'])) {
-				array_push($data['audit_rojo'], $item['audit_rojo']);
-			}
-			
-
-			// if(!in_array(($item['master']?? 'No'), $data['master'])){
-			// 	array_push($data['master'], $item['master']?? 'No');
-			// }
-			
-			if(empty($data['status'][$item['status']])){
-				$data['status'][$item['status']] = 1;
-			} else{
-				$data['status'][$item['status']]++;
-			}
-
-			// if(empty($data['region'][$item['region']])){
-			// 	$data['region'][$item['region']] = [$item['country_id']];
-			// } else{
-			// 	array_push($data['region'][$item['region']], $item['country_id']);
-			// }
-
-			// if(!in_array($item['country_id'], array_keys($data['country']))){
-			// 	$data['country'][$item['country_id']] = $item['country_name'];
-			// }
-
-			// if(!in_array($item['brand_id'], array_keys($data['brand']))){
-			// 	$data['brand'][$item['brand_id']] = $item['brand_name'];
-			// }
-			// if(!in_array($item['result'], $data['result']) and !empty($item['result'])){
-			// 	array_push($data['result'], $item['result']);
-			// }
-
-			$data['country_location'][$item['country_id']][] = $item['location_number'];
 		}
 
+		if($data['audit_list']){
+			$i=0;
+			foreach($data['audit_list'] as $item){
+				$af = 0;
+				$af = $this->model->getAutoFails($item['id']);
+				$data['audit_list'][$i]['autofails'] = $af;
 
+				if(!in_array($item['auditor_email'], $data['auditor_email'])){
+					array_push($data['auditor_email'], $item['auditor_email']);
+				}
+				if(!in_array($item['round_name'], $data['round_name'])){
+					array_push($data['round_name'], $item['round_name']);
+				}
+				if(!array_key_exists($item['location_number'], $data['audit_location'])){
+					$data['audit_location'][$item['location_number']] = $item['location_name'];
+				}
+				
+				// if(!in_array(($item['master']?? 'No'), $data['master'])){
+				// 	array_push($data['master'], $item['master']?? 'No');
+				// }
+				
+				if(empty($data['status'][$item['status']])){
+					$data['status'][$item['status']] = 1;
+				} else{
+					$data['status'][$item['status']]++;
+				}
 
+				$af=0;
+				array_push($data['autofails'], $af);
+
+				// if(empty($data['region'][$item['region']])){
+				// 	$data['region'][$item['region']] = [$item['country_id']];
+				// } else{
+				// 	array_push($data['region'][$item['region']], $item['country_id']);
+				// }
+
+				// if(!in_array($item['country_id'], array_keys($data['country']))){
+				// 	$data['country'][$item['country_id']] = $item['country_name'];
+				// }
+
+				// if(!in_array($item['brand_id'], array_keys($data['brand']))){
+				// 	$data['brand'][$item['brand_id']] = $item['brand_name'];
+				// }
+				// if(!in_array($item['result'], $data['result']) and !empty($item['result'])){
+				// 	array_push($data['result'], $item['result']);
+				// }
+
+				$data['country_location'][$item['country_id']][] = $item['location_number'];
+				$i++;
+			}
+		}
 		$this->views->getView($this, "audits", $data);
 	}
 
@@ -175,13 +137,14 @@ if (!empty($_GET['country'])) {
         $data['page-functions_js'] = "functions_audit.js";
 		$data['permision'] = $this->permission;
 
-		$tmp = $this->model->getAuditList(['checklist_id', 'status', 'visit_status', 'audited_areas'], 'id =' . $_GET['id']??-1);
+		$tmp = $this->model->getAuditList(['checklist_id', 'status', 'visit_status', 'audited_areas', 'type'], 'id =' . $_GET['id']??-1);
 		$checklist_id = $tmp[0]['checklist_id']??-1;
 
 		$data['status'] = $tmp[0]['status'];
 		$data['visit_status'] = $tmp[0]['visit_status'];
+		$data['type'] = $tmp[0]['type'];
 		$data['section'] = listSeccions($checklist_id, $tmp[0]['audited_areas']);
-		$data['question'] = $this->model->getChecklist($checklist_id, $_GET['id'], $_SESSION['userData']['default_language'], $tmp[0]['audited_areas']);
+		$data['question'] = $this->model->getChecklist($checklist_id, $_GET['id'], $_SESSION['userData']['default_language'], addslashes($tmp[0]['audited_areas']));
 		
 		$this->views->getView($this, "audit", $data);
 	}
@@ -235,13 +198,41 @@ if (!empty($_GET['country'])) {
 		}
 		$this->views->getView($this, "audit_files", $data);
 	}
+
+	public function times()
+	{
+		$data['page_tag'] = "Times";
+		$data['page_title'] = "Times";
+		$data['page_name'] = "Times";
+        $data['page-functions_js'] = "functions_times.js";
+		$data['id'] = $_GET['id'];
+
+		$times = $this->model->getTimes($_GET['id']??-1);
+		// Convierte la cadena JSON a un array asociativo
+		$data['times'] = json_decode($times, true);
+		
+		$this->views->getView($this, "audit_times", $data);
+	}
+
+	public function saveTimes(){
+		$res = $this->model->saveTimes($_POST['audit_id'], $_POST['med_1'], $_POST['med_2'], $_POST['med_3'], $_POST['med_4'], $_POST['med_5'], $_POST['med_6'], $_POST['med_7'], $_POST['med_8'], $_POST['med_9'], $_POST['med_10'], $_SESSION['userData']['id']);
+
+		if($res) echo json_encode(array(
+			"status" => true,
+			"msg" => 'Data saved successfully'
+		));
+	}
 	
 	public function auditInfo()
 	{
+		require_once("Models/Additional_QuestionModel.php");
+		$obj = new Additional_QuestionModel();
 		$data['page_tag'] = "General information";
 		$data['page_title'] = "General information";
 		$data['page_name'] = "general information";
         $data['page-functions_js'] = "functions_gral_info.js?071223";
+		$data['question'] = $obj->listAdditional_Question($_GET['id'], $_SESSION['userData']['default_language'])[2];
+		//die(var_dump($data['question']));
 		$tmp = $this->model->getAudits(
 			['date_visit', 'date_visit_end', 'visit_status', 'manager_email', 'manager_name', 'manager_signature', 'visit_comment', 'audited_areas'],
 			'id =' . $_GET['id']
@@ -257,9 +248,7 @@ if (!empty($_GET['country'])) {
 			die(http_response_code(401));
 		}
 
-		$areas = in_array('all', $_POST['areas'] ?? ['all']) ? null : json_encode(array_values($_POST['areas']));
-
-
+		$areas = in_array('all', $_POST['areas']??['all'])? NULL : implode('|', $_POST['areas']);
 		$arrUpdate = [
 			"status"			=> 'In Process',
 			"date_visit" 		=> $_POST['date_visit'] . ' ' . $_POST['start_time'],
@@ -284,7 +273,9 @@ if (!empty($_GET['country'])) {
 
 	public function auditTools()
 	{
-		if(!in_array($_SESSION['userData']['role']['id'], [1, 2,3])){
+		require_once("Models/RoundModel.php");
+		$obj = new RoundModel();
+		if(!in_array($_SESSION['userData']['role']['id'], [1, 2])){
 			die(http_response_code(401));
 		}
 
@@ -298,35 +289,17 @@ if (!empty($_GET['country'])) {
 
 		$data['audit']['front_door_pic'] = selectAuditFiles(
 			['url'],
-			"audit_id = {$_GET['id']} AND name = 'Foto de fachada de la tienda'"
+			"audit_id = {$_GET['id']} AND (name = 'Picture of the Front Door/Entrance of the Restaurant' OR name = 'Foto de entrada principal del restaurante')"
 		);
-		$data['audit']['round_id'] = AuditoriaModel::getAudit(['round_id'], "id=" . $_GET['id'])[0]['round_id'];
-
-
-		if( in_array($_SESSION['userData']['role']['id'], [1, 2]) ){
-			
-			$data['rounds'] = [];
-			$rounds = RoundModel::getRound([], 'country_id='.$data['audit']['country_id']);
-			$roundsName = RoundModel::getAllRoundNames();
-			$roundsType = RoundModel::getAllRoundTypes();
-			$data['name_rounds'] = [];
-			$data['types'] = [];
-			// print_r($roundsName);
-			// print_r($roundsType);
-			// dep($roundsName);
-			// die();
-
-			foreach($rounds as $r) $data['rounds'][] = $r;
-			foreach($roundsName as $rn) $data['name_rounds'][] = $rn['names'];
-			foreach($roundsType as $rt) $data['types'][] = $rt['types'];
-		}
-		
+		$data['rounds'] = $obj->getAllRounds();
+		$data['round'] = $obj->getRoundAudit($_GET['id']);
 
 		$this->views->getView($this, "audit_tools", $data);
 	}
 	
 	public function moveAuditStatus()
 	{
+		require_once 'Models/Audit_LogModel.php';
 		if(!in_array($_SESSION['userData']['role']['id'], [1, 2])){
 			die(http_response_code(401));
 		}
@@ -342,6 +315,40 @@ if (!empty($_GET['country'])) {
 		}
 
 		$status = $this->model->updateAudit($arrUpdate, "id = {$_POST['audit_id']}");
+		if($status){
+			$details = array("to status"=>$_POST['audit_status']);
+			$logs = [
+				'audit_id' => $_POST['audit_id'],
+				'user_id' => $_SESSION['userData']['id'],
+				'category' => 'Web',
+				'name' => 'Change status',
+				'details' => json_encode($details,JSON_UNESCAPED_UNICODE),
+				'date' => date('Y-m-d H:i:s'),
+			];
+			Audit_LogModel::insertAudit_Log($logs);
+		}
+		die(json_encode(['status' => $status? 1 : 0], JSON_UNESCAPED_UNICODE));
+	}
+
+	public function moveAuditRound(){
+		require_once 'Models/Audit_LogModel.php';
+		if(!in_array($_SESSION['userData']['role']['id'], [1, 2])){
+			die(http_response_code(401));
+		}
+
+		$status = $this->model->updateRound($_POST['audit_round'], $_POST['audit_id']);
+		if($status){
+			$details = array("to round"=>$_POST['audit_round']);
+			$logs = [
+				'audit_id' => $_POST['audit_id'],
+				'user_id' => $_SESSION['userData']['id'],
+				'category' => 'Web',
+				'name' => 'Change round',
+				'details' => json_encode($details,JSON_UNESCAPED_UNICODE),
+				'date' => date('Y-m-d H:i:s'),
+			];
+			Audit_LogModel::insertAudit_Log($logs);
+		}
 		die(json_encode(['status' => $status? 1 : 0], JSON_UNESCAPED_UNICODE));
 	}
 	
@@ -359,25 +366,6 @@ if (!empty($_GET['country'])) {
 		$status = $this->model->updateAudit($arrUpdate, "id = $audit_id");
 		die(json_encode(['status' => $status? 1 : 0], JSON_UNESCAPED_UNICODE));
 	}
-
-		public function moveAuditRound()
-	{
-		if (!in_array($_SESSION['userData']['role']['id'], [1, 2])) {
-			die(http_response_code(401));
-		}
-
-		$arrUpdate = [
-			"round_id"			=> $_POST['audit_round']
-		];
-		$status = $this->model->updateAudit($arrUpdate, "id = {$_POST['audit_id_round']}");
-
-		if($status){
-			$this->model->updateAuditLog($_POST['audit_id_round'], $_SESSION['userData']['id'], "r{$_POST['audit_round']}");
-		}
-
-		die(json_encode(['status' => $status ? 1 : 0], JSON_UNESCAPED_UNICODE));
-	}
-
 
 	public function setSignaturePic(){
 		if(!in_array($_SESSION['userData']['role']['id'], [1, 2])){
@@ -399,7 +387,7 @@ if (!empty($_GET['country'])) {
 		require_once("Models/Audit_FileModel.php");
 		$objAuditFile = new Audit_FileModel();
 
-		$objAuditFile->deleteAudit_File("audit_id = {$_POST['audit_id']} AND name = 'Picture of the Front Door/Entrance of the Restaurant'");
+		$objAuditFile->deleteAudit_File("audit_id = {$_POST['audit_id']} AND (name = 'Picture of the Front Door/Entrance of the Restaurant' OR name = 'Foto de entrada principal del restaurante')");
 		$status = $objAuditFile->insertFrontDoorPic($_POST['audit_id'], $_POST['url_pic']);
 		
 		die(json_encode(['status' => $status > 0], JSON_UNESCAPED_UNICODE));
@@ -419,7 +407,7 @@ if (!empty($_GET['country'])) {
 			$limitDays = $tmp['Criticos'] > 0? 1 : 7;
 			$dateLimit = date("d-m-Y",strtotime($audit['date_release']."+ $limitDays days"));
 			
-			$asunto = "{$audit['brand_prefix']} #{$audit['location_number']} ({$audit['country_name']}) @ Recordatorio del plan de acción";
+			$asunto = "{$audit['brand_prefix']} #{$audit['location_number']} ({$audit['country_name']}) @ Action Plan Reminder";
 			$arrMailPlanReminder = ['asunto' 				=> $asunto,
 									'email' 				=> $recipientsReminderPlan,
 									'audit_id'				=> $audit['id'],
@@ -428,13 +416,18 @@ if (!empty($_GET['country'])) {
 									'type'					=> $audit['type'],
 									'date_visit'			=> $audit['date_visit'],
 									'date_release'			=> $audit['date_release'],
+									'country'				=> $audit['country_id'],
 									'date_limit'			=> $dateLimit,
 									'limit_days'			=> $limitDays,
 									'total_opps'			=> $totalOpps['opps'],
 									'location_number'		=> $audit['location_number'],
 									'location_name'			=> $audit['location_name'],
 									'location_address'		=> $audit['location_address'] ];
-			sendEmail($arrMailPlanReminder, 'plan_reminder_gm');
+			if(esEspanol([$audit['country_id']])){
+				sendEmail($arrMailPlanReminder, 'plan_reminder_gm');
+			}else{
+				sendEmail($arrMailPlanReminder, 'plan_reminder_gm_eng');
+			}
 		}
 	}
 
@@ -442,20 +435,14 @@ if (!empty($_GET['country'])) {
 		if(!$this->permission['u'] and !isMySelfEvaluation($_POST['audit_id'])){
 			die(http_response_code(401));
 		}
+		require_once 'Models/UsuariosModel.php';
 
-		$tmp = $this->model->getAuditList(['status', 'type', 'location_id', 'country_id', 'country_name', 'location_number', 'region', 'location_address', 'brand_id', 'brand_prefix', 'report_layout_id', 'date_visit', 'manager_email','country_language','region'], 'id='.$_POST['audit_id']);
+		$tmp = $this->model->getAuditList(['status', 'type', 'location_id', 'country_id', 'country_name', 'location_number', 'location_name', 'region', 'location_address', 'brand_id', 'brand_prefix', 'report_layout_id', 'date_visit', 'manager_email'], 'id='.$_POST['audit_id']);
 		$currAudit = $tmp[0];
-		
 		
 		$steps = ['Pending', 'In Process', 'Completed'];
 		$index = array_search($currAudit['status'], $steps);
 		$status = ['status' => 0];
-
-	
-
-
-		
-
 		
 		if(!empty($index) or $index == 0){
 			$nextStatus = $steps[$index + 1];
@@ -469,94 +456,94 @@ if (!empty($_GET['country'])) {
 					$this->model->updateAuditLog($_POST['audit_id'], $_SESSION['userData']['id'], $nextStatus);
 					if($nextStatus == 'Completed'){
 
-						$tmp = getScore($_POST['audit_id']);
-
-						
-		$fnT = translate($currAudit['country_language']);				
-
-
-
-		
-		    $templateEmail = 'aviso_liberacion';
-			$asunto = $fnT('Final Report');
-			$calif  = $tmp['Result'] == 'Fail'? $fnT('Fail') : $fnT('Approved');
-			$score  = "{$fnT('Critical')} {$tmp['Criticos']} | {$fnT('Basics')} {$tmp['NoCriticos']} | {$fnT('Yellow')} {$tmp['Amarillos']} | {$fnT('Red')}  {$tmp['Rojos']} | {$fnT('Maintenance')} {$tmp['Amarillos']} | {$fnT('Zero tolerance')} {$tmp['AutoFail']}";
-
-
-
-
-			 $mail = "";
-
-		  	if ($currAudit['type'] == "Training-visits") {
-				
-				$calif = "N/A";
-
-			if($currAudit['country_name'] == 'Panama' ){
-
-				  		$mail = "Jonathan.Edwards@idq.com";
-
-			}elseif($currAudit['country_name'] == 'Indonesia' || $currAudit['country_name'] == 'Qatar'|| $currAudit['country_name'] == 'Bahrain'){
-
-				 		$mail = ",businesssupport-ca@lrqa.com,wildon.lacro@idq.com,Jonathan.Edwards@idq.com";
-
-			}
-			elseif($currAudit['country_name'] == 'Philippines'){
- 						$mail = ",businesssupport-ca@lrqa.com, 
-								  wildon.lacro@idq.com,		   
-								  ljuinio@ppiholdingsinc.com.ph,
-								  deromarate@ppiholdingsinc.com.ph,
-								  cdabu@ppiholdingsinc.com.ph,
-								  rherrera@ppiholdingsinc.com.ph,
-								  aguillermo@ppiholdingsinc.com.ph,
-								  dqtraining@ppiholdingsinc.com.ph,
-								  nborillo@ppiholdingsinc.com.ph,
-								  cmlim@ppiholdingsinc.com.ph,
-								  rcafranca@ppiholdingsinc.com.ph,
-								  jcapistrano@ppiholdingsinc.com.ph,
-								  murbano@ppiholdingsinc.com.ph";
-			}
-			else{
-				 
-						$mail = ",businesssupport-ca@lrqa.com";
-
-            }} 
-						
-						
+						$tmp = getScore($_POST['audit_id']);						
 						if($currAudit['type'] != 'Calibration Audit'){
-							$locationMails = getLocationEmails(['Fanchisee' , 'Ops Director' , 'Ops Leader' , 'Area Manager' , 'Store Manager'], $currAudit['location_id']);
+							//$locationMails = getLocationEmails(['Fanchisee' , 'Ops Director' , 'Ops Leader' , 'Area Manager' , 'Store Manager'], $currAudit['location_id']);
 
-							if($tmp['Result'] == 'Fail' && getScorePrevius($currAudit['location_number'], "Standard','Re-Audit','2nd Re-Audit", $_POST['audit_id'])['result'] == 'Fail'){
-								$recidivist = ' (Reincidente)';
+							if($tmp['value_3'] == 'F' && getScorePrevius($currAudit['location_number'], "Standard','Re-Audit','2nd Re-Audit", $_POST['audit_id'])['value_3'] == 'F'){
+								$recidivist = ' (Recidivist)'; //reincidente
 							}
 						}
 						$AdminMails = getLocationEmails(['admin arguilea'], 0);
-						if($currAudit['type'] == 'Self-Evaluation' || $currAudit['type'] == 'IDQ Internal Audit'){
-							$recipients = emailFilter("{$currAudit['manager_email']},$locationMails");
-						}else {
-							$recipients = emailFilter("{$currAudit['manager_email']},$locationMails,$AdminMails,$mail");
-
-						}
-					
-
+						//$recipients = emailFilter("{$currAudit['manager_email']},$locationMails,$AdminMails");
+						$esPrueba = false;
+        				if(in_array($currAudit['type'],['Calibration Audit'])) $esPrueba=true;
+						$to = UsuariosModel::getTo(2, $currAudit['location_id'], $esPrueba, $currAudit['country_id']);
+						$titulo = (in_array($currAudit['country_id'], [1,10,18,33,35,36])?'Reporte final':'Final Report');
+						$plantilla = (in_array($currAudit['country_id'], [1,10,18,33,35,36])?'aviso_liberacion_esp':'aviso_liberacion');
 						sendEmail([
-							'asunto' 				=> "{$currAudit['brand_prefix']} #{$currAudit['location_number']} ({$currAudit['country_name']}) @ {$asunto}",
-							'lang' 			        =>  $currAudit['country_language'],
-							'email' 				=> $recipients,
+							'asunto' 				=> "{$currAudit['brand_prefix']} #{$currAudit['location_number']} {$currAudit['location_name']} ({$currAudit['country_name']}) @ $titulo",
+							'email' 				=> $to,
 							'audit_id'				=> $_POST['audit_id'],
-							'score'					=> $score,
-							'result'				=> ($calif) . $recidivist,
+							'score'					=> $tmp['value_4'],
+							'result'				=> $tmp['value_3'],
 							'type'					=> $currAudit['type'],
 							'location_number'		=> $currAudit['location_number'],
 							'location_address'		=> $currAudit['location_address'],
-							'url_report'			=> getURLReport($_POST['audit_id'], $currAudit['report_layout_id'],$currAudit['country_language'])
-						], $templateEmail);
+							'country'				=> $currAudit['country_id'],
+							'url_report'			=> getURLReport($_POST['audit_id'], $currAudit['report_layout_id'], (in_array($currAudit['country_id'], [1,10,18,33,35,36])?'esp':'eng'))
+						], $plantilla);
+
+						/*if($tmp['value_3']=='F'){ 
+							$plantilla = (in_array($currAudit['country_id'], [1,10,18,33,35,36])?'failed_notification_esp':'failed_notification');
+							if($recidivist == ' (Recidivist)'){
+								$to = UsuariosModel::getTo(4, $currAudit['location_id'], $esPrueba, $currAudit['country_id']);
+								if(in_array($currAudit['country_id'], [1,10,18,33,35,36]))$recidivist=' (Reincidencia)';
+		
+								sendEmail([
+									'asunto' 				=> "{$currAudit['brand_prefix']} #{$currAudit['location_number']} {$currAudit['location_name']} ({$currAudit['country_name']}) @ $titulo ".$recidivist,
+									'email' 				=> $to,
+									'audit_id'				=> $_POST['audit_id'],
+									'score'					=> $tmp['value_4'],
+									'result'				=> $tmp['value_3'],
+									'type'					=> $currAudit['type'],
+									'location_number'		=> $currAudit['location_number'],
+									'location_address'		=> $currAudit['location_address'],
+									'country'				=> $currAudit['country_id'],
+									'url_report'			=> getURLReport($_POST['audit_id'], $currAudit['report_layout_id'], (in_array($currAudit['country_id'], [1,10,18,33,35,36])?'esp':'eng'))
+								],  $plantilla);
+							}else{
+								$to = UsuariosModel::getTo(3, $currAudit['location_id'], $esPrueba, $currAudit['country_id']);
+		
+								sendEmail([
+									'asunto' 				=> "{$currAudit['brand_prefix']} #{$currAudit['location_number']} {$currAudit['location_name']} ({$currAudit['country_name']}) @ $titulo",
+									'email' 				=> $to,
+									'audit_id'				=> $_POST['audit_id'],
+									'score'					=> $tmp['value_4'],
+									'result'				=> $tmp['value_3'],
+									'type'					=> $currAudit['type'],
+									'location_number'		=> $currAudit['location_number'],
+									'location_address'		=> $currAudit['location_address'],
+									'country'				=> $currAudit['country_id'],
+									'url_report'			=> getURLReport($_POST['audit_id'], $currAudit['report_layout_id'], (in_array($currAudit['country_id'], [1,10,18,33,35,36])?'esp':'eng'))
+								],  $plantilla);
+		
+								if($tmp['value_4']=='0' || $tmp['value_4']==0){
+									$to = UsuariosModel::getTo(11, $currAudit['location_id'], $esPrueba, $currAudit['country_id']);
+									$plantilla = (in_array($currAudit['country_id'], [1,10,18,33,35,36])?'zero_tolerance_esp':'zero_tolerance');
+		
+									sendEmail([
+										'asunto' 				=> "{$currAudit['brand_prefix']} #{$currAudit['location_number']} {$currAudit['location_name']} ({$currAudit['country_name']}) @ $titulo",
+										'email' 				=> $to,
+										'audit_id'				=> $_POST['audit_id'],
+										'score'					=> $tmp['value_4'],
+										'result'				=> $tmp['value_3'],
+										'type'					=> $currAudit['type'],
+										'location_number'		=> $currAudit['location_number'],
+										'location_address'		=> $currAudit['location_address'],
+										'country'				=> $currAudit['country_id'],
+										'url_report'			=> getURLReport($_POST['audit_id'], $currAudit['report_layout_id'], (in_array($currAudit['country_id'], [1,10,18,33,35,36])?'esp':'eng'))
+									],  $plantilla);
+								}
+							}
+						}*/
 						
 						if(in_array($currAudit['type'] , ['Standard','Re-Audit','2nd Re-Audit'])) {
 							$this->sendPlanReminder($_POST['audit_id']);
 						}
 					}
 				}
-				$status = ['status' => $status? 1 : 0, 'currStatus' => $nextStatus, 'nextStatus' => $steps[$index + 2], 'cal' => $cal, 'template' => $templateEmail, 'lang' => $currAudit['country_language'] ];
+				$status = ['status' => $status? 1 : 0, 'currStatus' => $nextStatus, 'nextStatus' => $steps[$index + 2], 'cal' => $cal];
 			}
 		}
 		die(json_encode($status, JSON_UNESCAPED_UNICODE));
@@ -602,71 +589,8 @@ if (!empty($_GET['country'])) {
 																		$country_id,
 																		$brand_id);
 
-
-
-				$idAudit = $this->model->validateId($location_id);// devuelve el id de la auditoria creada
-
 					if($request > 0){
-						$arrResponse = array("status" => true, "msg" => "The record has been generated correctly", "id_audit" =>  $idAudit['id_audit']);
-					}else if($request == 'exist'){
-						$arrResponse = array("status" => false, "msg" => "It is not possible to perform 2 evaluations in the same month");
-					}else{
-						$arrResponse = array("status" => false, "msg" => "It is not possible to generate the record");
-					}
-				}
-			}
-			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
-		}
-		die();
-	}
-
-
-	public function addIDQ()
-	{
-		//dep($_POST);
-		//die();
-		if($_POST)
-		{
-			$location_id = intVal($_POST['location_id']);
-			$country_id = intVal($_POST['country_id']);
-			$brand_id = array_key_first($_SESSION['userData']['brand']);
-
-			if($location_id == '' || $country_id == '' || $brand_id == ''){
-				$arrResponse = array("status" => false, "msg" => "Datos incorrecto.");
-			}else{
-
-				$request_validar = $this->model->validateRoundIDQ($brand_id, $country_id);
-
-				if(empty($request_validar)){
-					$request_insertR = $this->model->insertRoundIDQ($brand_id, $country_id);
-
-					if($request_insertR > 0){
-						$arrResponse = array("status" => false, "msg" => "The Round has been generated correctly");
-					}else{
-						$arrResponse = array("status" => false, "msg" => "It is not possible to generate the Round");
-					}
-				}
-
-				$round = $this->model->validateRoundIDQ($brand_id, $country_id);
-
-				if(!empty($round)){
-					//dep($auditoria);
-					$round_id = $round['id'];
-					$tipoViaje = 'Local';
-					$request = "";
-
-					$request = $this->model->insertAuditIDQ($round_id,
-																		$location_id,
-																		$tipoViaje,
-																		$country_id,
-																		$brand_id);
-
-
-
-				$idAudit = $this->model->validateIdIDQ($location_id);// devuelve el id de la auditoria creada
-
-					if($request > 0){
-						$arrResponse = array("status" => true, "msg" => "The record has been generated correctly", "id_audit" =>  $idAudit['id_audit']);
+						$arrResponse = array("status" => true, "msg" => "The record has been generated correctly");
 					}else if($request == 'exist'){
 						$arrResponse = array("status" => false, "msg" => "It is not possible to perform 2 evaluations in the same month");
 					}else{
@@ -714,20 +638,5 @@ if (!empty($_GET['country'])) {
 
 		$this->views->getView($this, "audit_print", $data);
 	}
-
-	public function selectOpp(){
-		
-		$id_audit = $_POST['id'];
-		$type 	  = $_POST['type'];
-    	echo json_encode($this->model->selectOpp($id_audit,$type), true);
-	
-	}
-
-
-
-
-
-
-
 }
 ?>

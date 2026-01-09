@@ -27,11 +27,40 @@ class PermisosModel extends Mysql{
 		return $request;
 	}
 
+	public function getNotifications($columns=[], $condition=NULL){
+		$query = "SELECT ". (count($columns) ? implode(', ', $columns) : "*") ." 
+				  FROM notifications 
+				  ". ($condition ? " WHERE $condition " : '') ." 
+				  ORDER BY id ASC";
+		
+		$request = $this -> select_all($query);
+		
+		return $request;
+	}
+
+	public function getPNotifications($columns=[], $condition=NULL){
+		$query = "SELECT ". (count($columns) ? implode(', ', $columns) : "*") ." 
+				  FROM sendEmail 
+				  ". ($condition ? " WHERE $condition " : '') ." 
+				  ORDER BY id ASC";
+		
+		$request = $this -> select_all($query);
+		
+		return $request;
+	}
+
 	public function deletePermisos(int $idrol)
 	{
 		$this->intRolid = $idrol;
 		$sql = "DELETE FROM permission WHERE role_id = $this->intRolid ";
 		$request = $this->delete($sql);
+		return $request;
+	}
+
+	public function deleteNotifications(int $idrol){
+		$this->intRolid = $idrol;
+		$sql = "UPDATE sendEmail SET send = ? WHERE role_id = ?";
+		$request = $this->update($sql, [0, $this->intRolid]);
 		return $request;
 	}
 
@@ -48,6 +77,17 @@ class PermisosModel extends Mysql{
 		$arrData = array($this->intRolid, $this->intModuloid, $this->r, $this->w, $this->u, $this->d);
 		$request_insert = $this->insert($query_insert,$arrData);
 		return $request_insert;
+	}
+
+	public function insertNotifications(int $idrol, int $idmodulo, int $send)
+	{
+		$this->intRolid = $idrol;
+		$this->intModuloid = $idmodulo;
+		$this->send = $send;
+
+		$sql = "UPDATE sendEmail SET send = ? WHERE role_id = ? AND notification_id = ?";
+		$request = $this->update($sql, [$this->send, $this->intRolid, $this->intModuloid]);
+		return $request;
 	}
 
 	public function permisosModulo(int $idrol)

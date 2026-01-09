@@ -3,7 +3,52 @@ const divLoading = document.getElementById('divLoading');
 
 let tableUsuarios;
 let rowTable = "";
-console.log('function_usuarios');
+
+/*cargarTema();
+
+function cargarTema(){
+
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUrl = base_url+'/personalization/cargarTema';
+            var strData = "id=1";
+            request.open("POST",ajaxUrl,true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(strData);
+            request.onreadystatechange = function(){
+
+                if(request.readyState == 4 && request.status == 200){
+                    //console.log(request.responseText);
+                    var objData = JSON.parse(request.responseText);
+
+                    document.documentElement.style.setProperty("--color1", objData[0].color1);
+                    document.documentElement.style.setProperty("--color2", objData[0].color2);
+                    document.documentElement.style.setProperty("--color3", objData[0].color3);
+                    document.documentElement.style.setProperty("--color4", objData[0].color4);
+
+                    if(objData[0].img2!=''){
+                        if(document.querySelector('.img-fluid')){
+                            document.querySelector('.img-fluid').src=objData[0].img2;
+                        }
+                    }
+
+                    if(objData[0].img3!=''){
+                        // Obtener el elemento del favicon (si existe)
+                        const favicon = document.querySelector('link[rel="icon"]') || 
+                        document.createElement('link');
+
+                        // Configurar sus atributos
+                        favicon.rel = 'icon';
+                        favicon.href = objData[0].img3; // Ruta del nuevo favicon
+                        favicon.type = 'image/x-icon';
+
+                        // Añadirlo al <head> si no existía
+                        document.head.appendChild(favicon);
+                    }
+
+                }
+            }
+}*/
+
 document.addEventListener('DOMContentLoaded', function(){
 
 	tableUsuarios = $('#tableUsuarios').dataTable({
@@ -109,89 +154,14 @@ document.addEventListener('DOMContentLoaded', function(){
                 className: 'btn btn-success',
                 title: 'Excel'
             },
-			{
-                text:  `<a  data-toggle='modal' data-target='#modalCSV'>
-                        <i class="fa-solid fa-file-csv"></i> Download archive csv</a>`,
-   
-                className: `btn bg-gray`
-            }
         ],/**/
         
 	});
 
-function confirmationQuestion(id, audit_id, type) {
-    var id_item           = id;
-    var id_auditoria      = audit_id;
-    var modulo            = type;
-    Swal.fire({
-      title: fnT('Confirmation'),
-      text: fnT('Select an option and add a comment'),
-      input: 'textarea',
-      inputPlaceholder: fnT('Write your comment here...'),
-      showCancelButton: true,
-      confirmButtonText: fnT('Confirm'),
-      cancelButtonText: fnT('Cancel'),
-      reverseButtons: false,
-      html: `
-      <div style="display: flex; gap: 20px; justify-content: center;">
-      <label><input type="radio" name="action" value="1" /> `+fnT('Fulfills')+`</label>
-      <label><input type="radio" name="action" value="0" /> `+fnT('No, Fulfills')+`</label>
-      </div>
-      `,
-      preConfirm: (comment) => {  
-        const selectedOption = document.querySelector('input[name="action"]:checked');
-        if (!selectedOption) {
-          Swal.showValidationMessage(fnT('Please select an option'));
-          return false;
-        }
-        if (!comment) {
-          Swal.showValidationMessage(fnT('Please add a comment'));
-          return false;
-        }
-        return { comment, selectedOption: selectedOption.value };
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        $('#divLoading').css('display', 'flex');
-        $.ajax({
-            type: "POST",
-               url:  " "+base_url+"/additional_Question/confirmationQuestion",
-               data:  'comentario='+result.value.comment
-               +'&confirmacion='+result.value.selectedOption,
-               success: function(response) {
-               console.log('Éxito:', response);
-               const Toast = Swal.mixin({
-               toast: true,
-               position: "top-end",
-               showConfirmButton: false,
-               timer: 1300,
-               timerProgressBar: true,
-               didOpen: (toast) => {
-               toast.onmouseenter = Swal.stopTimer;
-               toast.onmouseleave = Swal.resumeTimer;
-                }
-              });
-              Toast.fire({
-                icon: 'success',
-                title: fnT('Successful confirmation')
-              });
-              $('#divLoading').css('display', 'none');
-              location.reload();
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                alert('Hubo un problema al enviar los datos.');
-                $('#divLoading').css('display', 'none');
-            }
-        });
-        //alert(id_item+' '+id_auditoria+''+result.value.comment+''+result.value.selectedOption);
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.close();
-      }
-    });
-}
 
- 
+
+
+
 
 
 
@@ -235,6 +205,7 @@ function confirmationQuestion(id, audit_id, type) {
 			method: 'POST',
 			body: payload
 		}).then(res => res.json()).then(dat => {
+			console.log(dat);
 			if(dat.status){
 				$('#modalFormUser').modal("hide");
 				tableUsuarios.api().ajax.reload();
@@ -312,7 +283,11 @@ function fntEditUsuario(element, idUser){
 				limitCountry();
 
 				$('#user_brand').selectpicker('val', objData.data.brand_id.split(','));
-				$('#user_location').selectpicker('val', objData.data.location_id.split(','));
+				if(objData.data.location_id!='' && objData.data.location_id!=null){
+					$('#user_location').selectpicker('val', objData.data.location_id.split(','));
+				}else{
+					$('#user_location').selectpicker('val', []);
+				}
 			}
 			$('#formUser .selectpicker').selectpicker('refresh');
 			$('#modalFormUser').modal('show');
@@ -355,6 +330,41 @@ function fntDelUsuario(idUser){
 	});
 }
 
+function fntStatusUsuario(idUser, status){
+	var iduser = idUser;
+	swal({
+		title: (status==1?fnT('Activate user'):fnT('Inactivate user')),
+		text: (status==1?fnT('Do you really want to active this User ?'):fnT('Do you really want to inactive this User ?')),
+		type: "warning",
+		showCancelButton: true,
+		confirmButtonText: fnT('Yes'),
+		cancelButtonText: fnT('No'),
+		closeOnConfirm: false,
+		closeOnCancel: true
+	}, function(isConfirm){
+		if(isConfirm){
+			var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+			var ajaxUrl = base_url+'/usuarios/inactivarUsuario/';
+			var strData = "iduser="+iduser+"&statusx="+status;
+			request.open("POST",ajaxUrl,true);
+			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			request.send(strData);
+			request.onreadystatechange = function(){
+				if(request.readyState == 4 && request.status == 200){
+					var objData = JSON.parse(request.responseText);
+					if(objData.status)
+					{
+						swal(fnT('Delete'), fnT(objData.msg), "success");
+						tableUsuarios.api().ajax.reload();
+					}else{
+						swal(fnT('Attention'), fnT(objData.msg), "error");
+					}
+				}
+			}
+		}
+	});
+}
+
 function openModal(){
 	rowTable = "";
 	document.getElementById('user_id').value = "";
@@ -370,13 +380,6 @@ function openModal(){
 	$('#modalFormUser').modal('show');
 }
 
-function country_area(id){
-	
-	if(id==3){
-$("#user_country optgroup[label='AMR']").remove();
-	}
-	
- }
 function limitRole(level = false){
 	if(!level){
 		level = $(`#user_role [value='${$('#user_role').val()}']`).data('level');
@@ -403,24 +406,23 @@ function limitRole(level = false){
 }
 
 function limitCountry(){
-	// Quitar el optgroup AMR del select de países:
-	
-	$('#user_location').selectpicker('deselectAll');
-
-	const paisesSeleccionados = $('#user_country').val() ?? [];
-
-	// Oculta todos los options que no están relacionados
-	$('#user_location [data-country]').each(function(){
-		const pais = $(this).data('country').toString();
-		$(this).toggle(paisesSeleccionados.includes(pais));
+	//$('#user_location').selectpicker('deselectAll');
+	$('#user_country').selectpicker({
+		maxOptions: false
 	});
 
-	
-
-	// Refrescar ambos selectpickers
-	$('#user_country').selectpicker('refresh');
-	$('#user_location').selectpicker('refresh');
+	console.log($('#user_country').val());
+	$('#user_country').val().forEach(e=>{
+		$('#user_location [data-country]').filter(function(){
+			$(this).toggle(e.includes($(this).data('country').toString()));
+		});
+	});
+	/*$('#user_location [data-country]').filter(function(){
+		$(this).toggle($('#user_country').val().includes($(this).data('country').toString()));
+    });*/
+    $('#user_location').selectpicker('refresh');
 }
+
 function selectAllLocations(){
 	const countSelected = $('#user_location').val().length;
 	let aux = [];
@@ -436,4 +438,3 @@ function selectAllLocations(){
 	$('#user_location').selectpicker('refresh');
 
 }
-

@@ -24,6 +24,17 @@ class RolesModel extends Mysql{
 		return $request;
 	}
 
+	public function getNotificarions($columns=[], $condition=NULL){
+		$query = "SELECT ". (count($columns) ? implode(', ', $columns) : "*") ." 
+				  FROM notifications 
+				  ". ($condition ? " WHERE $condition " : '') ." 
+				  ORDER BY id DESC";
+
+		$request = $this -> select_all($query);
+		
+		return $request;
+	}
+
 	public function insertRol(string $name, string $description, int $level, int $status)
 	{
 		$sql = "SELECT * FROM role WHERE name = '{$name}'";
@@ -39,6 +50,23 @@ class RolesModel extends Mysql{
 		}
 
 		return $return;
+	}
+
+	public function crearPermisosEmail(){
+		$sql = "SELECT * FROM role";
+		$roles = $this->select_all($sql);
+		foreach($roles as $rol){
+			$sql = "SELECT * FROM notifications";
+			$notificaciones = $this->select_all($sql);
+			foreach($notificaciones as $n){
+				$sql = "SELECT * FROM sendEmail WHERE role_id = ".$rol['id']." AND notification_id = ".$n['id'];
+				$notificaciones = $this->select_all($sql);
+				if(!$notificaciones || count($notificaciones)<1){
+					$sql = "INSERT INTO sendEmail (role_id, notification_id, send) VALUES (?,?,?) ";
+					$request_insert = $this->insert($sql, [$rol['id'], $n['id'], 0]);
+				}
+			}
+		}
 	}
 
 	public function updateRol(int $id, string $name, string $description, int $level, int $status)

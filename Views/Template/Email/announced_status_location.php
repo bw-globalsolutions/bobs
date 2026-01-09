@@ -1,53 +1,42 @@
 <!DOCTYPE html>
-<html lang="es">
+<?php global $fnT; ?>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title><?=$data['asunto']?></title>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>Status change announcement</title>
 </head>
-<body style="margin:0; padding:0; font-family: Arial, Helvetica, sans-serif; background-color:#f9f9f9;">
-  <!-- Encabezado -->
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0d8bf2;">
-    <tr>
-      <td align="center" style="padding:20px;">
-        
-        <span style="color:#fff; font-size:36px; font-weight:bold;">Dairy queen</span>
-      </td>
-    </tr>
-  </table>
-
-  <!-- Barra de título -->
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0d8bf2; color:#fff;">
-    <tr>
-      <td align="center" style="padding:10px; font-size:18px; font-weight:bold;">
-        La tienda con el número <?=$data['numero'] ?> actualizó su estatus a <?=$data['actual'] ?>
-      </td>
-    </tr>
-  </table>
-
-  <!-- Contenido -->
-  <table width="100%" cellpadding="0" cellspacing="0" style="padding:20px; background-color:#fff;">
-    <tr>
-      <td align="center" style="color:#555; font-size:14px; max-width:600px;">
-        La tienda <strong><?=$data['numero'] ?></strong>, <strong><?=$data['name'] ?></strong>, 
-        ubicado en <strong><?=$data['direccion'] ?><strong> actualizó su estatus a <?=$data['actual'] ?></strong>, con fecha de <strong><?=date('M d - h:i', time())?></strong>.  
-        <br><br>
-      
-      </td>
-    </tr>
-    <tr>
-      <td align="center" style="padding:30px;">
-        
-      </td>
-    </tr>
-  </table>
-
-  <!-- Pie -->
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0d8bf2; color:#fff;">
-    <tr>
-    
-    </tr>
-  </table>
+<body>
+    <table border='0' align='left' cellpadding='3' cellspacing='2'>
+        <tbody>
+            <tr>
+                <td style='padding:5px;border:solid 1px #eeeeee;font-size:12px'>
+                    <table width='100%' border='0' cellspacing='0' cellpadding='5' style='font-size:11px;font-family:Arial,Helvetica,sans-serif'>
+                        <tbody>
+                            <tr><td width='717'></td></tr>
+                            <tr><td style='padding:10px;background:#eab54c;color:#ffffff;font-size:11px'>
+                                <span><?=$data['asunto']?></span>
+                            </td></tr>
+                            <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-church's"></center></td></tr>
+                            <tr>
+                                <td style='font-size:14px;padding:0px'>
+                                    <div style='border:1px solid #eee;padding:10px'>
+                                        <hr style='margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee'>
+                                        <div>
+                                            <b><?=$data['tabla_sucursal'] ?></b>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b><?=$fnT('Created:')?></b> <?=date('M d - h:i', time())?> &nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
-
 

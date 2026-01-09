@@ -52,7 +52,7 @@ class Appeals extends Controllers{
 	public function getAudits()
 	{
 		
-		$fil = "(status='Completed' AND type IN('Standard') AND DATEDIFF(NOW(), date_visit_end) <= 7 AND id NOT IN (SELECT audit_id FROM appeal))  AND (a.location_id IN({$_SESSION['userData']['location_id']}))";
+		$fil = "status='Completed' AND type IN('Standard') AND DATEDIFF(NOW(), date_visit_end) <= 7 AND id NOT IN (SELECT audit_id FROM appeal)";
 
 		if(!in_array($_SESSION['userData']['role']['id'], [1, 2] ) ) {
 			$fil .= " AND country_id IN({$_SESSION['userData']['country_id']}) AND (a.location_id IN({$_SESSION['userData']['location_id']}) OR '{$_SESSION['userData']['location_id']}'=0)";
@@ -108,61 +108,125 @@ class Appeals extends Controllers{
 		$data = $this->model->selectAppeals($filter);
 
 		$dataAppeals = array();
-		if (!empty($data['appeals'])) {
-			foreach ($data['appeals'] as $values) {
-				// Definir que roles pueden editar las apelaciones
-				$disabled = "disabled";
-				if( in_array( $_SESSION['userData']['role']['id'], [1, 2,17] ) and $values['status'] == 'Pending' ) {
-					$disabled = "";
-				}
-				
-				$datas['clarifications'] = '';
-				foreach ($values['items'] as $item) {
-					$filesOpp = '';
-					$dataFilesOpp = ActionPlanModel::getFilesOpp($item['audit_opp_id']);
-					foreach ($dataFilesOpp as $key) {
-						$filesOpp .= ' <div class="mr-3 my-2 mb-3">
-										<a href="'.$key['url'].'" target="_blank">
-											<img style="height:100px; width:100px" class="rounded shadow-sm of-cover cr-pointer" src="'.$key['url'].'">
-										</a><br>
-									</div>';
-					}
-					
-					$filesApp = '';
-					$dataFilesApp = $this->model->getFilesApp($item['audit_opp_id']);
-					foreach ($dataFilesApp as $key) {
-						$filesApp .= ' <div class="mr-3 my-2 mb-3">
-										<a href="'.$key['url'].'" target="_blank">
-											<img style="height:100px; width:100px" class="rounded shadow-sm of-cover cr-pointer" src="'.$key['url'].'">
-										</a><br>
-									</div>';
+			if (!empty($data['appeals'])) {
+				foreach ($data['appeals'] as $values) {
+
+					$disabled = "disabled";
+					if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14, 19, 20, 21] ) and $values['status'] == 'Pending' ) {
+						$disabled = "";
+					} else if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14, 19, 20, 21] ) and $values['status'] == 'In review' ) {
+						$disabled = "";
 					}
 
-					$datas['clarifications'] .= 
-						'<div class="mb-2" style="border-left: 5px solid #28A745; padding: 5px; border-top: 1px solid #CCC; border-right: 1px solid #CCC; border-bottom: 1px solid #CCC;">
-						<b><span class="badge badge-secondary">'.$item['question_prefix'].'</span> '.$item['eng'].'</b>
-						<br><b><span class="text-secondary"><i class="fa fa-comment"></i>  '.$item['auditor_comment'].'</span></b>
-						<br><div class="d-flex flex-wrap">'.$filesOpp.'</div>
-						<br><b><span class="text-danger"><i class="fa fa-exclamation-triangle"></i> '.$fnT("Appeal").': '.$item['author_comment'].'</span></b>
-						<br><div class="d-flex flex-wrap">'.$filesApp.'</div>
-						<br><b><span class="text-info"> '.$fnT("Decision").': '.$item['decision_result'].'</span></b>
-						<br><b><span class="text-info"> '.$fnT("Owner comment").': '.$item['decision_comment'].'</span></b></div>';
-				}
-				$datas['id'] = $values['id'];
-				$datas['store'] = '<b>'.$values['location']['number'].' - '.$values['location']['name'].'</b>
-									<br><b>'.$values['gralInfo']['round_name'].'</b>
-									<br><b>'.$fnT("Region").': '.$values['gralInfo']['region'].'</b>
-									<br><b>'.$fnT("Date of visit").': '.date("Y-m-d", strtotime( $values['gralInfo']['date_visit'] )).'</b>
-									<br><b>'.$fnT("Audit type").': '.$fnT($values['gralInfo']['type']).'</b>';
-				$datas['date'] = date("Y-m-d", strtotime( $values['date_start'] ));
-				$datas['options'] = 
-					'<b><span class="badge badge-info">'.$fnT($values['status']).'</span></b>
-					<br><b><i class="fa fa-calendar"></i> '.$fnT("Date start").' '.date("Y-m-d", strtotime( $values['date_start'] )).'</b>
-					<br><b>'.$fnT("Author").': <i class="fa fa-user"></i>  '.$values['author'].'</b>
-					<br><b>'.$fnT("Owner").': <i class="fa fa-user"></i>  '.$values['owner'].'</b>
-					<br><button class="btn btn-warning btnViewDetails" '.$disabled.' onclick="openModalUpd('.$values['id'].')" title="'.$fnT("Details").'">'.$fnT("Details").'</button><br>';
-				array_push($dataAppeals,$datas);
-			}
+					if( $values['status'] == 'Pending' and $values['diaspending'] > 4 ) { // Bloquear despues de dos dias pendiente
+						$values['status'] = "Closed";
+						$updateAppealValues = [
+							'status' => $values['status'],
+						];
+						$idAppeal = $this->model->updateAppeal($updateAppealValues, "id = ".$values['id']);
+					}
+
+					$datas['clarifications'] = '';
+					$border = "#FF8B40";
+					$badgeDes = "success";
+					foreach ($values['items'] as $item) {
+						$files = '';
+						$filesAppeals = '';
+						$dataFiles = ActionPlanModel::getFilesOpp($item['audit_opp_id']);
+						//dep($dataFiles);
+						foreach ($dataFiles as $key) {
+
+	$imgBlock = '
+		<div class="mr-3 mb-3 cr-pointer" style="width: 120px; height: 120px;" title="'.htmlspecialchars($key['name']).'">
+			<div class="rounded shadow-sm border overflow-hidden h-100 w-100">
+				<img class="w-100 h-100 of-cover"
+					style="object-fit: cover;"
+					src="'.$key['url'].'"
+					onclick="openImage(this, \''.addslashes($key['name']).'\', \''.$key['type'].'\', '.$key['reference_id'].')">
+			</div>
+		</div>';
+
+	if ($key['type'] == "Opportunity") {
+		$files .= $imgBlock;
+	}
+
+	if ($key['type'] == "Appeal") {
+		$filesAppeals .= $imgBlock;
+	}
+
+						}
+
+						if ( in_array($item['decision_result'], ['Proceeds by exception','Proceeds by criterion','Approved']) ) {
+							$border = "#0EA50A";
+							$badgeDes = "success";
+						} else if ( in_array($item['decision_result'], ['Not proceeds','Not approved']) ) {
+							$border = "#FA0808";
+							$badgeDes = "danger";
+						} else {
+							$border = "#F1E307";
+							$badgeDes = "warning";
+						}
+
+						$datas['clarifications'] .= 
+							'<div class="mb-2" style="border-left: 8px solid '.$border.'; padding: 5px; border-top: 1px solid #CCC; border-right: 1px solid #CCC; border-bottom: 1px solid #CCC;">
+								<div class="bg-info p-3 text-center text-white">'.$fnT("Opportunity").'</div>
+								<b><span class="badge badge-secondary">'.$item['question_prefix'].'</span> '.$item['eng'].'</b>
+								<br><b><span class="text-primary"><i class="fa fa-comments"></i>  '.$item['auditor_comment'].'</span></b>
+								<br><div class="d-flex flex-wrap">'.$files.'</div>
+								<div class="bg-info p-3 text-center text-white"><i class="fa fa-exclamation-triangle"></i> '.$fnT("Appeal").'</div>
+								<div class="text-center">
+									<h3><b><span class="badge badge-'.$badgeDes.'">'.$item['decision_result'].'</span></b></h3>
+									<br><b style="color:red !important;">GM '.$fnT("Comment").'</b>
+									<br><b style="color:red !important;">'.$item['author_comment'].'</b>
+									<hr class="border border-primary">
+									<b style="color:#F18E07 !important;">Decision '.$fnT("Comment").'</b>
+									<br><b style="color:#F18E07 !important;">'.$item['decision_comment'].'</b>
+									<hr class="border border-primary">
+									<div class="d-flex flex-wrap">'.$filesAppeals.'</div>
+								</div>
+							</div>';
+
+						}
+						//dep ($dataAppeals);
+						//dep ($values);
+						//$datas['id'] = 'AP'.$values['id'].'-AU'.$values['audit_id'];
+						$datas['id'] = $values['id'];
+						$datas['store'] = '<b>'.$values['location']['number'].' - '.$values['location']['name'].'</b>
+											<br><b>'.$values['gralInfo']['round_name'].'</b>
+											<br><b>'.$fnT("Region").': '.$values['gralInfo']['region'].'</b>
+											<br><b>'.$fnT("Date of visit").': '.date("Y-m-d", strtotime( $values['gralInfo']['date_visit'] )).'</b>
+											<br><b>'.$fnT("Audit type").': '.$fnT($values['gralInfo']['type']).'</b>
+											<br><b><a href="'.getURLReport($values['audit_id'], $values['gralInfo']['report_layout_id']).'" target="_blank">'.$fnT("View report").'</a>';
+						//$datas['clarifications'] = '<div class="mb-2" style="border-left: 5px solid #28A745; padding: 5px; border-top: 1px solid #CCC; border-right: 1px solid #CCC; border-bottom: 1px solid #CCC;">'.$values['items'][0]['auditor_comment'].'<br>'.$values['items'][0]['author_comment'].'</div>';
+						$datas['date'] = date("Y-m-d", strtotime( $values['date_start'] ));
+						// $fechaAppeal= new DateTime(date("Y-m-d", strtotime( $values['date_start'] )));
+						// $fechaHoy= new DateTime(date("Y-m-d"));
+						// $diffPending = $fechaAppeal->diffInDays($fechaHoy);
+						// echo $diffPending;
+						$strUsers = "";
+		
+						if( in_array( $_SESSION['userData']['role']['id'], [1, 2] )) {
+							$strUsers = '<br><b>'.$fnT("Author").': <i class="fa fa-user"></i>  '.$values['author'].'</b>
+										<br><b>'.$fnT("MBP").': <i class="fa fa-user"></i>  '.$values['owner'].'</b>
+										<br><b>'.$fnT("RBD").': <i class="fa fa-user"></i>  '.$values['user_desicion'].'</b>';
+						} else if( in_array( $_SESSION['userData']['role']['id'], [10] )) {
+							$strUsers = '<br><b>'.$fnT("Author").': <i class="fa fa-user"></i>  '.$values['author'].'</b>';
+						} else if( in_array( $_SESSION['userData']['role']['id'], [14, 19, 20, 21] )) {
+							$strUsers = '<br><b>'.$fnT("MBP").': <i class="fa fa-user"></i>  '.$values['owner'].'</b>';
+						} else if( in_array( $_SESSION['userData']['role']['id'], [14, 19, 20, 21] )) {
+							$strUsers = '<br><b>'.$fnT("RBD").': <i class="fa fa-user"></i>  '.$values['user_desicion'].'</b>';
+						}
+		
+						$datas['options'] = 
+							'<b><span class="badge badge-info">'.$fnT( $values['status'] ).'</span></b>
+							<br><b><i class="fa fa-calendar"></i> '.$fnT("Date start").' '.date("Y-m-d", strtotime( $values['date_start'] )).'</b>'.$strUsers.'
+							
+							<br><button class="btn btn-warning btnViewDetails" '.$disabled.' onclick="openModalUpd('.$values['id'].')" title="'.$fnT("Details").'">'.$fnT("Details").'</button><br>';
+						//dep ($datas); <br><b><i class="fa fa-calendar"></i> '.$fnT("Date finished").' '.date("Y-m-d", strtotime( $values['date_completed'] )).'</b>
+						array_push($dataAppeals,$datas);
+						//dep ($dataAppeals);
+					}
+				
 		}
 		
 		echo json_encode($dataAppeals,JSON_UNESCAPED_UNICODE);
@@ -283,10 +347,11 @@ class Appeals extends Controllers{
 						<select class="form-control" id="appealDes['.$data[$i]['id_appeal_item'].']" name="appealDes['.$data[$i]['id_appeal_item'].']" required>';
 			
 			// Definir que roloes pueden dictar si procede o no
-			if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14,17] ) ) {
+			if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14, 19, 20, 21] ) ) {
 				$data[$i]['decision'] .='
 							<option value="" '.($data[$i]['decision_result']=='Pending'?'selected':'').'></option>
-							<option value="Proceeds" '.($data[$i]['decision_result']=='Proceeds'?'selected':'').'>'.$fnT('Proceeds').'</option>
+							<option value="Proceeds by exception" '.(in_array($data[$i]['decision_result'], ['Proceeds', 'Proceeds by exception'])?'selected':'').'>'.$fnT('Proceeds by exception').'</option>
+							<option value="Proceeds by exception" '.(in_array($data[$i]['decision_result'], ['Proceeds by criterion'])?'selected':'').'>'.$fnT('Proceeds by criterion').'</option>
 							<option value="Not proceeds" '.($data[$i]['decision_result']=='Not proceeds'?'selected':'').'>'.$fnT('Not proceeds').'</option>';
 			}
 
@@ -320,6 +385,7 @@ class Appeals extends Controllers{
 
 			// Buscar el apppeal 
 			$isAppeal = $this->model->selectAppeal(['id'], "audit_id=$_POST[modal_audit_id]")[0];
+			$previusScore = $this->model->previusScore($_POST['modal_audit_id'])[0]['value_4'];
 			if ($isAppeal['id']) {
 				$idAppeal = $isAppeal['id'];
 			}else {
@@ -328,6 +394,7 @@ class Appeals extends Controllers{
 					'author_user_id' => $_SESSION['userData']['user_id'],
 					'status' => 'In Process',
 					'date_start' => date('Y-m-d'),
+					'score_previus' => $previusScore,
 				];
 				$idAppeal = $this->model->insertAppeal($insertAppealValues);
 			}
@@ -356,6 +423,7 @@ class Appeals extends Controllers{
 	{
 		if($_POST){
 			$tmp = $this->model->getAuditById([], 'id =' . $_POST['idAuditDT'])[0];
+			$previusScore = $this->model->previusScore($_POST['idAuditDT'])[0]['value_4'];
 
 			$insertAppealValues = [
 				'audit_id' => $_POST['idAuditDT'],
@@ -364,6 +432,7 @@ class Appeals extends Controllers{
 				'location_id' => $tmp['location_id'],
 				'country_id' => $tmp['country_id'],
 				'date_start' => date('Y-m-d'),
+				'score_previus' => $previusScore,
 			];
 			$idAppeal = $this->model->insertAppeal($insertAppealValues);
 
@@ -408,48 +477,45 @@ class Appeals extends Controllers{
 		die();
 	}
 
-	public function appealNotification($id )
+	public function appealNotification($id)
 	{
-		
-		//$id = 960;
+		require_once 'Models/UsuariosModel.php';
 		$audit       = AuditsModel::getAuditList([], "id=$id")[0];
 		$appeal      = $this->model->selectAppeal([], "audit_id=$id")[0];
 		$appealItems = $this->model->selectAppealUpd($appeal['id']);
-$fnT = translate($audit['country_language']);
+
 		$strAppeals = '<table width="100%" border="1">
                                 <tr bgcolor="#E73712">
-                                    <th>'.$fnT('Opportunity').'</th>
-                                    <th>'.$fnT('Appeal').'</th>
-                                
+                                    <th>Oportunidad</th>
+                                    <th>Apelación</th>
+                                    <th>Comentarios</th>
                                 </tr>';
-
 
 		foreach ($appealItems as $appeal) {
 			$strAppeals .= '<tr>
 								<td>
 									<b>'.$appeal['question_prefix'].' '.$appeal['eng'].'</b>
-									<br><b> '.$fnT('AUDITOR ANSWER').'</b> '.$appeal['auditor_answer'].'
-									<br><b> '.$fnT('AUDITOR COMMENT').':</b> '.$appeal['auditor_comment'].'
+									<br><b> Respuesta del auditor:</b> '.$appeal['auditor_answer'].'
+									<br><b> Comentario del auditor:</b> '.$appeal['auditor_comment'].'
 								</td>
 								<td>'.$appeal['author_comment'].'</td>
-							
+								<td>'.$appeal['owner_comment'].'</td>
 							</tr>';
 		}
 		$strAppeals .= '</table>';
 
-
-
-        //$locationMails = getCountryEmails([ 'Store Manager',], $audit['country_id']);
-		$locationMails = getLocationEmails(['Fanchisee' , 'Ops Director' , 'Ops Leader' , 'Area Manager' , 'Store Manager'], $audit['location_id']);
-		$recipientsAppeals = emailFilter($locationMails);
+        $countryMails = getCountryEmails(['District Manager'], $audit['country_id']);
+		$recipientsAppeals = emailFilter($countryMails);
+		$esPrueba = false;
+        if(in_array($audit['type'],['Calibration Audit'])) $esPrueba=true;
+		$to = UsuariosModel::getTo(8, $audit['location_id'], $esPrueba, $audit['country_id']);
 
 		$totalOpps = countTotalOpps($audit['id']);
-		$cal = getScore($audit['id'])['Calificacion'];
-		$asunto =  $fnT('Appeals review')." ({$audit['country_name']}) {$audit['brand_prefix']} #{$audit['location_number']}";
+		$cal = getScore($audit['id'])['value_4'];
+		$asunto = "Appeals under review ({$audit['country_name']}) {$audit['brand_prefix']} #{$audit['location_number']}";
 
 		$arrMailAppeal = ['asunto' 			 => $asunto,
-							'lang' 			 =>  $audit['country_language'],
-						  'email' 			 => $recipientsAppeals,
+						  'email' 			 => $to,
 						  'audit_id'		 => $audit['id'],
 						  'score'			 => $cal,
 						  'appeals'			 => $strAppeals,
@@ -461,31 +527,30 @@ $fnT = translate($audit['country_language']);
 						  'location_name'	 => $audit['location_name'],
 						  'round_name'		 => $audit['round_name'],
 						  'location_address' => $audit['location_address'],
-						  'url_report'		 => getURLReport($audit['id'], $audit['report_layout_id']),];
-						  
-						
+						  'country'          => $audit['country_id'],
+						  'url_report'		 => getURLReport($audit['id'], $audit['report_layout_id'], ($audit['country_id']==1?'esp':'eng'))];
+
 		$requestEmail = sendEmail($arrMailAppeal, 'appeal_process_mbp');
 	}
 
 	public function appealNotificationRefresh($id)
 	{
-
-		
+		require_once 'Models/UsuariosModel.php';
 		$audit 		 = AuditsModel::getAuditList([], "id=$id")[0];
 		$appeal 	 = $this->model->selectAppeal([], "audit_id=$id")[0];
 		$appealItems = $this->model->selectAppealUpd($appeal['id']);
-$fnT = translate($audit['country_language']);
+
 		$strAppeals = '<table width="100%" border="1">
                                 <tr bgcolor="#E73712">
-                                    <th>'.$fnT('Opportunity').'</th>
-									<th>'.$fnT('Decision').'</th>
-                                    <th>'.$fnT('Appeal').'</th>
-                                    <th>'.$fnT('Comments').'</th>
+                                    <th>Oportunidad</th>
+									<th>Decisión</th>
+                                    <th>Apelación</th>
+                                    <th>Comentarios</th>
                                 </tr>';
 
 		foreach ($appealItems as $appeal) {
 
-			if ($appeal['decision_result'] == 'Proceeds' OR $appeal['decision_result'] == 'Proceeds by exception'){
+			if ($appeal['decision_result'] == 'Proceeds' || $appeal['decision_result'] == 'Proceeds by criterion' OR $appeal['decision_result'] == 'Proceeds by exception'){
 				
 				$strAppeals .= '<tr>
 									<td><b>'.$appeal['question_prefix'].' '.$appeal['eng'].'</b>
@@ -502,16 +567,18 @@ $fnT = translate($audit['country_language']);
 		}
 		$strAppeals .= '</table>';
 
-		$locationMails = getLocationEmails(['Fanchisee' , 'Ops Director' , 'Ops Leader' , 'Area Manager' , 'Store Manager'], $audit['location_id']);
-		$recipientsAppeals = emailFilter($locationMails);
+		$countryMails      = getCountryEmails(['District Manager'], $audit['country_id']);
+		$recipientsAppeals = emailFilter($countryMails);
+		$esPrueba = false;
+        if(in_array($audit['type'],['Calibration Audit'])) $esPrueba=true;
+		$to = UsuariosModel::getTo(9, $audit['location_id'], $esPrueba, $audit['country_id']);
 
 		$totalOpps = countTotalOpps($audit['id']);
-		$cal 	   = getScore($audit['id'])['Calificacion'];
-		$asunto    = $fnT('Final appeal decision')." ({$audit['country_name']}) {$audit['brand_prefix']} #{$audit['location_number']}";
+		$cal 	   = getScore($audit['id'])['value_4'];
+		$asunto    = "Final appeal decision ({$audit['country_name']}) {$audit['brand_prefix']} #{$audit['location_number']}";
 
 		$arrMailAppeal = ['asunto' 			 => $asunto,
-						  'lang' 			 =>  $audit['country_language'],
-						  'email' 			 => $recipientsAppeals,
+						  'email' 			 => $to,
 						  'audit_id'		 => $audit['id'],
 						  'score'			 => $cal,
 						  'appeals'			 => $strAppeals,
@@ -524,7 +591,8 @@ $fnT = translate($audit['country_language']);
 						  'location_name'	 => $audit['location_name'],
 						  'round_name'		 => $audit['round_name'],
 						  'location_address' => $audit['location_address'],
-						  'url_report'		 => getURLReport($audit['id'], $audit['report_layout_id'], $audit['country_language'])];
+						  'country'          => $audit['country_id'],
+						  'url_report'		 => getURLReport($audit['id'], $audit['report_layout_id'], ($audit['country_id']==1?'esp':'eng'))];
 
 		$requestEmail = sendEmail($arrMailAppeal, 'appeal_process_refresh');
 
@@ -550,7 +618,7 @@ $fnT = translate($audit['country_language']);
 
 		foreach ($appealItems as $appeal) {
 
-			if ($appeal['decision_result'] == 'Proceeds' OR $appeal['decision_result'] == 'Proceeds by exception'){
+			if ($appeal['decision_result'] == 'Proceeds' || $appeal['decision_result'] == 'Proceeds by criterion' OR $appeal['decision_result'] == 'Proceeds by exception'){
 				
 				$strAppeals .= '<tr>
 									<td><b>'.$appeal['question_prefix'].' '.$appeal['eng'].'</b>
@@ -572,7 +640,7 @@ $fnT = translate($audit['country_language']);
 
 		$totalOpps = countTotalOpps($audit['id']);
 		$cal 	   = getScore($audit['id'])['Calificacion'];
-		$asunto    = "Decisión final de apelación ({$audit['country_name']}) {$audit['brand_prefix']} #{$audit['location_number']}";
+		$asunto    = "Final appeal decision ({$audit['country_name']}) {$audit['brand_prefix']} #{$audit['location_number']}";
 
 		$arrMailAppeal = ['asunto' 			 => $asunto,
 						  'email' 			 => $recipientsAppeals,
@@ -588,7 +656,8 @@ $fnT = translate($audit['country_language']);
 						  'location_name'	 => $audit['location_name'],
 						  'round_name'		 => $audit['round_name'],
 						  'location_address' => $audit['location_address'],
-						  'url_report'		 => getURLReport($audit['id'], $audit['report_layout_id'])];
+						  'country'          => $audit['country_id'],
+						  'url_report'		 => getURLReport($audit['id'], $audit['report_layout_id'], ($audit['country_id']==1?'esp':'eng'))];
 
 		//$requestEmail = sendEmail($arrMailAppeal, 'appeal_process_refresh');
 
@@ -639,7 +708,7 @@ $fnT = translate($audit['country_language']);
 			}
 
 			// Definir que roloes pueden dictar si procede o no
-			if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14,17,20] ) ) { // Regional OPS Dictamina
+			if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14, 19, 20, 21] ) ) { // Regional OPS Dictamina
 				$appTotStatus['Proceeds'] = 0;
 				$status = "Completed";
 
@@ -656,7 +725,7 @@ $fnT = translate($audit['country_language']);
 				if ( $appealDesItem == 'Approved' or $appealDesItem == 'Not approved') { //Para las decisiones de Master BP guarda en owner
 					$updateAppealItemValues = [
 						'decision_result' => $appealDesItem,
-						'owner_comment' => $_POST['appealDesCom'][$idItem],
+						'decision_comment' => $_POST['appealDesCom'][$idItem], //se cambio 'owner_comment' a 'decision_comment',
 					];
 				} else { //Para las decisiones de Regional guarda en desicion
 					$updateAppealItemValues = [
@@ -668,7 +737,7 @@ $fnT = translate($audit['country_language']);
 				$appealItem = $this->model->updateAppealItem($updateAppealItemValues, "id = ".$idItem);
 
 				//Borrar en caso de proceeds, no debe borrar para mantener el registro
-				if ( $appealDesItem == 'Proceeds') {
+				if ( $appealDesItem == 'Proceeds' || $appealDesItem == 'Proceeds by criterion' || $appealDesItem == 'Proceeds by exception') {
 					$appealInfo = $this->model->selectAppealItem([], "id = ".$idItem);
 					$appealOppInfo = $this->model->selectOppItem([], "id = ".$appealInfo['audit_opp_id']);
 					//dep($appealOppInfo);
@@ -697,7 +766,7 @@ $fnT = translate($audit['country_language']);
 			}
 
 			// Definir que roloes pueden dictar si procede o no
-			if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14,17,20] ) ) { // Regional OPS Dictamina
+			if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14, 19, 20, 21] ) ) { // Regional OPS Dictamina
 				$updateAppealValues = [
 					'desicion_user_id' => $_SESSION['userData']['user_id'],
 					'status' => $status,

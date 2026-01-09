@@ -39,51 +39,51 @@ $jsonApp['result']['CHECKLISTINFO'] = [
 //Armar Manualmente el Scoring para tal o cual version
 //Cada nuevo checklist, revisar esta parte manualmente.
 $jsonApp['result']['CHECKLISTINFO']['general_scores'] = [
-    ['title' => 'SEGURIDAD DE ALIMENTOS',
-     'title_esp' => 'SEGURIDAD DE ALIMENTOS',
+    ['title' => 'Segurança dos Alimentos',
+     'title_esp' => 'Segurança dos Alimentos',
      'how_to' => [
         'datatype' => 'FLOAT(5,2)',
-        'unit' => 'points',
+        'unit' => '%',
         'formula' => 
-            'SUM_SECTIONS_TARGET_POINTS-SUM_SECTIONS_EARNED_POINTS',
+            '(SUM_SECTIONS_EARNED_POINTS/SUM_SECTIONS_TARGET_POINTS)*100',
             'variables' => [
-                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'1', 'to'=>'5'],
-                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'1', 'to'=>'5']]
+                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'10'],
+                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'10']]
         ]
     ],
-    ['title' => 'LIMPIEZA',
-     'title_esp' => 'LIMPIEZA',
+    ['title' => 'Padrões da Marca',
+     'title_esp' => 'Padrões da Marca',
      'how_to' => [
         'datatype' => 'FLOAT(5,2)',
-        'unit' => 'points',
+        'unit' => '%',
         'formula' => 
-            'SUM_SECTIONS_TARGET_POINTS-SUM_SECTIONS_EARNED_POINTS',
+            '(SUM_SECTIONS_EARNED_POINTS/SUM_SECTIONS_TARGET_POINTS)*100',
             'variables' => [
-                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'6', 'to'=>'9'],
-                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'6', 'to'=>'9']]
+                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'11', 'to'=>'19'],
+                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'11', 'to'=>'19']]
         ]
     ],
-    ['title' => 'MANTENIMIENTO',
-     'title_esp' => 'MANTENIMIENTO',
+    ['title' => 'Pontuação geral',
+     'title_esp' => 'Pontuação geral',
      'how_to' => [
         'datatype' => 'FLOAT(5,2)',
-        'unit' => 'points',
+        'unit' => '%',
         'formula' => 
-            'SUM_SECTIONS_TARGET_POINTS-SUM_SECTIONS_EARNED_POINTS',
+            '(SUM_SECTIONS_EARNED_POINTS/SUM_SECTIONS_TARGET_POINTS)*100',
             'variables' => [
-                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'10', 'to'=>'15'],
-                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'10', 'to'=>'15']]
+                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'19'],
+                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'19']]
         ]
     ]
 ];
 
 //Armar las Secciones del Checklist
-$sections = Checklist_ItemModel::getChecklistSection("checklist_id=$checklist[id] AND type='Question'");
+$sections = Checklist_ItemModel::getChecklistSection("checklist_id=$checklist[id] AND type='Question'"); // AND section_number NOT IN (7,15)
 foreach ($sections as $r) {
     $jsonApp['result']['CHECKLISTINFO']['general_sections'][] = [
         'section_number' => $r['section_number'],
         'section_prefix' => NULL,
-        'title' => "(" . $r['main_section'] . ") " . $r['section_name'],
+        'title' => "(" . $fnT($r['main_section']) . ") " . $fnT($r['section_name']),
         'title_esp' => $r['section_name'],
         'target_points' => $r['tot_points'],
         'count_questions' => (int)$r['tot_questions'],
@@ -92,7 +92,7 @@ foreach ($sections as $r) {
 $jsonApp['result']['CHECKLISTINFO']['count_general_sections'] = count($sections);
 
 //Conocer Picklist y Preguntas del Checklist
-$items = Checklist_ItemModel::getChecklistItem([], "checklist_id=$checklist[id]");
+$items = Checklist_ItemModel::getChecklistItem([], "checklist_id=$checklist[id]"); // AND section_number NOT IN (7,15)
 $questions = [];
 $picklists = [];
 foreach($items as $r){
@@ -101,7 +101,7 @@ foreach($items as $r){
         $questions[$r['question_prefix']] = [
             "id_question" => $r['id'],
             'section_number' => $r['section_number'],
-            'section_name' => "(" . $r['main_section'] . ") " . $r['section_name'],
+            'section_name' => "(" . $fnT($r['main_section']) . ") " . $fnT($r['section_name']),
             'type' => $r['type'],
             'question_prefix1' => $r['question_prefix'],
             'question_prefix2' => NULL,
@@ -137,8 +137,8 @@ foreach($items as $r){
         //
         $picklists[$r['question_prefix']][] = [
             'id_item' => $r['id'],
-            'title' => $r['eng'],
-            'title_esp' => $r[$lang],
+            'title' => (!empty($r['AutoFail'])?'(Auto Fail) ':'').$r['eng'],
+            'title_esp' => (!empty($r['AutoFail'])?'(Auto Fail) ':'').$r[$lang],
             'type' => $r['type'],
             'picklist_prefix1' => $r['picklist_prefix'],
             'picklist_prefix2' => $r['question_prefix'],
@@ -153,11 +153,12 @@ foreach($items as $r){
         ];
     }
 }
+//die('picks:'.count($picklists['A101']));
 //Armar las Questions
 foreach($questions as $prefix => $r){
     $r['picklists'] = $picklists[$prefix];
-    $r['max_selected_picklists'] = count($picklists[$prefix]);
-    $r['count_picklists'] = count($picklists[$prefix]); 
+    $r['max_selected_picklists'] = (is_array($picklists[$prefix]) || $picklists[$prefix] instanceof Countable ? count($picklists[$prefix]) : 0);
+    $r['count_picklists'] = (is_array($picklists[$prefix]) || $picklists[$prefix] instanceof Countable ? count($picklists[$prefix]) : 0); 
     $jsonApp['result']['CHECKLISTINFO']['questions'][] = $r;
 }
 

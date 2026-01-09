@@ -39,14 +39,16 @@ class ScoringModel extends Mysql {
 		$tmp = $this->select($sqlScore);
 	
 		$request = [
-			'Criticos'			=> $tmp['value_1'],
-			'NoCriticos'		=> $tmp['value_2'],
-			'Verdes'			=> $tmp['value_3'],
-			'Amarillos'			=> $tmp['value_4'],
-			'Rojos'				=> $tmp['value_5'],
-			'Mantenimiento'		=> $tmp['value_6'],
-			'AutoFail'			=> $tmp['value_fs'],
+			'value_1'			=> $tmp['value_1'],
+			'value_2'			=> $tmp['value_2'],
+			'value_3'			=> $tmp['value_3'],
+			'value_4'			=> $tmp['value_4'],
+			'value_5'			=> $tmp['value_5'],
+			'value_6'			=> $tmp['value_6'],
+			'value_7'			=> $tmp['value_7'],
+			'value_fs'			=> $tmp['value_fs'],
 			'Result'			=> $tmp['result']
+			
 			// 'Mayores'			=> $tmp['value_6'],
 			// 'Menores'			=> $tmp['value_7']
 		];

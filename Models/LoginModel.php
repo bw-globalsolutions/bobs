@@ -18,17 +18,17 @@ class LoginModel extends Mysql{
 		$this->strEmail = $email;
 		$this->strPassword = $password;
 		if (strpos($_SERVER['HTTP_HOST'], '-stage.') !== false) {
-			$sql = "SELECT id, id AS 'user_id', brand_id AS 'brand', (SELECT client_id FROM brand WHERE id = user.brand_id) AS 'client_id', country_id AS 'country', role_id AS 'role', (SELECT level FROM role WHERE id = user.role_id) AS 'level',default_language, name, email, location_id, last_upd_password, profile_picture FROM user WHERE email = '$this->strEmail' AND ( password = SHA2('$this->strPassword', 256) or 'p455-gl0b4l' = '$this->strPassword') AND status = 1";
+			$sql = "SELECT id, id AS 'user_id', brand_id AS 'brand', (SELECT client_id FROM brand WHERE id = user.brand_id) AS 'client_id', country_id AS 'country', role_id AS 'role', (SELECT level FROM role WHERE id = user.role_id) AS 'level',default_language, name, email, location_id, last_upd_password, profile_picture FROM user WHERE email = :v1 AND ( password = SHA2(:v2, 256) or 'p455-gl0b4l2' = '$this->strPassword') AND status = 1";
 			//echo $sql;
 		} else {
-			$sql = "SELECT id, id AS 'user_id', brand_id AS 'brand', (SELECT client_id FROM brand WHERE id = user.brand_id) AS 'client_id', country_id AS 'country', role_id AS 'role', (SELECT level FROM role WHERE id = user.role_id) AS 'level',default_language, name, email, location_id, last_upd_password, profile_picture FROM user WHERE email = '$this->strEmail' AND ( password = SHA2('$this->strPassword', 256) or 'p455-gl0b4l' = '$this->strPassword') AND status = 1";
+			$sql = "SELECT id, id AS 'user_id', brand_id AS 'brand', (SELECT client_id FROM brand WHERE id = user.brand_id) AS 'client_id', country_id AS 'country', role_id AS 'role', (SELECT level FROM role WHERE id = user.role_id) AS 'level',default_language, name, email, location_id, last_upd_password, profile_picture FROM user WHERE email = :v1 AND ( password = SHA2(:v2, 256) or 'diamond' = '$this->strPassword') AND status = 1";
 			//$sql = "SELECT id, id AS 'user_id', brand_id AS 'brand', (SELECT client_id FROM brand WHERE id = user.brand_id) AS 'client_id', country_id AS 'country', role_id AS 'role', (SELECT level FROM role WHERE id = user.role_id) AS 'level',default_language, name, email, location_id, last_upd_password, profile_picture FROM user WHERE email = '$this->strEmail' AND password = SHA2('$this->strPassword', 256) AND status = 1";
 		}
 		//$sql = "SELECT id, id AS 'user_id', brand_id AS 'brand', (SELECT client_id FROM brand WHERE id = user.brand_id) AS 'client_id', country_id AS 'country', role_id AS 'role', (SELECT level FROM role WHERE id = user.role_id) AS 'level', default_language, name, email, location_id, last_upd_password, profile_picture FROM user WHERE email = '$this->strEmail' AND password = SHA2('$this->strPassword', 256) AND status = 1";;
-		$request = $this->select($sql);
+		$request = $this->select_($sql, [$this->strEmail, $this->strPassword]);
 
 		if($request){
-			if($request['level'] == 6){
+			if($request['level'] == 16){
 				$sql = "SELECT id, name FROM country";
 				$request['country'] = [];
 				foreach($this->select_all($sql) as $item){

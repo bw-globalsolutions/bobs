@@ -40,12 +40,6 @@ function headerTemplatePopups($data="")
 	require_once($view_header);
 }
 
-function headerFilter($data="")
-{
-	$view_header = "Views/Template/header_filter.php";
-	require_once($view_header);
-}
-
 function headerTemplateAudits($id, $sect = ""){
 	$tmp = selectAuditList(['round_name', 'brand_id', 'country_id', 'region', 'country_name', 'brand_prefix', 'location_number', 'location_address', 'location_name', 'status', 'visit_status', 'date_visit', 'type', 'id', 'checklist_id', 'report_layout_id', 'scoring_id'], "id=$id");	
 	if(!empty($tmp)){
@@ -60,12 +54,15 @@ function headerTemplateAudits($id, $sect = ""){
 		}
 		
 		$data['url_report'] = getURLReport($id, $data['report_layout_id'], $_SESSION['userData']['default_language']);
-		$data['score'] = getScore($data['id'], $data['scoring_id']);
+		$data['download_report'] = getURLDownloadReport($id, $_SESSION['userData']['default_language']);
+		$data['score'] = setScore($data['id'], $data['scoring_id']);
+		//$data['score']['FootSafety'] = 'id:'.$data['id'].' scoring_id:'.$data['scoring_id'];
+		//$data['score']['OperationsE'] = getScore($data['id'], $data['scoring_id']);
 		$data['score_previus'] = empty($data['date_visit'])? false : getScorePrevius($data['location_number'], $data['type'], $data['date_visit']);
 		
 		$tmp = selectAuditFiles(
 			['url'],
-			"audit_id = {$data['id']} AND name IN ('Foto de fachada de la tienda', 'Picture of the Front Door/Entrance of the Restaurant') 
+			"audit_id = {$data['id']} AND (name = 'Picture of the Front Door/Entrance of the Restaurant' OR name = 'Foto de entrada principal del restaurante')
 		");
 		$visit_img = $tmp[0]['url']?? base_url().'/Assets/images/generic_restaurant.jpg';;
 
@@ -82,7 +79,10 @@ function progressTemplateActionPlan($id){
 	$fnT = translate($_SESSION['userData']['default_language']);
 	require_once("Models/ActionPlanModel.php");
 	require_once 'Models/AuditoriaModel.php';
+	require_once 'Models/UsuariosModel.php';
 	$objData = new ActionPlanModel();
+	date_default_timezone_set('America/Mexico_City');
+	$fechaActual = date('Y-m-d H:i:s');
 
 	$dataP = $objData->getOppsPlan($id);
 
@@ -143,6 +143,9 @@ function progressTemplateActionPlan($id){
 			'action_plan_status' => $generalStatus
 		];
 		$request_audit = AuditoriaModel::updateAudit($updateAuditValues, "id=$id");
+		$request_audit = AuditoriaModel::updateDataStartActionPlan($fechaActual, "id=$id");
+	}else if($dataP['totalReview'] == 100){
+		$request_audit = AuditoriaModel::updateDateFinishActionPlan($fechaActual, "id=$id");
 	} else if ( $dataP['totalFinished'] == 100) {
 		$generalStatus = 'Finished';
 		$updateAuditValues = [
@@ -152,38 +155,25 @@ function progressTemplateActionPlan($id){
 
 		$audit = selectAuditList([], 'id='.$id)[0];
 
-		 
-		if($audit['country_language'] == 'esp'){
-			$templateMail = 'ap_finished';
-			$asunto = 'Plan de accion finalizado';
-		}else{
-			$templateMail = 'ap_finished_eng';
-			$asunto = 'Action plan completed';
-
-
-		}
-
-		if($audit['type'] != 'Calibration Audit'){
-			$locationMails = getLocationEmails(['Fanchisee' , 'Ops Director' , 'Ops Leader' , 'Area Manager' , 'Store Manager'], $audit['location_id']);
-		}
 		$recipients = emailFilter("{$audit['manager_email']},$locationMails");
+		$esPrueba = false;
+        if(in_array($audit['type'],['Calibration Audit'])) $esPrueba=true;
+		$to = UsuariosModel::getTo(6, $audit['location_id'], $esPrueba, $audit['country_id']);
 
 		sendEmail([
-			'asunto' 				=> "{$audit['brand_prefix']} #{$audit['location_number']} ({$audit['country_name']}) @ ".$asunto,
-			'email' 				=> $recipients,
+			'asunto' 				=> "{$audit['brand_prefix']} #{$audit['location_number']} ({$audit['country_name']}) @ Action plan completed",
+			'email' 				=> $to,
 			'audit_id'				=> $id,
 			'type'					=> $audit['type'],
 			'location_number'		=> $audit['location_number'],
 			'location_address'		=> $audit['location_address'],
-			'url_report'			=> getURLReport($id, $audit['report_layout_id'],$audit['country_language'])
-		], $templateMail);
-
-		
+			'country'               => $audit['country_id'],
+			'url_report'			=> getURLReport($id, $audit['report_layout_id'], ($audit['country_id']==1?'esp':'eng'))
+		], 'ap_finished');
 	}
 	
 	
 	$view_header = "Views/Template/progress_action_plan.php";
-
 	require_once($view_header);
 }
 
@@ -245,6 +235,7 @@ function emailSend($to = NULL, $subject, $body, $cc = NULL, $bcc = NULL)
 	if (strpos($_SERVER['HTTP_HOST'], '-stage.') !== false) {
 		
 		$sendTo = emailFilter($to, $cc, $bcc);
+		if(is_array($sendTo))$sendTo=implode(',', $sendTo);
 		$subject .= " (ENTORNO DE PRUEBA)";
 		$body = "<tr>
 			<td style='text-align: center; padding:10px;background:#7FDFD4; color:black; font-size:11px'>
@@ -252,12 +243,10 @@ function emailSend($to = NULL, $subject, $body, $cc = NULL, $bcc = NULL)
 		</tr>" . $body;
 		
 		//$to='mosorio@bw-globalsolutions.com,emaldonado@bw-globalsolutions.com,epena@bw-globalsolutions.com'; 
-		//$to='emaldonado@bw-globalsolutions.com'; 
-		$to='mosorio@bw-globalsolutions.com,dpeza@bw-globalsolutions.com,emaldonado@bw-globalsolutions.com'; 
-
+		$to='mosorio@bw-globalsolutions.com,cordonez@bw-globalsolutions.com,alopez@arguilea.com,mmaximiliano@arguilea.com'; 
 		$cc=NULL; 
 		$bcc=NULL;
-		//$bcc='mosorio@bw-globalsolutions.com,dpeza@bw-globalsolutions.com,ycabello@bw-globalsolutions.com,schirino@bw-globalsolutions.com,';
+		//$bcc='mosorio@bw-globalsolutions.com,dpeza@bw-globalsolutions.com,ycabello@bw-globalsolutions.com';
 
 	} else{
 		require_once("Controllers/EmailValidator.php");
@@ -288,7 +277,7 @@ function emailSend($to = NULL, $subject, $body, $cc = NULL, $bcc = NULL)
 		$bccArray = explode(",", str_replace(" ", "", $bcc));
 		$bccArray = array_filter($bccArray);
 	}
-	/*
+	
 	$SesClient = SesClient::factory([
 		'region' 	=> 'eu-west-1',
 		'version' 	=> 'latest',
@@ -341,103 +330,15 @@ function emailSend($to = NULL, $subject, $body, $cc = NULL, $bcc = NULL)
 		echo $e->getMessage();
 		echo ("The email was not sent. Error message: " . $e->getAwsErrorMessage() . "\n");
 		return false;
-	}*/
-	if (EMAIL_SERVICE == "AWS"){
-		return emailSendAWS($to, $subject, $body, $cc, $bcc);
-	} else if (EMAIL_SERVICE == "SG") {
-		return emailSendSG($to, $subject, $body, $cc, $bcc);
 	}
 };
-
-
-function emailSendAWS($to, $subject, $body, $cc, $bcc)
-{
-	$SesClient = SesClient::factory([
-		'region' 	=> 'eu-west-1',
-		'version' 	=> 'latest',
-		'credentials' 	=> array(
-			'key' 		=> AWS_ACCESS_KEY_ID,
-			'secret'	=> AWS_SECRET_ACCESS_KEY,
-		)
-	]);
-
-	$sender_email = 'no-reply@bw-globalsolutions.net';
-	$char_set = 'UTF-8';
-
-	$destination = [];
-	if (!empty ($to)){
-		$destination ["ToAddresses"] = explode(',', $to);
-	}
-	if (!empty ($cc)){
-		$destination ["CcAddresses"] = explode(',', $cc);
-	}
-	if (!empty ($bcc)){
-		$destination ["BccAddresses"] = explode(',', $bcc);
-	}
-
-	try {
-		$SesClient->sendEmail([
-			'Destination' => $destination,
-			'ReplyToAddresses' => [$sender_email],
-			'Source' => $sender_email,
-			'Message' => [
-				'Body' => [
-					'Html' => [
-						'Charset' => $char_set,
-						'Data' => $body,
-					],
-					'Text' => [
-						'Charset' => $char_set,
-						'Data' => $body,
-					],
-				],
-				'Subject' => [
-					'Charset' => $char_set,
-					'Data' => $subject,
-				],
-			],
-		]);
-		return true;
-	} catch (AwsException $e) {
-		return false;
-	}
-};
-
-function emailSendSG($to, $subject, $body, $cc, $bcc){
-
-	set_include_path('/usr/local/lib/php/');
-	require_once "Mail.php";
-	
-	$headers['Content-type'] = "text/html; charset=utf-8";
-	$headers['Subject'] = $subject;
-	$headers['From'] = 'Audits DQ <no-reply@bw-globalsolutions.com>';
-	
-	if($to != NULL){ $headers['To'] = $to; $recipients .= ($recipients<>''?',':'').$to; }
-	if($cc != NULL){ $headers['Cc'] = $cc; $recipients .= ($recipients<>''?',':'').$cc; }
-	if($bcc != NULL){ $headers['Bcc'] = $bcc; $recipients .= ($recipients<>''?',':'').$bcc; }
-	
-	$smtp = Mail::factory('smtp', array('host' => HOST_MAIL,
-										'port' => PORT_MAIL,
-										'auth' => true,
-										'username' => 'apikey',
-										'password' => PASS_MAIL));
-	
-	if($to<>NULL) $mail = $smtp->send($recipients, $headers, $body);
-	
-	$msg = (PEAR::isError($mail)) ? false : true;
-	
-	if(PEAR::isError($mail))
-		return false;
-	
-	return $msg;
-};
-
-
-
 
 function sendEmail($data, $template){
+	global $fnT;
+	$fnT = translate($_SESSION['userData']['default_language']);
     $asunto = $data['asunto'];
     $emailDestino = $data['email'];
+	$cc = $data['cc']?? NULL;
 	$bcc = $data['bcc']?? null;
     $empresa = NOMBRE_REMITENTE;
     $remitente = EMAIL_REMITENTE;
@@ -454,11 +355,8 @@ function sendEmail($data, $template){
 		$cc = NULL;
 		$bcc = NULL;
 	}
-	if($data['type'] == 'Self-Evaluation'){
-		$send = emailSend($emailDestino, $asunto, $mensaje, NULL, 'mosorio@bw-globalsolutions.com,emaldonado@bw-globalsolutions.com');
-	}else{
-		$send = emailSend($emailDestino, $asunto, $mensaje, NULL, 'mosorio@bw-globalsolutions.com,dpeza@bw-globalsolutions.com,emaldonado@bw-globalsolutions.com');
-	}
+
+	$send = emailSend($emailDestino, $asunto, $mensaje, $cc, 'cordonez@bw-globalsolutions.com, mosorio@arguilea.com');
 	
     
     return $send;
@@ -896,6 +794,13 @@ function selectModules($select, $where=null){
 	return $arrModule;
 }
 
+function selectNotifications($select, $where=null){
+	require_once("Models/PermisosModel.php");
+	$objData = new PermisosModel();
+	$arrModule = $objData->getNotifications($select, $where);
+	return $arrModule;
+}
+
 function selectAuditList($select, $where = null){
 	require_once("Models/AuditsModel.php");
 	$objData = new AuditsModel();
@@ -968,16 +873,7 @@ function listAuditTypes(){
 function listSeccions($checklist_id, $audited_areas = null){
 	require_once("Models/Checklist_ItemModel.php");
 	$objData = new Checklist_ItemModel();
-
-	$decodedAreas = json_decode($audited_areas, true);
-$areaList = 'AND area IS NULL';
-
-if (!empty($decodedAreas) && is_array($decodedAreas)) {
-    $areaList = '"' . implode('","', $decodedAreas) . '"';
-}
-	$filter_area = is_null($audited_areas)? 'AND area IS NULL ' : 'AND area IN(' . $areaList  . ') OR (area IS NULL AND checklist_id = ' . $checklist_id  . ')';
-
-
+	$filter_area = is_null($audited_areas)? '' : 'AND area IN("' . str_replace("|", '","', $audited_areas) . '")';
 	$arrSection = $objData->getChecklistSection("checklist_id = $checklist_id $filter_area");
 	return $arrSection;
 }
@@ -1065,6 +961,12 @@ function getScore($audit_id, $scoring_id = null){
 	return $result;
 }
 
+function getToTest($notification_id, $location_id){
+	require_once 'Models/UsuariosModel.php';
+	$to = UsuariosModel::getTo($notification_id, $location_id);
+	return $to;
+}
+
 function getScorePrevius($lnumber, $type, $dvisit){
 	require_once("Models/AuditReportModel.php");
 	$objData = new AuditReportModel();
@@ -1084,11 +986,16 @@ function getScoreDefinition($cal = null){
 	return is_null($cal)? $scoreColors : $scoreColors[$cal];
 }
 
-function getURLReport($audit_id, $report_layout_id, $lan = 'esp'){
+function getURLReport($audit_id, $report_layout_id, $lan = 'eng'){
 	require_once("Models/Report_LayoutModel.php");
 	$objData = new Report_LayoutModel();
 	$layout = $objData->getReport_Layout(['layout_location'], 'id =' . $report_layout_id)[0]['layout_location'];
 	$response = base_url() . '/' .  $layout . '?tk=' . encryptId($audit_id) . '&lan=' . $lan;
+	return $response;
+}
+
+function getURLDownloadReport($audit_id, $lan = 'eng'){
+	$response = base_url() . '/auditReport/downloadReport?tk=' . encryptId($audit_id) . '&lan=' . $lan;
 	return $response;
 }
 
@@ -1195,5 +1102,32 @@ function limitString($cadena, $limite, $sufijo){
 		return substr($cadena, 0, $limite) . $sufijo;
 	}
 	return $cadena;
+}
+
+function isAmerican(){
+      foreach($_SESSION['userData']['country'] as $key=>$c){
+        if(in_array($key, [1,6])){
+          return true;
+        }
+      } 
+      return false;
+}
+
+function esEspanol($arr){
+	foreach($arr as $key){
+        if(in_array($key, [1,10,18,33,35,36])){
+          return true;
+        }
+      } 
+      return false;
+}
+
+function isAmerican2($arr){
+      foreach($arr as $key){
+        if(in_array($key, [1,6])){
+          return true;
+        }
+      } 
+      return false;
 }
 ?>

@@ -3,7 +3,13 @@
     getModal('modalImage', null);
     global $fnT;
 ?>
-<main class="app-content">
+<div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
     <div class="app-title">
         <div>
             <h1>
@@ -24,9 +30,9 @@
                 <? foreach($data['files'] as $type => $files): ?>
                     <li class="list-group-item">
                         <h2 class="h4 mb-3"><?=$fnT($type)?>:</h2>
-                        <div class="row">
+                        <div class="row contGaleria">
                             <? foreach($files as $f): ?>
-                                <div class="col-xl-2 col-lg-3 col-md-4 col-6 mb-2 cr-pointer" style="height: 180px" data-toggle="tooltip" data-placement="top" title="<?=$f['name']?>">
+                                <div class="cr-pointer imgGal" style="height: 180px" data-toggle="tooltip" data-placement="top" title="<?=$f['name']?>">
                                     <img class="h-100 w-100 of-cover" src="<?=$f['url']?>" onclick="openImage(this, '<?=$f['name']?>', '<?=$type?>', <?=$f['reference_id']?>)">
                                 </div>
                             <? endforeach ?>

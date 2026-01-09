@@ -2,12 +2,12 @@
 /*	display: none;*/
 }
 .headerRegister, .header-primary{
-	background: #009688;
+	background: transparent;
 	color: #FFF;
 }
 .headerUpdate{
-	background: #007bff;
-	color: #FFF;
+	background: transparent;
+	color: var(--color4);
 }
 .notBlock{
 	display: none;
@@ -22,6 +22,7 @@
 	justify-content: center;
 	align-items: center;
 	background: rgba(254,254,255, .65);
+  background-color: #00000059;
 	z-index: 9999;
 	display: none;
 }
@@ -69,4 +70,7 @@
  background-image: url("../images/logo_pleca.png");
  background-repeat: no-repeat;
  background-position: bottom left;
+ background-color: #ffffff88;
+    backdrop-filter: blur(10px);
+    border-bottom-right-radius: 20px;
 }

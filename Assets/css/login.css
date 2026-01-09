@@ -1,18 +1,40 @@
 #login-bg{
-    background: #ffffff url("/Assets/images/background-login-Bobs.jpg") no-repeat left center / cover;
+    background: #ffffff url("/Assets/images/fondo.png") no-repeat left center / cover;
 }
 
 #login-bg{
     height: 100vh;
+    max-width: 100%;
+    flex: 0 0 100%;
+}
+
+#login-wrapper{
+    box-shadow: -5px 0 16px 1px #dcd7d7;
+    background-color: #ebf5ff88;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    border-top-left-radius: var(--radius);
+    border-bottom-left-radius: var(--radius);
+    backdrop-filter: blur(10px);
 }
 
 #login-wrapper form{
     max-width: 400px;
+    padding: 40px;
+    border-radius: var(--radius);
+    background-color: #ffffff00 !important;
+    /* backdrop-filter: grayscale(3); */
+    /* backdrop-filter: blur(1000px); */
+    backdrop-filter: hue-rotate(45deg);
+    box-shadow: 0 0 12px 1px #ccc;
+    box-shadow: rgb(80 77 77 / 18%) 0 8px 20px;
 }
 
 #login-wrapper input:not([type=checkbox]){
-    border-left: 10px solid #009688 !important;
     height: 50px;
+    border-radius: var(--radius2);
+    padding-left: 60px !important;
 }
 
 #login-bg-label *{
@@ -20,10 +42,57 @@
     max-width: 525px;
 }
 
+#client-log{
+    position: absolute;
+    filter: drop-shadow(2px 4px 14px var(--color4));
+    top: -80px;
+    left: 10px;
+}
+
 #argui-log {
     bottom: 10px;
     left: 10px;
     filter: drop-shadow(0 0 3px #FFF5);
+    padding: 5px 20px;
+    border-radius: var(--radius);
+    box-shadow: 0 0 8px 0 #fff;
+    /* backdrop-filter: blur(30px); */
+    background-color: #fff;
+}
+
+.lblMarca{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #fff;
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    opacity: 0;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
+}
+
+a {
+    color: var(--color4);
+    background-color: var(--color1);
+  padding: 2px 10px;
+  border-radius: 20px;
+  transition: .5s;
+}
+
+a:hover {
+  color: var(--color4);
+  background-color: var(--color3);
+}
+
+@keyframes lblM {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
 }
 
 #btn-language{
@@ -40,7 +109,7 @@
 }
 
 #login-wrapper [type=submit]{
-    border-radius: 50px;
+    border-radius: var(--radius2);
 }
 
 

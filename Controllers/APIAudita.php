@@ -51,14 +51,12 @@ class APIAudita extends Controllers
 
             //Ultimas versiones de Scoring, Checklist, Layouts y AdditionalQuestion
             $scoring = ScoringModel::getScoring(['id'], "brand_id=$brand[id] AND date_start <= '{$audita_data['periodo']}-01'")[0];
-
-            //$checklist = ChecklistModel::getChecklist(['id'], "brand_id=$brand[id] AND date_start <= '{$audita_data['periodo']}-01'")[0];
-
+            $checklist = ChecklistModel::getChecklist(['id'], "brand_id=$brand[id] AND date_start <= '{$audita_data['periodo']}-01'")[0];
             $report_layout = Report_LayoutModel::getReport_Layout(['id'], "brand_id=$brand[id] AND date_start <= '{$audita_data['periodo']}-01'")[0];
             $additional_question = Additional_QuestionModel::getAdditional_Question(['id'], "brand_id=$brand[id] AND date_start <= '{$audita_data['periodo']}-01'")[0];
 
             $data['definitions']['scoring_id'] = $scoring['id'];
-            $data['definitions']['checklist_id'] = '';
+            $data['definitions']['checklist_id'] = $checklist['id'];
             $data['definitions']['report_layout_id'] = $report_layout['id'];
             $data['definitions']['additional_question_id'] = $additional_question['id'];
 
@@ -66,20 +64,12 @@ class APIAudita extends Controllers
             foreach ($audita_data['audita_data'] as $x => $row) {
 
                 $location = LocationModel::getLocation(['id', 'country_id', 'shop_type', 'address_1'], "number='$row[Numero_Tienda]' AND brand_id='$brand[id]' AND status = 'Active'")[0];
-
                 //Excepcion en caso de que los checklist sean por tipo de tienda
                 // if(!empty($location['shop_type'])){
                 //     $checklist = ChecklistModel::getChecklist(['id'], "brand_id=$brand[id] AND name like '%$location[shop_type]%' AND date_start <= '{$audita_data['periodo']}-01')")[0];
                 //     $data['definitions']['checklist_id'] = $checklist['id'];
                 // }
                 //No existe la tienda?
-
-                $checklist = ChecklistModel::getChecklist(['id'],"(SELECT CASE WHEN '$row[Pais]' = 'MEX' AND $row[Tipo] != '11' THEN 'Mexico'
-                                                                               WHEN '$row[Pais]' != 'MEX' AND $row[Tipo] != '11' THEN 'International'
-                                                                               WHEN $row[Tipo]  = '11' THEN 'Re-Audit' END) = shop_type")[0];
-                $data['definitions']['checklist_id'] = $checklist['id'];
-
-
                 if (empty($location)) {
 
                     $data['NOT Added Audits'][] = [
@@ -99,48 +89,47 @@ class APIAudita extends Controllers
                     //Ya existe la visita?
                     //$isAudit = AuditoriaModel::getAudit(['id', 'status', 'date_visit', 'checklist_id', 'additional_question_id', 'audita_folio', 'audita_id'], "location_id=$location[id] AND audita_id=$row[Auditoria] AND audita_folio=$row[Folio]")[0];
 //AceSync
-                    if ($audita_data['Action'] == "AceSync") {  $logCategory = "Audit AceSync";
-                                                                $isAudit = AuditoriaModel::getAudit([
-                                                                    'id', 
-                                                                    'status', 
-                                                                    'date_visit', 
-                                                                    'checklist_id', 
-                                                                    'additional_question_id', 
-                                                                    'audita_folio', 
-                                                                    'audita_id',
-                                                                    'audita_ace_id',
-                                                                    'audita_ace_folio'
-                                                                ], "location_id={$location['id']} AND audita_ace_id={$row['Auditoria']} AND audita_ace_folio={$row['Folio']}")[0];
+                    if ($audita_data['Action'] == "AceSync") {
+                        $logCategory = "Audit AceSync";
+                        $isAudit = AuditoriaModel::getAudit(['id', 
+                                                             'status', 
+                                                             'date_visit', 
+                                                             'checklist_id', 
+                                                             'additional_question_id', 
+                                                             'audita_folio', 
+                                                             'audita_id',
+                                                             'audita_ace_id',
+                                                             'audita_ace_folio'], 
+                                                             "location_id=".$location['id']." AND audita_ace_id=$row[Auditoria] AND audita_ace_folio=$row[Folio]")[0];
+                                                             
+                                                             
+                    } else if ($audita_data['Action'] == "Autosync") {
+                        $logCategory = "Audit Autosync";
+                        $isAudit = AuditoriaModel::getAudit([
+                            'id', 
+                            'status', 
+                            'date_visit', 
+                            'checklist_id', 
+                            'additional_question_id', 
+                            'audita_folio', 
+                            'audita_id',
+                            'audit_program_id',
+                            'audit_program_folio'
+                        ], "location_id={$location['id']} AND audit_program_id={$row['Auditoria']} AND audit_program_folio={$row['Folio']}")[0];
                                                             
-                                                            } else if ($audita_data['Action'] == "Autosync") {
-                                                                $logCategory = "Audit Autosync";
-                                                                $isAudit = AuditoriaModel::getAudit([
-                                                                    'id', 
-                                                                    'status', 
-                                                                    'date_visit', 
-                                                                    'checklist_id', 
-                                                                    'additional_question_id', 
-                                                                    'audita_folio', 
-                                                                    'audita_id',
-                                                                    'audit_program_id',
-                                                                    'audit_program_folio'
-                                                                ], "location_id={$location['id']} AND audit_program_id={$row['Auditoria']} AND audit_program_folio={$row['Folio']}")[0];
-                                                            
-                                                            } else {
-                                                                $logCategory = "Audit Sync";
-                                                                $isAudit = AuditoriaModel::getAudit([
-                                                                    'id', 
-                                                                    'status', 
-                                                                    'date_visit', 
-                                                                    'checklist_id', 
-                                                                    'additional_question_id', 
-                                                                    'audita_folio', 
-                                                                    'audita_id',
-                                                                    'audita_ace_id',
-                                                                    'audita_ace_folio'
-                                                                ], "location_id={$location['id']} AND audita_id={$row['Auditoria']} AND audita_folio={$row['Folio']}")[0];
-                                                            }
-
+                    } else {
+                        $logCategory = "Audit Sync";
+                        $isAudit = AuditoriaModel::getAudit(['id', 
+                                                             'status', 
+                                                             'date_visit', 
+                                                             'checklist_id', 
+                                                             'additional_question_id', 
+                                                             'audita_folio', 
+                                                             'audita_id',
+                                                             'audita_ace_id',
+                                                             'audita_ace_folio'], 
+                                                             "location_id=".$location['id']." AND audita_id=$row[Auditoria] AND audita_folio=$row[Folio]")[0];
+                    }
                    
 
                     
@@ -196,7 +185,7 @@ class APIAudita extends Controllers
                                 'auditor_email' => $row['emailAuditor'],
                                 'auditor_name' => $row['nombre_auditor'],
                                 'local_foranea' => ($row['Foranea'] ? 'Foranea' : 'Local'),
-                                'announced_date' => $row['Fecha_Programada'],
+                                'announced_date' => $row['Fecha_Programada']
                             ];
                             AuditoriaModel::updateAudit($updateAuditValues, "id=$isAudit[id]");
                             $data['Already & Updated Audits'][$isAudit['id']] = [
@@ -205,11 +194,11 @@ class APIAudita extends Controllers
                                 'round_type' => $arrTipos[$row['Tipo']],
                                 'round_name' => $roundInfo['name'],
 
-                                'audita_folio' => $isAudit['audita_folio']??$isAudit['audit_program_folio'],
-                                'audita_id' => $isAudit['audita_id']??$isAudit['audit_program_id'],  
+                                'audita_folio' => $row['Folio'],
+                                'audita_id' => $row['Auditoria'],
 
                                 'status' => $isAudit['status'],
-                                'date_visit' => $isAudit['date_visit'],
+                                'date_visit' => $row['Fecha_Programada'],
                                 'audit_definition' => 'vID.' . $isAudit['additional_question_id'],
                                 'checklist_version' => 'vID.' . $isAudit['checklist_id'],
                                 'location_address' => $location['address_1'],
@@ -234,26 +223,25 @@ class APIAudita extends Controllers
                             $newRoundID = $isRound['id'];
                         }
                         
-
-
-
-                        
                         if ($audita_data['Action'] == "AceSync") {
-                            $insertAuditValues = [
-                                'round_id'               => $newRoundID,
-                                'location_id'            => $location['id'],
-                                'checklist_id'           => $checklist['id'],
-                                'scoring_id'             => $scoring['id'],
-                                'additional_question_id' => $additional_question['id'],
-                                'report_layout_id'       => $report_layout['id'],
-                                'status'                 => 'Pending',
-                                'audita_ace_folio'       => $row['Folio'],
-                                'audita_ace_id'          => $row['Auditoria'],
-                                'period'                 => $audita_data['periodo'],
-                                'auditor_email'          => $row['emailAuditor'],
-                                'auditor_name'           => $row['nombre_auditor'],
-                                'local_foranea'          => ($row['Foranea'] ? 'Foranea' : 'Local'),
-                            ];
+                            $insertAuditValues = ['round_id'               => $newRoundID,
+                                                  'location_id'            => $location['id'],
+                                                  'checklist_id'           => $checklist['id'],
+                                                  'scoring_id'             => $scoring['id'],
+                                                  'additional_question_id' => $additional_question['id'],
+                                                  'report_layout_id'       => $report_layout['id'],
+                                                  'status'                 => 'Pending',
+                                                  'audita_ace_folio'       => $row['Folio'],
+                                                  'audita_ace_id'          => $row['Auditoria'],
+                                                  'period'                 => $audita_data['periodo'],
+                                                  'auditor_email'          => $row['emailAuditor'],
+                                                  'auditor_name'           => $row['nombre_auditor'],
+                                                  'local_foranea'          => ($row['Foranea'] ? 'Foranea' : 'Local'),
+                                                ];
+
+                                                
+
+                                                                 
                         } else if ($audita_data['Action'] == "Autosync") {
                             $insertAuditValues = [
                                 'round_id'               => $newRoundID,
@@ -267,27 +255,25 @@ class APIAudita extends Controllers
                                 'audit_program_id'       => $row['Auditoria'],
                                 'auditor_email'          => $row['emailAuditor'],
                                 'auditor_name'           => $row['nombre_auditor'],
-                                'announced_date'           => $row['Fecha_Programada'],
+                                'announced_date'         => $row['Fecha_Programada'],
                                 'local_foranea'          => ($row['Foranea'] ? 'Foranea' : 'Local'),
                             ];
                         } else {
-                            $insertAuditValues = [
-                                'round_id'               => $newRoundID,
-                                'location_id'            => $location['id'],
-                                'checklist_id'           => $checklist['id'],
-                                'scoring_id'             => $scoring['id'],
-                                'additional_question_id' => $additional_question['id'],
-                                'report_layout_id'       => $report_layout['id'], 
-                                'status'                 => 'Pending',
-                                'audita_folio'           => $row['Folio'],
-                                'audita_id'              => $row['Auditoria'],
-                                'period'                 => $audita_data['periodo'],
-                                'auditor_email'          => $row['emailAuditor'],
-                                'auditor_name'           => $row['nombre_auditor'],
-                                'local_foranea'          => ($row['Foranea'] ? 'Foranea' : 'Local'),
-                            ];
+                            $insertAuditValues = ['round_id'               => $newRoundID,
+                                                  'location_id'            => $location['id'],
+                                                  'checklist_id'           => $checklist['id'],
+                                                  'scoring_id'             => $scoring['id'],
+                                                  'additional_question_id' => $additional_question['id'],
+                                                  'report_layout_id'       => $report_layout['id'],
+                                                  'status'                 => 'Pending',
+                                                  'audita_folio'           => $row['Folio'],
+                                                  'audita_id'              => $row['Auditoria'],
+                                                  'period'                 => $audita_data['periodo'],
+                                                  'auditor_email'          => $row['emailAuditor'],
+                                                  'auditor_name'           => $row['nombre_auditor'],
+                                                  'local_foranea'          => ($row['Foranea'] ? 'Foranea' : 'Local'),
+                                                 ];
                         }
-
                         
 
 
@@ -327,6 +313,357 @@ class APIAudita extends Controllers
         $this->views->getView($this, "sync", $data);
     }
 
+    public function sync_ace()
+    {
+        $audita_json = file_get_contents('php://input');
+        $arrTipos = ['1' => 'Standard', '11' => 'Re-Audit', '18' => '2nd Re-Audit', '28' => '3rd Re-Audit', '29' => '3rd Re-Audit', '23' => 'Calibration Audit'];
+        // dep($audita_json);
+        // die();
+        //Datos a enviar a la Vista
+        $data = [];
+
+        if ($audita_json == '') {
+            $data['response'] = "FAIL - Empty Data!";
+
+        } else {
+            $audita_data = json_decode($audita_json, true);
+            if ($audita_data['action'] == "AceSync") {
+                //$data['response'] = "SUCCESS";
+                $data['action'] = $audita_data['action'];
+                $data['periodo'] = $audita_data['periodo'];
+
+                //Leer data de ACE ya procesada en people
+                
+    
+                // dep($audita_data);
+    
+                // if ($audita_data['Action'] = "Autosync") {
+                //     echo "<br>Action a usar";
+                // }
+                // die();
+    
+                $brand = BrandModel::getBrand(['id', 'prefix'], "prefix='$audita_data[marcaRef]'")[0];
+                $roundInfo = knowRoundInfoBy($brand['prefix'], $audita_data['periodo']); //Helpers.php
+    
+                //Ultimas versiones de Scoring, Checklist, Layouts y AdditionalQuestion
+                $scoring = ScoringModel::getScoring(['id'], "brand_id=$brand[id] AND date_start <= '{$audita_data['periodo']}-01'")[0];
+                $checklist = ChecklistModel::getChecklist(['id'], "brand_id=$brand[id] AND date_start <= '{$audita_data['periodo']}-01'")[0];
+                $report_layout = Report_LayoutModel::getReport_Layout(['id'], "brand_id=$brand[id] AND date_start <= '{$audita_data['periodo']}-01'")[0];
+                $additional_question = Additional_QuestionModel::getAdditional_Question(['id'], "brand_id=$brand[id] AND date_start <= '{$audita_data['periodo']}-01'")[0];
+    
+                /*$data['definitions']['scoring_id'] = $scoring['id'];
+                $data['definitions']['checklist_id'] = $checklist['id'];
+                $data['definitions']['report_layout_id'] = $report_layout['id'];
+                $data['definitions']['additional_question_id'] = $additional_question['id'];*/
+                $data['periodos_considerar'] = $audita_data['periodos_considerar'];
+                $data['audita_data_nuevas_visitas'] = $audita_data['audita_data_nuevas_visitas'];
+                $data['marcaRef'] = $audita_data['marcaRef'];
+    
+                //Recorrer cada visita del sync
+                $summary = array();
+                foreach ($audita_data['audita_data'] as $x => $row) {
+    
+                    $location = LocationModel::getLocation(['id', 'country_id', 'address_1', 'shop_type'], "number='$row[Numero_Tienda]' AND brand_id='$brand[id]' (and status = 'Active' or status = '1')")[0];
+    
+                    // if(!empty($location['shop_type'])){
+                    //     $checklist = ChecklistModel::getChecklist(['id'], "brand_id=$brand[id] AND name like '%$location[shop_type]%' AND date_start <= '{$audita_data['periodo']}-01')")[0];
+                    //     $data['definitions']['checklist_id'] = $checklist['id'];
+                    // }
+    
+                    //No existe la tienda?
+                    if (!$location['id'] ) {
+    
+                        $data['NOT Added Audits'][] = [
+                            'number' => $row['Numero_Tienda'],
+                            'ace_folio' => $row['Folio'],
+                            'ace_id' => $row['Auditoria'],
+                            'cause' => 'Store not exists or is not Active',
+                        ];
+    
+                    } else { 
+                        //La tienda existe y esta activa
+                        //Ya existe la visita/asignacion?
+                        //End point unico de ACE ya no hay validacion para ver de donde proviene
+                        $logCategory = "Audit Ace";
+                        $isAudit = AuditoriaModel::getAuditAce([
+                            'id', 'status', 'round_id', 'date_visit', 'checklist_id', 'additional_question_id', 'ace_folio', 'ace_id', 'auditor_name'], "location_id=$location[id] AND ace_id=$row[Auditoria] AND ace_folio=$row[Folio]")[0];
+                        //die(var_dump($isAudit));
+                        
+
+                        /*if ($row['id']) {
+                            // echo "Existe row";
+                            // dep($isAudit);
+                            // die();
+                            //Estos extatus no llegan de ACe de la forma normal de audita
+                            //if (in_array($row['Estatus'], array('Reprogramada', 'Eliminada', 'Cancelada'))) {
+
+                            //if ($isAudit['status'] == 'Pending') { //Aqui podria entrar el update, validar que no duplique informacion de ids de ace y que retorna
+                                //Actualizar algunos columnas
+                                $updateAuditValues = [
+                                    'auditor_email' => $row['emailAuditor'],
+                                    'auditor_name' => $row['nombre_auditor'],
+                                    'local_foranea' => ($row['Foranea'] ? 'Foranea' : 'Local'),
+                                    'announced_date' => $row['Fecha_Inicial']
+                                ];
+                                AuditoriaModel::updateAudit($updateAuditValues, "id=$isAudit[id]");
+                                /*$data['Already & Updated Audits'][$isAudit['id']] = [
+                                    'id_visit' => $isAudit['id'],
+                                    'number' => $row['Numero_Tienda'],
+                                    'round_type' => $arrTipos[$row['Tipo']],
+                                    'round_name' => $roundInfo['name'],
+                                    'ace_folio' => $isAudit['ace_folio'],
+                                    'aace_id' => $isAudit['ace_id'],
+                                    'status' => $isAudit['status'],
+                                    'date_visit' => $isAudit['date_visit'],
+                                    'announced_date' => $row['Fecha_Inicial'],
+                                    'audit_definition' => 'vID.' . $isAudit['additional_question_id'],
+                                    'checklist_version' => 'vID.' . $isAudit['checklist_id'],
+                                    'location_address' => $location['address_1'],
+                                ];*/
+                                
+                            //}
+    
+                        //} else 
+                        if ($row['Estatus'] == 'Pendiente') {
+                            //Si no existe, Insertar la Visita
+                            //Identificar si ya existe el Round
+                            $isRound = RoundModel::getRound(['id'], "type='" . $arrTipos[$row['Tipo']] . "' AND country_id=$location[country_id] AND name='$roundInfo[name]'")[0];
+    
+                            if (!$isRound['id']) {
+                                $insertRoundValues = [
+                                    'brand_id' => $brand['id'],
+                                    'country_id' => $location['country_id'],
+                                    'name' => $roundInfo['name'],
+                                    'type' => $arrTipos[$row['Tipo']],
+                                    'date_start' => $roundInfo['date_start'],
+                                ];
+                                $newRoundID = RoundModel::insertRound($insertRoundValues);
+                            } else {
+                                $newRoundID = $isRound['id'];
+                            }
+    
+                            $insertAuditValues = [
+                                'round_id' => $newRoundID,
+                                'location_id' => $location['id'],
+                                'checklist_id' => $checklist['id'],
+                                'scoring_id' => $scoring['id'],
+                                'additional_question_id' => $additional_question['id'],
+                                'report_layout_id' => $report_layout['id'],
+                                'status' => 'Pending',
+                                'ace_folio' => $row['Folio'],
+                                'ace_id' => $row['Auditoria'],
+                                'announced_date' => $row['Fecha_Inicial'],
+                                'auditor_email' => $row['emailAuditor'],
+                                'auditor_name' => $row['nombre_auditor'],
+                                'local_foranea' => ($row['Foranea'] ? 'Foranea' : 'Local'),
+                            ];
+                            
+                            $newAuditID = AuditoriaModel::insertAudit($insertAuditValues);
+    
+                            if ($newAuditID) {
+                                /*$data['New Added Audits'][$newAuditID] = [
+                                    'id_visit' => $newAuditID,
+                                    'number' => $row['Numero_Tienda'],
+                                    'round_type' => $arrTipos[$row['Tipo']],
+                                    'round_name' => $roundInfo['name'],
+                                    'ace_folio' => $row['Folio'],
+                                    'ace_id' => $row['Auditoria'],
+                                    'audit_definition' => 'vID.' . $additional_question['id'],
+                                    'checklist_version' => 'vID.' . $checklist['id'],
+                                    'location_address' => $location['address_1'],
+                                ];*/
+    
+                                //Insertar Log
+                                $insertAudit_LogValues = [
+                                    'audit_id' => $newAuditID,
+                                    'user_id' => -1,
+                                    'category' => $logCategory,
+                                    'name' => 'Audit Created',
+                                    'details' => 'Audit Created trough Sync Ace Process',
+                                    'date' => date('Y-m-d H:i:s'),
+                                ];
+                                Audit_LogModel::insertAudit_Log($insertAudit_LogValues);
+                                $isAudit = AuditoriaModel::getAuditAce([
+                            'id', 'status', 'round_id', 'date_visit', 'checklist_id', 'additional_question_id', 'ace_folio', 'ace_id', 'auditor_name'], "location_id=$location[id] AND ace_id=$row[Auditoria] AND ace_folio=$row[Folio]")[0];
+                                $data['audita_data'][$x]['Estatus'] = str_replace(array('Pending', 'Completed', 'In Process', 'Closed'), 
+                                    array('Pendiente', 'Finalizada', 'En Proceso', 'Cerrada'), 
+                                    $isAudit['status']);
+                                $data['audita_data'][$x]['id_visit'] = intval($isAudit['id']);
+                                $data['audita_data'][$x]['nombre_auditor'] = $isAudit['auditor_name'];
+                                $data['audita_data'][$x]['Numero_Tienda'] = $row['Numero_Tienda'];
+                                $data['audita_data'][$x]['ID_Tienda'] = $row['ID_Tienda'];
+                                $data['audita_data'][$x]['E_Mail'] = $row['E_Mail'];
+                                $data['audita_data'][$x]['Tipo'] = $row['Tipo'];
+                                $data['audita_data'][$x]['Foranea'] = $row['Foranea'];
+                                $data['audita_data'][$x]['Fecha_Inicial'] = $row['Fecha_Inicial'];
+                                $data['audita_data'][$x]['Fecha_Final'] = $row['Fecha_Final'];
+                                $data['audita_data'][$x]['Pais'] = $row['Pais'];
+                                $data['audita_data'][$x]['Folio'] = $row['Folio'];
+                                $data['audita_data'][$x]['Auditoria'] = $row['Auditoria'];
+                                $data['audita_data'][$x]['RFuturo'] = $row['RFuturo'];
+                                $data['audita_data'][$x]['people_id_asignacion'] = $row['people_id_asignacion'];
+                                $data['audita_data'][$x]['flujo_reprogramada'] = $row['flujo_reprogramada'];
+                                $data['audita_data'][$x]['id_auditor'] = $row['id_auditor'];
+                                $data['audita_data'][$x]['emailAuditor'] = $row['emailAuditor'];
+                                $data['audita_data'][$x]['periodo'] = $row['periodo'];
+                                $data['audita_data'][$x]['checklist_version'] = 'vID.' . $checklist['id'];
+                                $data['audita_data'][$x]['audit_definition'] = 'vID.' . $additional_question['id'];
+                                $data['audita_data'][$x]['tienda_direccion'] = $location['address_1'];
+                                $data['audita_data'][$x]['round'] = $roundInfo['name'];
+                                $data['audita_data'][$x]['roundName'] = $arrTipos[$row['Tipo']];
+                                $roundJ = RoundModel::getRound([], "id = ".$isAudit['round_id'])[0];
+                                $pais = CountryModel::getCountry([], "id = ".$roundJ['country_id'])[0];
+
+                                //Hacer algo para las ya asignadas
+                                $summary['current'][$roundJ['type']." ".$pais['name']]++;
+                            }
+                        }
+                        //$data['summary'] = $summary;
+                    }
+                }
+            } else {
+                $data['response'] = "FAIL - Invalid Action!";
+            }    
+        }
+        //carga y return ($data) a la vista
+        //die(var_dump($data));
+        $this->views->getView($this, "sync", $data);
+    }
+
+    public function updateAce(){
+        $raw_input = file_get_contents("php://input");
+        $_POST = json_decode($raw_input, true);
+        $audit = $_POST['audita_data'][0];
+        //die(var_dump($audit));
+        $audit['marcaRef'] = $_POST['marcaRef'];
+        $nombreRound = RoundModel::getRoundInfo($audit['periodo'], NULL);
+
+        $roundNameToFind = $nombreRound['nm'];
+        $country = $audit['Pais'];
+        if ($country == 'MEX') $country = 'MEXICO';
+        $tmpRound = RoundModel::getRoundAce(intval($audit['Tipo']), addslashes($roundNameToFind));
+        //die(var_dump($tmpRound));
+        /*----------  Creación del Round si no existe  ----------*/
+        if (count($tmpRound)<1) {
+            $tipo = "";
+            switch($audit['Tipo']){
+                case 1:
+                    $tipo = 'Standard';
+                    break;
+                case 11:
+                    $tipo = 'Re-Audit';
+                    break;
+                case 18:
+                    $tipo = 'Re auditoria 2da.';
+                    break;
+                case 23:
+                    $tipo = 'Calibration Audit';
+                    break;
+                case 28:
+                    $tipo = 'Re auditoria 3ra.';
+                    break;
+                case 29:
+                    $tipo = 'Re auditoria 4ta.';
+                    break;
+            }
+            $args = array(
+                "brand_id" => 1,
+                "country_id" => 1,
+                "name" => $roundNameToFind,
+                "type" => $tipo,
+                "date_start" => $nombreRound['desde']
+            );
+            $rsRound = RoundModel::insertRound($args);
+            //die(var_dump($rsRound));
+            // EJECUTAR NUEVAMENTE EL QUERY DE SELECT PARA TRAER LOS DATOS FINALES
+            $tmpRound = RoundModel::getRoundAce(intval($audit['Tipo']), addslashes($roundNameToFind));
+        }
+        $round = $tmpRound[0];
+        //die(var_dump(addslashes($roundNameToFind)));
+        if( (in_array($audit['Tipo'],array(1,11,18,28,29,23)) && $audit['marcaRef']=='DLP')){
+            $col = ['id', 'status', 'checklist_id', 'scoring_id'];
+            $tmpAudita = AuditoriaModel::getAuditAce($col, "ace_folio='".$audit['Folio']."'");
+            if(!empty($tmpAudita)){
+                $auditsOperativas = $tmpAudita[0];
+                if($auditsOperativas['status']=='Pending'){
+                    $local_foranea = $audit['Foranea']? 'Foranea' : 'Local';
+                    $monthName = date('F', strtotime($audit['periodo'] . '-01'));
+                    $args = array(
+                        "auditor_email" => $audit['emailAuditor'],
+                        "auditor_name" => $audit['nombre_auditor'],
+                        "local_foranea" => $local_foranea,
+                        "round_id" => $round['id_round'],
+                        "checklist_id" => $auditsOperativas['checklist_id'],
+                        "scoring_id" => $auditsOperativas['scoring_id'],
+                        "announced_date" => $audit['Fecha_Inicial']
+                    );
+                    $update = AuditoriaModel::updateAudit($args, "id = ".$auditsOperativas['id']);
+                    //var_dump($update);
+                    if($update){
+                        $response = [
+                            'Estatus' => 'Visita actualizada exitosamente',
+                            'Checklist_version' => 'vID.'.$auditsOperativas['checklist_id'],
+                            'Checklist_definition' => 'vID.'.$auditsOperativas['checklist_id'],
+                            'Round' => $round['round'],
+                            'Round_name' => $round['round'],
+                            'Tipo_visita' => $round['type']
+                        ];
+                    } else{
+                        // En caso de error al actualizar
+                        $response = ['Estatus' => 'Error al actualizar'];
+                    }
+                } else{
+                    // En caso de la visita no estar en pendiente
+                    $response = ['Estatus' => 'Visita fuera de estatus'];
+                }
+            }
+        }else{
+            // Al no estar acorde el servicio a la marca manda error a people
+            $response = ['Estatus' => 'Servicio no soportado'];
+        }
+        echo json_encode($response);
+    }
+
+    public function deleteAce(){
+        header('Content-Type: application/json; charset=utf-8');
+        $raw_input = file_get_contents("php://input");
+        $data = json_decode($raw_input, true);
+        // Validación fuerte
+        if (!$data || !isset($data['Folio']) || !is_array($data['Folio'])) {
+            echo json_encode(['Estatus' => 'No se encontraron folios']);
+            return;
+        }
+        $folios = $data['Folio'];
+        $response = [];
+        foreach ($folios as $folio) {
+            $folio = trim((string)$folio);
+            if ($folio === '') {
+                $response[] = ['Estatus' => 'Folio inválido', 'folio' => $folio];
+                continue;
+            }
+            $result = AuditoriaModel::getAuditAce([], "ace_folio = '$folio'");
+            $response[] = ['Estatus' => 'error', 'folio' => $folio];
+            if (is_array($result) && count($result) > 0) {
+                if($result[0]['status'] == 'Pending'){
+                    $args = array(
+                        "status" => "Deleted!"
+                    );
+                    $ok = AuditoriaModel::updateAudit($args, "ace_folio=".$folio);
+                    if ($ok) {
+                        $response[] = ['Estatus' => 'Visita eliminada exitosamente', 'folio' => $folio];
+                    } else {
+                        $response[] = ['Estatus' => 'Error al eliminar', 'folio' => $folio];
+                    }
+                }else{
+                    $response[] = ['Estatus' => 'Visita fuera de estatus', 'folio' => $folio];
+                }
+            } else {
+                $response[] = ['Estatus' => 'Folio not exists in people', 'folio' => $folio];
+            }
+        }
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
+    }
+
     //checklist_definition invocado por People (via Helmut)
     public function getChecklist()
     {
@@ -336,7 +673,9 @@ class APIAudita extends Controllers
         $tmp = explode(".", $post->checklist_version); //ej. vID.1
         $checklist_id = $tmp[1];
         $lang = strtolower($post->lang);
-$fnT = translate($lang);
+        global $fnT;
+		$fnT = translate($lang);
+
         //Obtener Checklist
         $checklist = ChecklistModel::getChecklist([], "id=$checklist_id")[0];
 
@@ -410,6 +749,7 @@ $fnT = translate($lang);
         $appdata = json_decode(file_get_contents('php://input'), true);
         $audit_id = $appdata['id_visit'];
         $response = [];
+        global $fnT;
 
         //Verificar si la visita existe
         $isAudit = AuditoriaModel::getAudit([], "id=$audit_id")[0];
@@ -425,6 +765,7 @@ $fnT = translate($lang);
             require_once 'Models/Audit_Addi_QuestionModel.php';
             require_once 'Models/Audit_ScoreModel.php';
             require_once 'Models/ScoringModel.php';
+            require_once 'Models/UsuariosModel.php';
 
             //bloquear temporalmente mientras se procesa la data
             AuditoriaModel::updateAudit(['status' => 'Temp Processing'], "id=$isAudit[id]");
@@ -442,171 +783,84 @@ $fnT = translate($lang);
             //Envío de E-mail Respuesta Preliminar
             $round = RoundModel::getRound([], "id=$isAudit[round_id]")[0];
             $location = LocationModel::getLocation(['id', 'country_id', 'name', 'number'], "id=$isAudit[location_id]")[0];
-            $country = CountryModel::getCountry(['name', 'language'], "id=$location[country_id]")[0];
+            $country = CountryModel::getCountry(['name', 'language'], "id=".$location['country_id'])[0];
             $brand = BrandModel::getBrand(['id', 'prefix'], "id='$round[brand_id]'")[0];
+            $esPrueba = false;
+            if(in_array($round['type'],['Calibration Audit'])) $esPrueba=true;
+            $to = UsuariosModel::getTo(1, $isAudit['location_id'], $esPrueba, $location['country_id']);
 
-            if($round['type'] != 'Calibration Audit'){
+            /*if($round['type'] != 'Calibration Audit'){
                 $locationMails = getLocationEmails(['Fanchisee' , 'Ops Director' , 'Ops Leader' , 'Area Manager' , 'Store Manager'], $isAudit['location_id']);
-            }
+            }*/
             $AdminMails = getLocationEmails(['admin arguilea'], 0);
-            $recipients = emailFilter("{$isAudit['manager_email']},$locationMails,$AdminMails");
+            //$recipients = emailFilter("{$isAudit['manager_email']},$locationMails,$AdminMails");
             
+            /*function esEspanol($arr){
+                foreach($arr as $key){
+                    if(in_array($key, [1,10,18,33,35,36])){
+                    return true;
+                    }
+                } 
+                return false;
+            }*/
+
             if($visit_status == 'Closed'){
                 //Limpiar los Scores
                 ScoringModel::closedScore($isAudit['id']);
                 
-$audit_closed = "audit_closed_eng";
+                if(esEspanol([$location['country_id']])){
+                    $fnT = translate('esp');
+                }else{
+                    $fnT = translate('eng');
+                }
+                $titulo=$fnT("Visit closed");
+                    $contentTitle = $fnT("We inform you that the visit was carried out, but the auditor found the store closed.");
+                    $contenido = '<p>'.$fnT('Round').': <b>'.$round['name'].' / '.$round['type'].'</b><br />
+                                             '.$fnT('Store name').': <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
+                                             '.$fnT('Audit date').': <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
+                                             '.$fnT('Auditors name').': <b>' . $isAudit['auditor_name'] . '</b></p>';
 
-
-if ($country['language'] == 'esp') {
-
-    $data_closed_visit = [
-                    'asunto'            => "$appdata[brand] #$location[number] ($country[name]) @ Visita Cerrada",
-                    'email'             => $recipients,
+                $data_closed_visit = [
+                    'asunto'            => "$appdata[brand] #".$location['number']." ($country[name]) @ $titulo",
+                    'email'             => $to,
                     'audit_id'          => $isAudit['id'],
-                    'content_title'     => 'Le informamos que se realizó la visita, pero el auditor encontró la tienda cerrada',
-                    'content_message'   => '<p>Ronda: <b>'.$round['name'].' / '.$round['type'].'</b><br />
-                                             Nombre de la Tienda: <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
-                                             Fecha de la Auditoría: <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
-                                             Nombre del Auditor: <b>' . $isAudit['auditor_name'] . '</b></p>'
+                    'country'           => $country['country_id'],
+                    'titulo'            => $titulo,
+                    'content_title'     => $contentTitle,
+                    'content_message'   => $contenido
                 ];
-$audit_closed = "audit_closed";
-
-
-
-}else if ($country['language'] == 'eng') {
-
-    $data_closed_visit = [
-                    'asunto'            => "$appdata[brand] #$location[number] ($country[name]) @ Closed Visit",
-                    'email'             => $recipients,
-                    'audit_id'          => $isAudit['id'],
-                    'content_title'     => 'We inform you that the visit was carried out, but the auditor found the store closed.',
-                    'content_message'   => '<p>Round: <b>'.$round['name'].' / '.$round['type'].'</b><br />
-                                             Store Name: <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
-                                             Audit Date: <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
-                                             Auditors Name: <b>' . $isAudit['auditor_name'] . '</b></p>'
-                ];
-$audit_closed = "audit_closed_eng";
-
-
- }
- else if ($country['language'] == 'ind') {
-
-    $data_closed_visit = [
-                    'asunto'            => "$appdata[brand] #$location[number] ($country[name]) @ Kunjungan Tertutup",
-                    'email'             => $recipients,
-                    'audit_id'          => $isAudit['id'],
-                    'content_title'     => 'Kami informasikan bahwa kunjungan telah dilakukan, tetapi auditor menemukan toko dalam keadaan tutup.',
-                    'content_message'   => '<p>Putaran: <b>'.$round['name'].' / '.$round['type'].'</b><br />
-                                             Nama Toko: <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
-                                             Tanggal Audit: <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
-                                             Nama Auditor: <b>' . $isAudit['auditor_name'] . '</b></p>'
-                ];
-    $audit_closed = "audit_closed_ind";
-
-}
-else{
-
-     $data_closed_visit = [
-                    'asunto'            => "$appdata[brand] #$location[number] ($country[name]) @ Closed Visit",
-                    'email'             => $recipients,
-                    'audit_id'          => $isAudit['id'],
-                    'content_title'     => 'We inform you that the visit was carried out, but the auditor found the store closed.',
-                    'content_message'   => '<p>Round: <b>'.$round['name'].' / '.$round['type'].'</b><br />
-                                             Store Name: <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
-                                             Audit Date: <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
-                                             Auditors Name: <b>' . $isAudit['auditor_name'] . '</b></p>'
-                ];
-$audit_closed = "audit_closed_eng";
-
- }
-
-
-                
-
-
-
-                sendEmail($data_closed_visit, $audit_closed);     
-                
-                
-
-
-
+                sendEmail($data_closed_visit, "audit_closed");                
             } else{
                 //Cálculo de Scores
                 ScoringModel::setScore($isAudit['id'], $isAudit['scoring_id']);
 
-                $url_audit_report = getURLReport($isAudit['id'], $isAudit['report_layout_id'],$country['language']);
+                if(esEspanol([$location['country_id']])){
+                    $fnT = translate('esp');
+                    $url_audit_report = getURLReport($isAudit['id'], $isAudit['report_layout_id'], 'esp');
+                }else{
+                    $fnT = translate('eng');
+                    $url_audit_report = getURLReport($isAudit['id'], $isAudit['report_layout_id'], 'eng');
+                }
 
+                $titulo = $fnT('Preliminary Results');
+                    $contentTitle = $fnT("Preliminary results are available at the following link");
+                    $contenido = '<p>'.$fnT('Round').': <b>'.$round['name'].' / '.$round['type'].'</b><br />
+                                             '.$fnT('Store name').': <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
+                                             '.$fnT('Audit date').': <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
+                                             '.$fnT('Audit status').': <b>' . $isAudit['visit_status'] . '</b><br />
+                                             '.$fnT('Auditors name').': <b>' . $isAudit['auditor_name'] . '</b></p>';
 
-$preliminary_email = 'audit_preliminary_results_eng';
-
-if ($country['language'] == 'esp') {
-    // Español
-     $data_preliminary_email = [
-                    'asunto'            => "$appdata[brand] #$location[number] ($country[name]) @ Resultados Preliminares",
-                    'email'             => $recipients,
+                $data_preliminary_email = [
+                    'asunto'            => "$appdata[brand] #".$location['number']." ($country[name]) @ $titulo",
+                    'email'             => $to,
                     'audit_id'          => $isAudit['id'],
-                    'content_title'     => 'Los resultados preliminares están disponibles en el siguiente enlace',
-                    'content_message'   => '<p>Ronda: <b>'.$round['name'].' / '.$round['type'].'</b><br />
-                                             Nombre de la tienda: <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
-                                             Fecha de la auditoría: <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
-                                             Estado de la auditoría: <b>' . $isAudit['visit_status'] . '</b><br />
-                                             Nombre del auditor: <b>' . $isAudit['auditor_name'] . '</b></p>',
+                    'country'           => $location['country_id'],
+                    'titulo'            => $titulo,
+                    'content_title'     => $contentTitle,
+                    'content_message'   => $contenido,
                     'content_url'       => '<a href="' . $url_audit_report . '">' . $url_audit_report .'</a>'
                 ];
-
-                $preliminary_email = 'audit_preliminary_results';
-
-} else if ($country['language'] == 'eng') {
-    $data_preliminary_email = [
-                    'asunto'            => "$appdata[brand] #$location[number] ($country[name]) @ Preliminary Results",
-                    'email'             => $recipients,
-                    'audit_id'          => $isAudit['id'],
-                    'content_title'     => 'Preliminary results are available at the following link',
-                    'content_message'   => '<p>Round: <b>'.$round['name'].' / '.$round['type'].'</b><br />
-                                             Store name: <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
-                                             Audit date: <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
-                                             Audit status: <b>' . $isAudit['visit_status'] . '</b><br />
-                                             Auditor name: <b>' . $isAudit['auditor_name'] . '</b></p>',
-                    'content_url'       => '<a href="' . $url_audit_report . '">' . $url_audit_report .'</a>'
-                ];
-                $preliminary_email = 'audit_preliminary_results_eng';
-
-}
-else if ($country['language'] == 'ind') {
-    $data_preliminary_email = [
-                    'asunto'            => "$appdata[brand] #$location[number] ($country[name]) @ Hasil Sementara",
-                    'email'             => $recipients,
-                    'audit_id'          => $isAudit['id'],
-                    'content_title'     => 'Hasil sementara tersedia di tautan berikut',
-                    'content_message'   => '<p>Putaran: <b>'.$round['name'].' / '.$round['type'].'</b><br />
-                                             Nama Toko: <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
-                                             Tanggal Audit: <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
-                                             Status Audit: <b>' . $isAudit['visit_status'] . '</b><br />
-                                             Nama Auditor: <b>' . $isAudit['auditor_name'] . '</b></p>',
-                    'content_url'       => '<a href="' . $url_audit_report . '">' . $url_audit_report .'</a>'
-                ];
-                $preliminary_email = 'audit_preliminary_results_ind';
-
-} else {
-      $data_preliminary_email = [
-                    'asunto'            => "$appdata[brand] #$location[number] ($country[name]) @ Preliminary Results",
-                    'email'             => $recipients,
-                    'audit_id'          => $isAudit['id'],
-                    'content_title'     => 'Preliminary results are available at the following link',
-                    'content_message'   => '<p>Round: <b>'.$round['name'].' / '.$round['type'].'</b><br />
-                                             Store name: <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
-                                             Audit date: <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
-                                             Audit status: <b>' . $isAudit['visit_status'] . '</b><br />
-                                             Auditor name: <b>' . $isAudit['auditor_name'] . '</b></p>',
-                    'content_url'       => '<a href="' . $url_audit_report . '">' . $url_audit_report .'</a>'
-                ];
-                $preliminary_email = 'audit_preliminary_results_eng';
-}
-                
-
-                sendEmail($data_preliminary_email, $preliminary_email);
+                sendEmail($data_preliminary_email, "audit_preliminary_results");
             }
 
             //Notificar a WS de People
@@ -659,7 +913,7 @@ else if ($country['language'] == 'ind') {
     public function fecha_programada ()
     {
         $_POST = json_decode(file_get_contents('php://input'), true);
-        echo '<div style="border:solid 1px #CCC; padding:10px; background:#FBFBFB;"><h1>Date Of Visit -- Dairy Queen</h1>';
+        echo '<div style="border:solid 1px #CCC; padding:10px; background:#FBFBFB;"><h1>Date Of Visit -- CHURCHS TEXAS CHICKEN</h1>';
         dep($_POST);
         //echo '<pre>'; print_r($_POST); echo '</pre>';
         foreach($_POST as $i=>$v) if(is_numeric($i)){

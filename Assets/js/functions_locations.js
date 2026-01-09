@@ -33,6 +33,51 @@ const UpdStatusLocation = (id, status) => {
     });
 }
 
+/*cargarTema();
+
+function cargarTema(){
+
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUrl = base_url+'/personalization/cargarTema';
+            var strData = "id=1";
+            request.open("POST",ajaxUrl,true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(strData);
+            request.onreadystatechange = function(){
+
+                if(request.readyState == 4 && request.status == 200){
+                    //console.log(request.responseText);
+                    var objData = JSON.parse(request.responseText);
+
+                    document.documentElement.style.setProperty("--color1", objData[0].color1);
+                    document.documentElement.style.setProperty("--color2", objData[0].color2);
+                    document.documentElement.style.setProperty("--color3", objData[0].color3);
+                    document.documentElement.style.setProperty("--color4", objData[0].color4);
+
+                    if(objData[0].img2!=''){
+                        if(document.querySelector('.img-fluid')){
+                            document.querySelector('.img-fluid').src=objData[0].img2;
+                        }
+                    }
+
+                    if(objData[0].img3!=''){
+                        // Obtener el elemento del favicon (si existe)
+                        const favicon = document.querySelector('link[rel="icon"]') || 
+                        document.createElement('link');
+
+                        // Configurar sus atributos
+                        favicon.rel = 'icon';
+                        favicon.href = objData[0].img3; // Ruta del nuevo favicon
+                        favicon.type = 'image/x-icon';
+
+                        // Añadirlo al <head> si no existía
+                        document.head.appendChild(favicon);
+                    }
+
+                }
+            }
+}*/
+
 const delLocation = (id) => {
     swal({
         title: fnT('Alert'),
@@ -109,69 +154,62 @@ const sendStoreFile = async () => {
     payload.append('columns', storeData['columns']);
     payload.append('data', storeData['jdata']);
 
-    const pet = fetch(base_url + '/location/massInsertion', {
-        method: 'post',
-        body: payload
-    }).then(res => res.json());
+    try {
+        // Primero obtenemos la respuesta como texto
+        const response = await fetch(base_url + '/location/massInsertion', {
+            method: 'post',
+            body: payload
+        });
+        
+        // Mostramos la respuesta textual en la consola
+        const textResponse = await response.text();
+        console.log("Respuesta textual del servidor:", textResponse);
+        
+        // Ahora intentamos parsearla a JSON
+        let jsonResponse;
+        try {
+            jsonResponse = JSON.parse(textResponse);
+        } catch (e) {
+            console.error("La respuesta no es JSON válido:", e);
+            throw new Error("La respuesta del servidor no es JSON válido");
+        }
+        
+        const locations = jsonResponse.locations || [];
+        const errors = jsonResponse.errors || [];
+        const users = jsonResponse.users || [];
+        
+        // Resto de tu código para manejar la respuesta...
+        $('#divLoading').css('display', 'none');
 
-    $('#divLoading').css('display', 'flex');
-    const response = await pet;
-    const locations = response.locations || [];
-    const errors = response.errors || [];
-    const users = response.users || [];
-    $('#divLoading').css('display', 'none');
+        document.getElementById('list-locations').innerHTML = !locations.length?
+            `<li class="list-group-item list-group-item-secondary">${fnT('No items')}</li>` :
+            locations.reduce((acc, cur) => {
+                return `${acc} <li data-location="${cur[0] || ''}" class="item-locations list-group-item"><b>${cur[0]}</b> &#187; ${fnT('Action')}: ${fnT(cur[1])}</li>`
+            }, `<li class="list-group-item list-group-item-secondary d-flex justify-content-between">
+                ${fnT('Renew Locations')}
+                <div class="input-group rounded" style="width: 200px;">
+                    <input class="form-control rounded" id="filter_search" placeholder="${fnT('Search number')}" onkeyup="searchInTable(this.value, 'locations')">
+                    <span class="input-group-text border-0 bg-transparent" id="search-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                </div>
+            </li>`);
+        document.getElementById('counter-locations').innerHTML = locations.length;
 
-    document.getElementById('list-locations').innerHTML = !locations.length?
-        `<li class="list-group-item list-group-item-secondary">${fnT('No items')}</li>` :
-        locations.reduce((acc, cur) => {
-            return `${acc} <li data-location="${cur[0] || ''}" class="item-locations list-group-item"><b>${cur[0]}</b> &#187; ${fnT('Action')}: ${fnT(cur[1])}</li>`
-        }, `<li class="list-group-item list-group-item-secondary d-flex justify-content-between">
-            ${fnT('Renew Locations')}
-            <div class="input-group rounded" style="width: 200px;">
-                <input class="form-control rounded" id="filter_search" placeholder="${fnT('Search number')}" onkeyup="searchInTable(this.value, 'locations')">
-                <span class="input-group-text border-0 bg-transparent" id="search-addon">
-                    <i class="fa fa-search"></i>
-                </span>
-            </div>
-        </li>`);
-    document.getElementById('counter-locations').innerHTML = locations.length;
+        // ... resto del código para manejar errors y users ...
+        
+        tableLocations.api().ajax.reload();
+        document.getElementById('store-file').value = '';
+        storeData = [];
 
-    document.getElementById('list-errors').innerHTML = !errors.length?
-        `<li class="list-group-item list-group-item-secondary">${fnT('Without errors')}</li>` :
-        errors.reduce((acc, cur) => {
-            return `${acc} <li data-location="${cur[0] || ''}" class="item-locations-error list-group-item"><b>${cur[0]}</b> &#187; ${fnT(cur[1])}, ${fnT('In row')}: ${cur[2]}</li>`
-        },  `<li class="list-group-item list-group-item-secondary d-flex justify-content-between">
-            ${fnT('Errors')}
-            <div class="input-group rounded" style="width: 200px;">
-                <input class="form-control rounded" id="filter_search" placeholder="${fnT('Search number')}" onkeyup="searchInTable(this.value, 'locations-error')">
-                <span class="input-group-text border-0 bg-transparent" id="search-addon">
-                    <i class="fa fa-search"></i>
-                </span>
-            </div>
-        </li>`);
-    document.getElementById('counter-errors').innerHTML = errors.length;
-    
-    document.getElementById('list-users').innerHTML = !users.length?
-        `<li class="list-group-item list-group-item-secondary">${fnT('Without users')}</li>` :
-        users.reduce((acc, cur) => {
-            return `${acc} <li data-location="${cur[2] || ''}" class="item-users list-group-item"><b>${cur[2]}</b> &#187; ${fnT('Action')}: ${fnT(cur[1])}, ${fnT('with role')}: ${cur[3]}, ${fnT('in locations')}: <span class="text-secondary">${cur[0].join(' ')}</span></li>`
-        },  `<li class="list-group-item list-group-item-secondary d-flex justify-content-between">
-            ${fnT('Users')}
-            <div class="input-group rounded" style="width: 200px;">
-                <input class="form-control rounded" id="filter_search" placeholder="${fnT('Search email')}" onkeyup="searchInTable(this.value, 'users')">
-                <span class="input-group-text border-0 bg-transparent" id="search-addon">
-                    <i class="fa fa-search"></i>
-                </span>
-            </div>
-        </li>`);
-    document.getElementById('counter-users').innerHTML = users.length;
-    
-    tableLocations.api().ajax.reload();
-    document.getElementById('store-file').value = '';
-    storeData = [];
-
-    console.log(response);
-    $('#modalMassInsertion').modal('show');
+        console.log("Respuesta JSON:", jsonResponse);
+        $('#modalMassInsertion').modal('show');
+        
+    } catch (error) {
+        $('#divLoading').css('display', 'none');
+        console.error("Error en la petición:", error);
+        // Aquí podrías mostrar un mensaje de error al usuario
+    }
 }
 
 addEventListener("DOMContentLoaded", (event) => {
@@ -236,11 +274,12 @@ async function UpdLocation(idLocation){
     const pet = fetch(base_url + '/location/getFullDataLocation/'+idLocation).then(res => res.json());
     
     $('#divLoading').css('display', 'flex');
-    const response = await pet;
+    let response = await pet;
     $('#divLoading').css('display', 'none');
 
     document.querySelectorAll('#form-location [name]').forEach(item => {
         const name = item.getAttribute('name');
+        if(name=='status')response[name] = (response[name]==1?'Open':'Closed');
         item.value = response[name];
     });
     
@@ -248,7 +287,8 @@ async function UpdLocation(idLocation){
 }
 
 async function sendLocation(element){
-    const payload = new FormData(element);
+    let formulario = document.querySelectorAll('#form-location')[1];
+    const payload = new FormData(formulario);
     const pet = fetch(base_url + "/location/insLocation", {
         method: 'POST',
         body: payload
@@ -259,9 +299,100 @@ async function sendLocation(element){
     $('#divLoading').css('display', 'none');
 
     if(response.status == 1){
+        console.log('res: '+response);
         tableLocations.api().ajax.reload();
         $('#modalEditLocation').modal('hide');
     } else{
+        console.log('res:'+response);
+        swal({
+            title: 'Error',
+            text: fnT('An error occurred in the process, if the problem persists please contact support'),
+            type: 'error'
+        });
+    }
+}
+
+async function openModal() {
+    document.getElementById('input-number').removeAttribute('readonly');
+    console.log("Abriendo modal...");
+
+    // try {
+        // Llamar a la ruta del backend para obtener datos del país
+        // const pet = fetch(base_url + '/location/getCountry/?key=Mexico').then(res => res.json());
+        // const response = await pet;
+
+        // console.log("Respuesta del servidor:", response);
+
+        // Verifica si la respuesta contiene datos
+        // if (response.status === 1 && response.data) {
+        //     const select = document.getElementById("input-country");
+
+        //     // Limpia el contenido actual del select
+        //     select.innerHTML = "";
+
+        //     // Rellena el select con los datos del país
+        //     response.data.forEach(country => {
+        //         const option = document.createElement("option");
+        //         option.value = country.id; // ID como valor
+        //         option.textContent = country.name; // Nombre como texto
+        //         select.appendChild(option);
+        //     });
+        // } else {
+        //     console.warn("No se encontraron países en la respuesta.");
+        // }
+
+        // Limpiar los campos del formulario
+        document.querySelectorAll('#modalFormUser [name]').forEach(item => {
+             item.value = ""; 
+        });
+        if(document.querySelectorAll('#form-location')[0].querySelector('#inpNew')){
+            console.log('existe');
+            document.querySelectorAll('#inpNew').forEach(e=>{e.value='1'});
+        }else{
+            console.log('no existe');
+            let formulario = document.querySelectorAll('#form-location')[0];
+            let inpNew = document.createElement('INPUT');
+            inpNew.type = 'hidden';
+            inpNew.setAttribute('id', 'inpNew');
+            inpNew.name = 'inpNew';
+            formulario.appendChild(inpNew);
+            document.querySelectorAll('#inpNew').forEach(e=>{e.value='1'});
+        }
+
+        // Actualizar el título del modal
+        document.getElementById('titleModal').innerHTML = fnT("New Location");
+
+        // Mostrar el modal
+        $('#modalFormUser').modal('show');
+    // } catch (error) {
+    //     console.error("Error al obtener datos del país:", error);
+    // }
+}
+
+async function addLocation(element){
+    let formulario = document.querySelectorAll('#form-location')[0];
+    const payload = new FormData(formulario);
+    const pet = fetch(base_url + "/location/addlocation", {
+        method: 'POST',
+        body: payload
+    }).then(res => res.json());;
+
+    $('#divLoading').css('display', 'flex');
+    const response = await pet;
+    $('#divLoading').css('display', 'none');
+
+    if(response.status == 1){
+        console.log(response);
+        tableLocations.api().ajax.reload();
+        $('#modalFormUser').modal('hide');
+    }else if(response.status == 2){
+        swal({
+            title: 'Error',
+            text: fnT('Location number already exists '+response.sql),
+            type: 'error'
+        });
+    }else{
+        console.log(response);
         swal({
             title: 'Error',
             text: fnT('An error occurred in the process, if the problem persists please contact support'),

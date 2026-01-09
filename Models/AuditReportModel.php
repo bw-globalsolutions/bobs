@@ -7,7 +7,14 @@ class AuditReportModel extends Mysql{
 	}
 
     public function getSectionsOpp(int $audit_id, int $checklist_id){
-        $sql = "SELECT ci.main_section, ci.section_number, ci.section_name, SUM(IF(ap.lost_point > 0, 1, 0)) AS 'questions', SUM(ci.points) AS 'target', IFNULL(SUM(ap.lost_point), 0) AS 'points' FROM checklist_item ci LEFT JOIN (SELECT lost_point, question_prefix FROM audit_point WHERE audit_id = $audit_id) ap ON (ci.question_prefix = ap.question_prefix) WHERE ci.checklist_id = $checklist_id AND ci.type = 'Question' GROUP BY ci.main_section, ci.section_number, ci.section_name ORDER BY section_number ASC";
+        $sql = "SELECT ci.main_section, 
+                       ci.section_number, 
+                       ci.section_name, 
+                       SUM(IF(ap.lost_point > 0, 1, 0)) AS 'questions', 
+                       SUM(ci.points) AS 'target', 
+                       IFNULL(SUM(ap.lost_point), 0) AS 'points' 
+                FROM checklist_item ci 
+                LEFT JOIN (SELECT lost_point, question_prefix FROM audit_point WHERE audit_id = $audit_id) ap ON (ci.question_prefix = ap.question_prefix) WHERE ci.checklist_id = $checklist_id AND ci.type = 'Question' AND ci.section_name != 'Information' GROUP BY ci.main_section, ci.section_number, ci.section_name ORDER BY section_number ASC";
         $request = [];
         foreach($this->select_all($sql) as $s){
             if(empty($request[$s['main_section']])){
@@ -24,8 +31,9 @@ class AuditReportModel extends Mysql{
 		return $request;
 	}
 
-    public function getQuestionsOpp(int $audit_id, int $checklist_id, string $lan){
-        $sql = "SELECT ci.section_name, IFNULL(ci.$lan, ci.eng) AS 'txt', ci.question_prefix, ci.priority FROM checklist_item ci INNER JOIN audit_point ap ON (ci.question_prefix = ap.question_prefix) WHERE ci.type = 'Question' AND ap.audit_id = $audit_id AND ci.checklist_id = $checklist_id";
+    public function getQuestionsOpp(int $audit_id, int $checklist_id, $lan){
+        if($lan==NULL)$lan='eng';
+        $sql = "SELECT ci.section_name, IFNULL(ci.$lan, ci.eng) AS 'txt', ci.question_prefix, ci.priority FROM checklist_item ci INNER JOIN audit_point ap ON (ci.question_prefix = ap.question_prefix) WHERE ci.type = 'Question' AND ap.audit_id = $audit_id AND ci.checklist_id = $checklist_id AND ci.section_name!='Information'";
         $request = [];
 
         foreach($this->select_all($sql) as $q){
@@ -61,7 +69,7 @@ class AuditReportModel extends Mysql{
 		return $request;
     }
 
-    public function getPreviousAudit(int $lnumber, string $type, string $dvisit){
+    public function getPreviousAudit(string $lnumber, string $type, string $dvisit){
         $sql = "SELECT id, scoring_id FROM audit_list WHERE location_number = $lnumber AND type IN('$type') AND date_visit < '$dvisit' AND status = 'Completed' ORDER BY date_visit DESC";
         $response = $this->select($sql);
         return $response;
@@ -74,7 +82,25 @@ class AuditReportModel extends Mysql{
     }
 
     public function getAuditListById($audit_id){	
-		$query = "SELECT checklist_id, type, round_name, status, date_visit, date_visit_end, location_id, location_number, location_name, location_address, auditor_name, manager_name, manager_signature, scoring_id FROM audit_list a WHERE id=$audit_id ORDER BY date_visit DESC, id DESC";
+		$query = "SELECT checklist_id, 
+                         type, 
+                         round_name, 
+                         status, 
+                         date_visit, 
+                         date_visit_end, 
+                         location_id, 
+                         location_number, 
+                         location_name, 
+                         location_address, 
+                         auditor_name, 
+                         manager_name, 
+                         manager_signature, 
+                         scoring_id,
+                         country_id,
+                         id,
+                         (SELECT url FROM audit_file b WHERE b.audit_id = id AND (name = 'Picture of the Front Door/Entrance of the Restaurant' OR name = 'Foto de entrada principal del restaurante') LIMIT 1) picture_front
+                    FROM audit_list a 
+                    WHERE id = $audit_id ORDER BY date_visit DESC, id DESC";
 		$request = $this->select($query);
 		return $request;
 	}

@@ -14,7 +14,13 @@
         $endTime = $tmp->format("H:i");
     }
 ?>
-<main class="app-content">
+<div class="fig1"></div>
+  <div class="fig2"></div>
+  <div class="fig3"></div>
+  <div class="fig4"></div>
+  <div class="fig5"></div>
+  <div class="fig6"></div>
+  <main class="app-content">
     <div class="app-title">
         <div>
             <h1>
@@ -33,36 +39,34 @@
             <form id="form-grl-info" onsubmit="sendGrlInfo(this); return false;">
                 <input type="hidden" name="audit_id" value="<?=$_GET['id']?>" id="audit-id">
                 <div class="form-row">
-                    
-                    <div class="col-lg-3 col-md-6 col-12 form-group">
+                    <div class="col-lg-4 col-md-6 col-12 form-group">
                         <label for="date-visit"><?=$fnT('Date visit')?></label>
                         <input value="<?=$dateVisit?? date("Y-m-d")?>" type="date" class="form-control" name="date_visit" id="date-visit" required>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-12 form-group">
+                    <div class="col-lg-4 col-md-6 col-12 form-group">
                         <label for="start_time"><?=$fnT('Start time')?></label>
                         <input value="<?=$startTime?? date("H:i")?>" type="time" class="form-control" name="start_time" id="start_time" required>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-12 form-group">
+                    <div class="col-lg-4 col-md-6 col-12 form-group">
                         <label for="end_time"><?=$fnT('End Time')?></label>
                         <input value="<?= $endTime?? date('H:i', strtotime('+2 hours')) ?>" type="time" class="form-control" name="end_time" id="end_time" required>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-12 form-group">
-                            <label for="audited-areas" class="mr-3"><?=$fnT('Audited areas')?>: </label><br>
+
+                    <? if(ON_AA): ?>
+                        <div class="col-lg-4 col-md-6 col-12 form-group">
+                            <label for="audited-areas" class="mr-3"><?=$fnT('Audited areas')?>: </label>
                             <? if(empty($data['audit']['visit_status'])): ?>
-                                <select class="selectpicker" multiple title="<?=$fnT('Select one or more areas')?>" data-width="275px" name="areas[]" >
-                                    
+                                <select class="selectpicker" multiple title="<?=$fnT('Select one or more areas')?>" data-width="275px" name="areas[]" required>
+                                    <option value="all"><?=$fnT('All areas')?></option>
                                     <? foreach($data['areas'] as $area): ?>
-                                        <option selected value="<?= $area ?>"><?= $area ?></option>
+                                        <option value="<?= $area ?>"><?= $area ?></option>
                                     <? endforeach; ?>
                                 </select>
                             <? else: ?>
                                 <b><?= empty($data['audit']['audited_areas']) || in_array($data['audit']['audited_areas'], ['[]', ' ["-Sin-Areas-"]'])? $fnT('All areas') : str_replace('|', ', ', $data['audit']['audited_areas']) ?></b> 
                             <? endif ?>
                         </div>
-
-               
-                        
-            
+                    <? endif; ?>
 
                 </div>
                 <hr>
@@ -90,24 +94,9 @@
                         <textarea class="form-control" id="visit-comment" rows="2" name="visit_comment"><?=$data['audit']['visit_comment']?></textarea>
                     </div>
                     <div class="col-lg-4 col-md-6 col-12 form-group">
-                        
-
-<label for="visit-pic"><?=$fnT('Front door')?></label>
-                        <!-- Campo oculto (por si lo ocupas) -->
-<input type="hidden" id="visit-pic">
-
-<!-- Input file oculto -->
-<input type="file" id="visit-pic" class="file-trigger" style="display: none;" onchange="uploadPic(this)">
-                            <br>
-                         
-
-<!-- Botón personalizado -->
-<button type="button" class="btn-file btn btn-primary mr-1">
-    <?=$fnT('Choose picture')?> <!-- Texto editable -->
-</button>
-
-
-                        
+                        <label for="input-pic"><?=$fnT('Front door')?></label>
+                        <input type="hidden" id="visit-pic">
+                        <input type="file" class="form-control-file" id="visit-pic" onchange="uploadPic(this)">
                     </div>
                     <div class="col-lg-4 col-md-6 col-12 form-group" id="panel-pic"></div>
                 </div>
@@ -117,6 +106,14 @@
                             <label><?=$fnT('Manager signature')?></label>:&nbsp;&nbsp;&nbsp;
                             <a href="<?=$data['audit']['manager_signature']?>" target="_blank">
                                 <img style="height:85px; width:85px" class="rounded shadow-sm of-cover cr-pointer" src="<?=$data['audit']['manager_signature']?>">
+                            </a>
+                        <? endif ?>
+                    </div>
+                    <div>
+                        <? if(!empty($data['question']['url'])): ?>
+                            <label><?=$fnT('Manager comments')?></label>:&nbsp;&nbsp;&nbsp;
+                            <a href="<?=$data['question']['url']?>" target="_blank">
+                                <img style="height:85px; width:85px" class="rounded shadow-sm of-cover cr-pointer" src="<?=$data['question']['url']?>">
                             </a>
                         <? endif ?>
                     </div>
@@ -131,10 +128,6 @@
 </main>
 <?php footerTemplate($data);?>
 <script>
-
-    document.querySelector('.btn-file').addEventListener('click', function() {
-    document.querySelector('.file-trigger').click();
-});
     <? if(!empty($data['audit']['visit_status']) || !($data['permision']['u'] || isMySelfEvaluation($_GET['id']))): ?>
         $('#form-grl-info input, #form-grl-info textarea, #form-grl-info select').prop( "disabled", true);
         $('#btn-send-grl-info').addClass('d-none');

@@ -22,7 +22,7 @@ class SystemLanguagesModel extends Mysql {
 		$sql = "SELECT id, word FROM system_languages_dictionary";
 		$request = [];
 		foreach($this->select_all($sql) as $w){
-			$sql = "SELECT sln.translation, sl.color, sl.id FROM system_languages_definition sln INNER JOIN system_languages sl ON(sln.system_language_id=sl.id) WHERE sln.languages_dictionary_id = {$w['id']}";
+			$sql = "SELECT sln.translation, sl.color, sl.id FROM system_languages_definition sln INNER JOIN system_languages sl ON(sln.system_language_id=sl.id) WHERE sln.languages_dictionary_id = {$w['id']} AND sln.system_language_id IN (1,2)";
 			array_push($request, [
 				'id'			=> $w['id'],
 				'word'			=> $w['word'],
@@ -33,7 +33,7 @@ class SystemLanguagesModel extends Mysql {
 	}
 	
 	public function getLanguages(){
-		$sql = "SELECT sl.id, sl.name, sl.color, COUNT(sln.translation) AS 'count' FROM system_languages sl INNER JOIN system_languages_definition sln ON(sln.system_language_id=sl.id) GROUP BY sl.id, sl.name, sl.color";
+		$sql = "SELECT sl.id, sl.name, sl.color, COUNT(sln.translation) AS 'count' FROM system_languages sl INNER JOIN system_languages_definition sln ON(sln.system_language_id=sl.id) WHERE sl.id IN (1,2) GROUP BY sl.id, sl.name, sl.color";
 		$request = $this->select_all($sql);
 		return $request;
 	}

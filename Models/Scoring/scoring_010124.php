@@ -24,7 +24,7 @@
 
 	$sqlScore2 = "SELECT 
 			IFNULL(SUM(IF(ci.esp = 'Crítico', 1, 0)), 0) criticos, 
-			IFNULL(SUM(IF(ci.esp = 'No Crítico' OR ci.esp = 'Básicos', 1, 0)), 0) AS nocriticos, 
+			IFNULL(SUM(IF(ci.esp = 'No Crítico', 1, 0)), 0) nocriticos, 
 			IFNULL(SUM(IF(ci.main_section = 'MANTENIMIENTO', 1, 0)), 0) main, 
 			IFNULL(SUM(IF(ci.main_section = 'ZTC', 1, 0)), 0) af  
 			FROM audit_opp ao 
@@ -47,14 +47,6 @@
 
 	if($criticos > 1 || $rojos > 10 || $af > 0){
 		$visit_result = "Fail";
-	}
-	 
-	$sqltype = "SELECT type FROM audit a INNER JOIN round b ON a.round_id = b.id WHERE a.id = $audit_id";
-	$type = $res->select($sqltype);
-	$tipo = $type['type'];
-
-	if($tipo =='Training-visits'){
-		$visit_result = "NA";
 	}
 	
 	
