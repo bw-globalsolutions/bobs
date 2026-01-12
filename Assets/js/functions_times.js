@@ -48,7 +48,7 @@ function saveTimes(audit_id){
                         title: "",
                         text: fnT(objData.msg),
                         type: "success",
-                        confirmButtonText: fnT("Accept"),
+                        confirmButtonText: fnT("Aceitar"),
                         closeOnConfirm: true,
                     });
             }else{

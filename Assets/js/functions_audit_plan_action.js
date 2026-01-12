@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		"aProcessing":true,
 		"aServerSide":true,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/actionPlan/getOpps?idAudit="+idAudit,
@@ -143,11 +143,11 @@ document.addEventListener('DOMContentLoaded', function(){
 			if(dat.status){
 				$('#modalFormAction').modal("hide");
 				tableAuditPlanActions.api().ajax.reload();
-				swal(fnT('Action Plan'), fnT(dat.msg), "success");
+				swal(fnT('Plano de ação'), fnT(dat.msg), "success");
 				refreshStatics();
 				formPlanAction.reset();
 			}else{
-				swal(fnT('Error'), fnT(dat.msg), "error");
+				swal(fnT('Erro'), fnT(dat.msg), "error");
 			}
 			divLoading.style.display = "none";
 		});
@@ -184,7 +184,7 @@ function fntAddAction(idOpp,idAudit){
                 document.querySelector('.formCheck').style.display='none';
             }
         }else{
-            swal(fnT('Error'), fnT(dat.msg), "error");
+            swal(fnT('Erro'), fnT(dat.msg), "error");
         }
     });
 }
@@ -192,13 +192,13 @@ function fntAddAction(idOpp,idAudit){
 function fntChangeStatusAction(idAction,idOpp){
     console.log(idAction);
     swal({
-        title: fnT('Alert'),
-        text: fnT('What decision should you make?'),
+        title: fnT('Alerta'),
+        text: fnT('Que decisão você deve tomar?'),
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: '#0B9C26',
-        confirmButtonText: fnT('Approve action'),
-        cancelButtonText: fnT('Decline action'),
+        confirmButtonText: fnT('Aprovar ação'),
+        cancelButtonText: fnT('Recusar ação'),
         closeOnConfirm: false,
         closeOnCancel: false
     },
@@ -211,11 +211,11 @@ function fntChangeStatusAction(idAction,idOpp){
 			if(dat.status){
 				$('#modalFormAction').modal("hide");
 				tableAuditPlanActions.api().ajax.reload();
-				swal(fnT('Action Plan'), fnT(dat.msg), "success");
+				swal(fnT('Plano de ação'), fnT(dat.msg), "success");
 				formPlanAction.reset();
                 refreshStatics();
 			}else{
-				swal(fnT('Error'), fnT(dat.msg), "error");
+				swal(fnT('Erro'), fnT(dat.msg), "error");
 			}
 			divLoading.style.display = "none";
 		});
@@ -228,10 +228,10 @@ function fntChangeStatusAction(idAction,idOpp){
 			if(dat.status){
 				$('#modalFormAction').modal("hide");
 				tableAuditPlanActions.api().ajax.reload();
-				swal(fnT('Action Plan'), fnT(dat.msg), "success");
+				swal(fnT('Plano de ação'), fnT(dat.msg), "success");
 				formPlanAction.reset();
 			}else{
-				swal(fnT('Error'), fnT(dat.msg), "error");
+				swal(fnT('Erro'), fnT(dat.msg), "error");
 			}
 			divLoading.style.display = "none";
 		});
@@ -243,13 +243,13 @@ function fntChangeStatusAction(idAction,idOpp){
 function fntCloseAction(idAction,idOpp){
     //console.log(idAction);
     swal({
-        title: fnT('Alert'),
-        text: fnT('What decision should you make?'),
+        title: fnT('Alerta'),
+        text: fnT('Que decisão você deve tomar?'),
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: '#0B9C26',
-        confirmButtonText: fnT('Finish action'),
-        cancelButtonText: fnT('Cancel'),
+        confirmButtonText: fnT('Finalizar ação'),
+        cancelButtonText: fnT('Cancelar'),
         closeOnConfirm: false,
         closeOnCancel: false
     },
@@ -262,10 +262,10 @@ function fntCloseAction(idAction,idOpp){
                 if(dat.status){
                     $('#modalFormAction').modal("hide");
                     tableAuditPlanActions.api().ajax.reload();
-                    swal(fnT('Action Plan'), fnT(dat.msg), "success");
+                    swal(fnT('Plano de ação'), fnT(dat.msg), "success");
                     formPlanAction.reset();
                 }else{
-                    swal(fnT('Error'), fnT(dat.msg), "error");
+                    swal(fnT('Erro'), fnT(dat.msg), "error");
                 }
                 divLoading.style.display = "none";
             });
@@ -313,7 +313,7 @@ function uploadPic(element){
                         <img style="height:85px; width:85px" class="rounded shadow-sm of-cover cr-pointer" src="${dat.Info.location}">
                     </a><br>
                     <span class ="badge badge-pill badge-danger mt-1 cr-pointer" onclick="dropImg(${idImg}, '${dat.Info.location}')">
-                        <i class="fa fa-trash"></i>&nbsp; ${fnT('Delete')}
+                        <i class="fa fa-trash"></i>&nbsp; ${fnT('Excluir')}
                     </span>
                 </div>`);
 
@@ -323,8 +323,8 @@ function uploadPic(element){
         });
     }else{
         swal({
-            title: fnT('Error'),
-            text: fnT('Format not supported'),
+            title: fnT('Erro'),
+            text: fnT('Formato não suportado'),
             type: 'error'
         });
     }
@@ -352,7 +352,7 @@ function openOpportunity(picklist_id, audit_id){
                 <span>${cur.text}</span>
                 <div class="toggle-flip success-danger ml-3">
                     <label class="m-0"><input value="${cur.key}" type="checkbox" ${cur.opp?'checked':''} disabled>
-                        <span class="flip-indecator" data-toggle-on="${fnT('No')}" data-toggle-off="${fnT('Yes')}"></span>
+                        <span class="flip-indecator" data-toggle-on="${fnT('Não')}" data-toggle-off="${fnT('Sim')}"></span>
                     </label>
                 </div>
             </li>`;
@@ -401,7 +401,7 @@ function fntViewUsuario(idUser){
 				document.getElementById('cel-regDate').innerHTML = objData.data.created;
 				$('#modalViewUser').modal('show');
 			}else{
-				swal(fnT('Error'),fnT(objData.msg),"error");
+				swal(fnT('Erro'),fnT(objData.msg),"error");
 			}
 		}
 	}
@@ -413,8 +413,8 @@ function fntEditUsuario(element, idUser){
 
 	document.querySelector('.modal-header').classList.replace("headerRegister", "headerUpdate");
 	document.querySelector('#btnActionForm').classList.replace("btn-primary", "btn-info");
-	document.querySelector('#titleModal').innerHTML = fnT('Update user');
-	document.querySelector('#btnText').innerHTML = fnT('Save');
+	document.querySelector('#titleModal').innerHTML = fnT('Atualizar usuário');
+	document.querySelector('#btnText').innerHTML = fnT('Salvar');
 
 	var iduser = idUser;
 	var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
@@ -463,12 +463,12 @@ function fntEditUsuario(element, idUser){
 function fntDelUsuario(idUser){
 	var iduser = idUser;
 	swal({
-		title: fnT('Delete user'),
-		text: fnT('Do you really want to delete this User ?'),
+		title: fnT('Excluir usuário'),
+		text: fnT('Deseja realmente excluir este usuário?'),
 		type: "warning",
 		showCancelButton: true,
-		confirmButtonText: fnT('Yes, delete'),
-		cancelButtonText: fnT('No, cancel'),
+		confirmButtonText: fnT('Sim, excluir'),
+		cancelButtonText: fnT('Não, cancelar'),
 		closeOnConfirm: false,
 		closeOnCancel: true
 	}, function(isConfirm){
@@ -484,10 +484,10 @@ function fntDelUsuario(idUser){
 					var objData = JSON.parse(request.responseText);
 					if(objData.status)
 					{
-						swal(fnT('Delete'), fnT(objData.msg), "success");
+						swal(fnT('Excluir'), fnT(objData.msg), "success");
 						tableUsuarios.api().ajax.reload();
 					}else{
-						swal(fnT('Attention'), fnT(objData.msg), "error");
+						swal(fnT('Atenção'), fnT(objData.msg), "error");
 					}
 				}
 			}

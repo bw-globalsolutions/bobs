@@ -117,12 +117,12 @@
                                         <option value = 3 >Photograph   </option>
                                         <option value = 4 >Spelling   </option>
                                     </select>
-                                    <label for="action" class="control-label"><?=$fnT('Description')?></label>
+                                    <label for="action" class="control-label"><?=$fnT('Descrição')?></label>
                                     <textarea class="form-control valid validText" name="comentarioCerttis" id="comentarioCerttis" cols="40" rows="3" style="resize: both;" required></textarea>
                             </div>
                             <div class="tile-footer">
-                                <button id="btnFormAddAction" class="btn btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Add')?></button>
-                                <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Cancel')?></button>
+                                <button id="btnFormAddAction" class="btn btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Adicionar')?></button>
+                                <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Cancelar')?></button>
                             </div>
                         </form>
                     </div>
@@ -184,10 +184,10 @@
                                                 <tr>
 
             				                        <th><?=$fnT('CERTTIS')?></th>
-            				                        <th><?=$fnT('CERTTIS COMMENT')?></th>
-            				                        <th># <?=$fnT('QUESTION')?></th>
-            				                        <th><?=$fnT('AUDITOR ANSWER')?></th>
-            				                        <th><?=$fnT('AUDITOR COMMENT')?></th>
+            				                        <th><?=$fnT('COMENTÁRIO CERTTIS')?></th>
+            				                        <th># <?=$fnT('PERGUNTA')?></th>
+            				                        <th><?=$fnT('RESPOSTA DO AUDITOR')?></th>
+            				                        <th><?=$fnT('COMENTÁRIO DO AUDITOR')?></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -200,8 +200,8 @@
                             </div>
                             <div class="tile-footer">
                             <input type="" id="audit_email"     name="audit_email"  hidden>
-                                <button id="btnFormAddAction" class="btn btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Send')?></button>
-                                <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Cancel')?></button>
+                                <button id="btnFormAddAction" class="btn btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Enviar')?></button>
+                                <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Cancelar')?></button>
                             </div>
                         </form>
                     </div>  

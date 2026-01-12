@@ -41,27 +41,27 @@
                 <div class="row">
                     <div class="col-lg-5">
                         <div class="card mb-3">
-                            <h5 class="card-header hd-ss" style="color:#fff; background-color: #000; font-weight: bold; border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0; padding: 0.75rem 1.25rem;"><?=$fnT('Assesment info')?></h5>
+                            <h5 class="card-header hd-ss" style="color:#fff; background-color: #000; font-weight: bold; border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0; padding: 0.75rem 1.25rem;"><?=$fnT('Informações da avaliação')?></h5>
                             <div class="card-body p-2">
                                 <table class="w-100" cellpadding="3">
                                     <tr>
-                                        <td align="right"><?=$fnT('Type')?>:</td>
+                                        <td align="right"><?=$fnT('Tipo')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$fnT($data['audit']['type'])?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Round')?>:</td>
+                                        <td align="right"><?=$fnT('Rodada')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$data['audit']['round_name']?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Stard')?>:</td>
+                                        <td align="right"><?=$fnT('Início')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=date_format(date_create($data['audit']['date_visit']), "M d, Y H:i")?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('End')?>:</td>
+                                        <td align="right"><?=$fnT('Fim')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=date_format(date_create($data['audit']['date_visit_end']), "M d, Y H:i")?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Front door')?>:</td>
+                                        <td align="right"><?=$fnT('Porta da frente')?>:</td>
                                         <td>
                                             
                                             &nbsp;&nbsp;
@@ -69,25 +69,25 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Location')?>:</td>
+                                        <td align="right"><?=$fnT('Localização')?>:</td>
                                         <td>&nbsp;&nbsp; <b>#<?=$data['audit']['location_number']?> - <?=$data['audit']['location_name']?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Address')?>:</td>
+                                        <td align="right"><?=$fnT('Endereço')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$data['audit']['location_address']?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Auditor name')?>:</td>
+                                        <td align="right"><?=$fnT('Nome do auditor')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$data['audit']['auditor_name']?></b></td>
                                     </tr>
                                     <tr><td colspan="2"><hr></td></tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Manager')?>:</td>
+                                        <td align="right"><?=$fnT('Gerente')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$data['audit']['manager_name']?></b></td>
                                     </tr>
                                     <? if($data['audit']['type']!='Self-Evaluation'){ ?>
                                     <tr>
-                                        <td align="right"><?=$fnT('Signature')?>:</td>
+                                        <td align="right"><?=$fnT('Assinatura')?>:</td>
                                         <td>&nbsp;&nbsp; 
                                             <img width="121" height="92" class="of-contain" src="<?= empty($data['audit']['manager_signature']) || $data['audit']['manager_signature']=='Sin Firma'? media().'/images/no-image-available.jpg' : $data['audit']['manager_signature'] ?>" alt="Manager signature">
                                         </td>
@@ -101,10 +101,10 @@
                         <div class="card mb-3">
                             <div class="d-flex text-center">
                                 <div class="col card-header" style="background-color: var(--color1);">
-                                    <h6><?=$fnT('Food safety')?></h6>
+                                    <h6><?=$fnT('Segurança alimentar')?></h6>
                                 </div>
                                 <div class="col card-header" style="background-color: var(--color1);">
-                                    <h6><?=$fnT('Operations Excellence')?></h6>
+                                    <h6><?=$fnT('Excelência operacional')?></h6>
                                 </div>
                             </div>
 
@@ -113,16 +113,16 @@
                                 <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['OperationsE']??0?></b><span>#</span></div>
                             </div>
                             <!-- <div class="card-header hd-red d-flex text-center">
-                                <h6 class="col border-right d-none d-md-block"><?=$fnT('Green')?></h6>
-                                <h6 class="col border-right d-none d-md-block"><?=$fnT('Yellow')?></h6>
-                                <h6 class="col"><?=$fnT('Red')?></h6>
+                                <h6 class="col border-right d-none d-md-block"><?=$fnT('Verde')?></h6>
+                                <h6 class="col border-right d-none d-md-block"><?=$fnT('Amarelo')?></h6>
+                                <h6 class="col"><?=$fnT('Vermelho')?></h6>
                             </div> -->
                             <div class="d-flex text-center">
                                 <div class="col card-header hd-red">
-                                    <h6><?=$fnT('Auto Fail')?></h6>
+                                    <h6><?=$fnT('Falha automática')?></h6>
                                 </div>
                                 <div class="col card-header" style="background-color: var(--color1);">
-                                    <h6><?=$fnT('Overall score')?></h6>
+                                    <h6><?=$fnT('Pontuação geral')?></h6>
                                 </div>
                             </div>
                             <div class="card-body d-flex p-2">
@@ -131,7 +131,7 @@
                                 <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['OverallScore']??0?></b><span>#</span></div>
                             </div>
                             <!--<div class="card-header hd-ss d-flex text-center">
-                                <h6 class="col"><?=$fnT('Letter')?></h6>
+                                <h6 class="col"><?=$fnT('Letra')?></h6>
                             </div>
                             <div class="card-body d-flex p-2">
                                 <div class="col d-none d-md-flex justify-content-center align-items-center" style="background-color:<?=$data['scoring']['color']?>; color:#fff;"><b class="display-4"><?=$data['scoring']['Letra']??0?></b><span>#</span></div>
@@ -148,8 +148,8 @@
                                     <table class="w-100 score" cellpadding="4">
                                         <thead class="border-bottom">
                                             <tr>
-                                                <th><?=$fnT('Name')?></th>
-                                                <th><?=$fnT('Opportunities')?></th>
+                                                <th><?=$fnT('Nome')?></th>
+                                                <th><?=$fnT('Oportunidades')?></th>
                                             </tr>
                                         </thead>
                                         <tbody class="border-bottom">
@@ -176,7 +176,7 @@
                 </div>
             </div>
             <div class="card mb-5">
-                <h4 class="card-header bg-danger text-white"><i class="fa fa-bolt"></i>&nbsp;&nbsp;<?=$fnT('Opportunity detail')?></h4>
+                <h4 class="card-header bg-danger text-white"><i class="fa fa-bolt"></i>&nbsp;&nbsp;<?=$fnT('Detalhe da oportunidade')?></h4>
                 <div class="card-body pb-0">
                     <? foreach($data['questions'] as $s => $questions): ?>
                         <ul class="list-group mb-4">

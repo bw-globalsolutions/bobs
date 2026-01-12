@@ -41,11 +41,11 @@ class Location extends Controllers
 			$item['status'] = ($item['status']==1?'Open':'Closed');
 			$updStatus = $item['status'] == 'Active' ? 0 : 1;
 			$item['actions'] = "<div class='btn-group dropleft' role='group'>
-				<button type='button' class='btn btn-sm btn-secondary dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" . $fnT('Actions') . "</button>
+				<button type='button' class='btn btn-sm btn-secondary dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" . $fnT('Ações') . "</button>
 				<div class='dropdown-menu'>
-					<button class='dropdown-item' onclick='UpdLocation({$item['actions']})'" . ($this->permission['u']? '' : 'disabled') . ">". $fnT('Update') ."</button>
+					<button class='dropdown-item' onclick='UpdLocation({$item['actions']})'" . ($this->permission['u']? '' : 'disabled') . ">". $fnT('Atualizar') ."</button>
 					<button class='dropdown-item' onclick='UpdStatusLocation({$item['actions']}, $updStatus)'" . ($this->permission['u']? '' : 'disabled') . ">". $fnT($updStatus? 'Activate' : 'Inactivate') ."</button>
-					<button class='dropdown-item text-danger' onclick='delLocation({$item['actions']})'" . ($this->permission['d']? '' : 'disabled') . ">" . $fnT('Delete') . " <i class='fa fa-trash'></i></button>
+					<button class='dropdown-item text-danger' onclick='delLocation({$item['actions']})'" . ($this->permission['d']? '' : 'disabled') . ">" . $fnT('Excluir') . " <i class='fa fa-trash'></i></button>
 				</div>
 			</div>";
 			return $item;

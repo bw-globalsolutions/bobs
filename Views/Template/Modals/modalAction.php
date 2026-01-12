@@ -4,7 +4,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header header-primary">
-                <h5 class="modal-title" id="titleModal"><?=$fnT('Add action')?></h5>
+                <h5 class="modal-title" id="titleModal"><?=$fnT('Adicionar ação')?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -23,7 +23,7 @@
                                 <div class="form-row justify-content-center">
                                     <input type="hidden" name="checks" id="checks">
                                     <div class="form-group col-md-10">
-                                        <label for="action" class="control-label"><?=$fnT('Action')?></label>
+                                        <label for="action" class="control-label"><?=$fnT('Ação')?></label>
                                         <textarea class="form-control valid validText" name="action" id="action" cols="40" rows="3" style="resize: both;"></textarea>
                                     </div>
 
@@ -36,11 +36,11 @@
                                 </div>
                             </form>
                         </div>
-                        <p class="errorBox errorBoxC" style="display:none;"><?=$fnT('You need to select at least one option')?></p>
-                        <p class="errorBox errorBoxN" style="display:none;"><?=$fnT('You must fill in the text field')?></p>
+                        <p class="errorBox errorBoxC" style="display:none;"><?=$fnT('Você precisa selecionar pelo menos uma opção')?></p>
+                        <p class="errorBox errorBoxN" style="display:none;"><?=$fnT('Você deve preencher o campo de texto')?></p>
                         <div class="tile-footer">
-                            <button id="btnFormAddAction" form="formPlanAction" class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Save')?></button>
-                            <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Cancel')?></button>
+                            <button id="btnFormAddAction" form="formPlanAction" class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Salvar')?></button>
+                            <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Cancelar')?></button>
                         </div>
                     </div>
                 </div>

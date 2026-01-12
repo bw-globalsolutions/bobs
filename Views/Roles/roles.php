@@ -16,10 +16,10 @@
             <i class="fa fa-id-card-o" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             <? if($data['permission']['w']): ?>
               &nbsp;
-              <button class="btn btn-sm btn-primary mb-1" type="button" onclick="openModal();"><i class="fa fa-plus-circle" aria-hidden="true"></i> <?=$fnT('New')?></button>
+              <button class="btn btn-sm btn-primary mb-1" type="button" onclick="openModal();"><i class="fa fa-plus-circle" aria-hidden="true"></i> <?=$fnT('Novo')?></button>
             <? endif ?>
           </h1>
-          <p><?=$fnT('Register, update and delete user roles')?></p>
+          <p><?=$fnT('Cadastrar, atualizar e excluir funções de usuário')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -35,11 +35,11 @@
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th><?=$fnT('Name')?></th>
-                      <th><?=$fnT('Description')?></th>
-                      <th><?=$fnT('Level')?></th>
+                      <th><?=$fnT('Nome')?></th>
+                      <th><?=$fnT('Descrição')?></th>
+                      <th><?=$fnT('Nível')?></th>
                       <th><?=$fnT('Status')?></th>
-                      <th><?=$fnT('Action')?></th>
+                      <th><?=$fnT('Ação')?></th>
                     </tr>
                   </thead>
                   <tbody>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<title><?=$fnT('Appeal process')?></title>
+	<title><?=$fnT('Processo de apelação')?></title>
 </head>
 <body>
     <table border='0' align='left' cellpadding='3' cellspacing='2'>
@@ -15,7 +15,7 @@
                             <tr><td width='1200'></td></tr>
                             <tr>
                                 <td style='text-align: center; padding:10px;background:#eab54c; color:#ffffff; font-size:15px'>
-                                <span><?=$fnT('Appeals under review')?></span></td>
+                                <span><?=$fnT('Apelações sob revisão')?></span></td>
                             </tr>
                             <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-church's"></center></td></tr>
 
@@ -30,11 +30,11 @@
                                 <td style='font-size:14px;padding:0px'>
                                     <div style='border:1px solid #eee;padding:11px'>
                                         <ul>
-                                            <li><b><?=$fnT('Location')?>: <?=$data['brand_prefix']?> #<?=$data['location_number']?>, <?=$data['location_name']?></b></li>
-                                            <li><b><?=$fnT('ROUND')?>: <?=$data['type']?>, <?=$data['round_name']?></b></li>
-                                            <li><b><?=$fnT('Date visit')?>: <?= date("F j, Y, h:m", strtotime( $data['date_visit'] )) ?></b></li>
-                                            <li><b><?=$fnT('Total opportunities')?>: <?= date("F j, Y, h:m", strtotime( $data['date_release'] )) ?></b></li>
-                                            <li><b><?=$fnT('Score')?>: <?=$data['score']?></b></li>
+                                            <li><b><?=$fnT('Localização')?>: <?=$data['brand_prefix']?> #<?=$data['location_number']?>, <?=$data['location_name']?></b></li>
+                                            <li><b><?=$fnT('RODADA')?>: <?=$data['type']?>, <?=$data['round_name']?></b></li>
+                                            <li><b><?=$fnT('Data da visita')?>: <?= date("F j, Y, h:m", strtotime( $data['date_visit'] )) ?></b></li>
+                                            <li><b><?=$fnT('Total de oportunidades')?>: <?= date("F j, Y, h:m", strtotime( $data['date_release'] )) ?></b></li>
+                                            <li><b><?=$fnT('Pontuação')?>: <?=$data['score']?></b></li>
 										</ul>
                                     </div>
                                 </td>
@@ -49,7 +49,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><b><?=$fnT('Created:')?></b> <?=date('M d - h:i', time())?></td>
+                                <td><b><?=$fnT('Criado:')?></b> <?=date('M d - h:i', time())?></td>
                             </tr>
                         </tbody>
                     </table>

@@ -204,14 +204,14 @@ const setTopOpp = mainSection => {
             "chart": {
                 "caption": fnT(mainSection),
                 "subCaption": "Top 10",
-                "xAxisName": fnT('Questions'),
-                "yAxisName": fnT('Incidence'),
+                "xAxisName": fnT('Perguntas'),
+                "yAxisName": fnT('Incidência'),
                 "theme": 'ocean',
                 "palettecolors": "5d62b5,29c3be,f2726f,A88CCC,EED482,FFAE91,FE93B5,D98ACF,7BCDE8,94A8E9",
                 "showBorder": "1",
                 "numberSuffix": "%"
             },
-            "data": currTopOpp[mainSection].map(item => ({label: item.question_prefix, displayValue: `${Math.round(item.frecuency * 100 / item.count)}%`, value: item.frecuency * 100 / item.count, tooltext: `${fnT('Audits')}: ${item.frecuency}<br><br> ${item.text}`}))
+            "data": currTopOpp[mainSection].map(item => ({label: item.question_prefix, displayValue: `${Math.round(item.frecuency * 100 / item.count)}%`, value: item.frecuency * 100 / item.count, tooltext: `${fnT('Auditorias')}: ${item.frecuency}<br><br> ${item.text}`}))
         },
         events: {
             "dataPlotClick": (eventObj, dataObj) => showTopOppDetails(eventObj, dataObj)
@@ -227,8 +227,8 @@ const showTopOppDetails = (eventObj, dataObj) => {
         type: "info",
         showCancelButton: true,
         confirmButtonColor: '#0B9C26',
-        confirmButtonText: fnT('Download picklist details'),
-        cancelButtonText: fnT('Close')
+        confirmButtonText: fnT('Baixar detalhes da picklist'),
+        cancelButtonText: fnT('Fechar')
     },
     function(isConfirm){
         if (isConfirm){
@@ -247,9 +247,9 @@ window.genActionPlanStatus = (data, renderAt = 'chart-action-plan') => {
         theme: 'ocean',
         dataSource: {
             chart: {
-                caption: fnT('Action plan'),
+                caption: fnT('Plano de ação'),
                 plottooltext: '$label: <b>$value</b>',
-                centerlabel: fnT('Audits') + ": $value",
+                centerlabel: fnT('Auditorias') + ": $value",
                 theme: 'ocean',
                 showPercentageValues: '1',
                 palettecolors: '5d62b5,29c3be,f2726f,A88CCC,EED482,FFAE91,FE93B5,D98ACF,7BCDE8,94A8E9',
@@ -272,9 +272,9 @@ window.genDaypart = (data, renderAt = 'chart-daypart') => {
         theme: 'ocean',
         dataSource: {
             chart: {
-                caption: fnT('Daypart'),
+                caption: fnT('Período do dia'),
                 plottooltext: '$label: <b>$value</b>',
-                centerlabel: fnT('Audits') + ": $value",
+                centerlabel: fnT('Auditorias') + ": $value",
                 theme: 'ocean',
                 showPercentageValues: '1',
                 palettecolors: '5d62b5,29c3be,f2726f,A88CCC,EED482,FFAE91,FE93B5,D98ACF,7BCDE8,94A8E9',
@@ -297,9 +297,9 @@ window.genWeekday = (data, renderAt = 'chart-weekday') => {
         theme: 'ocean',
         dataSource: {
             chart: {
-                caption: fnT('Weekday'),
+                caption: fnT('Dia da semana'),
                 plottooltext: '$label: <b>$value</b>',
-                centerlabel: fnT('Audits') + ": $value",
+                centerlabel: fnT('Auditorias') + ": $value",
                 theme: 'ocean',
                 showPercentageValues: '1',
                 palettecolors: '5d62b5,29c3be,f2726f,A88CCC,EED482,FFAE91,FE93B5,D98ACF,7BCDE8,94A8E9',
@@ -322,9 +322,9 @@ window.genDuration = (data, renderAt = 'chart-duration') => {
         theme: 'ocean',
         dataSource: {
             chart: {
-                caption: fnT('Duration'),
+                caption: fnT('Duração'),
                 plottooltext: '$label: <b>$value</b>',
-                centerlabel: fnT('Audits') + ": $value",
+                centerlabel: fnT('Auditorias') + ": $value",
                 theme: 'ocean',
                 showPercentageValues: '1',
                 palettecolors: '5d62b5,29c3be,f2726f,A88CCC,EED482,FFAE91,FE93B5,D98ACF,7BCDE8,94A8E9',
@@ -348,7 +348,7 @@ const genCategoryTrend = data => {
         theme: 'ocean',
         dataSource: {
             chart: {
-                caption: fnT('Section trend'),
+                caption: fnT('Tendência da seção'),
                 plottooltext: '$label',
                 theme: 'ocean',
                 showPercentageValues: '1',
@@ -390,8 +390,8 @@ const setQuestionTrend = section_number => {
         theme: 'ocean',
         dataSource: {
             chart: {
-                caption: fnT('Question trend by section') + ': ' + section_number,
-                subCaption: fnT('Select section in chart section trend'),
+                caption: fnT('Tendência de perguntas por seção') + ': ' + section_number,
+                subCaption: fnT('Selecione a seção no gráfico de tendência da seção'),
                 plottooltext: '$label: <b>$value</b>',
                 theme: 'ocean',
                 showPercentageValues: '1',
@@ -435,11 +435,11 @@ const setProgressStatus = groupBy => {
         theme: 'ocean',
         dataSource: {
             chart: {
-                caption: fnT('Program preview'),
+                caption: fnT('Prévia do programa'),
                 theme: 'ocean',
                 showBorder: '1',
                 plottooltext: '<b>$label</b>, $percentValue, $value',
-                yAxisName: fnT('Audits')
+                yAxisName: fnT('Auditorias')
             },
             categories: [
                 {
@@ -450,15 +450,15 @@ const setProgressStatus = groupBy => {
                 {
                     dataset: [
                         {
-                            seriesname: fnT('Pending'),
+                            seriesname: fnT('Pendente'),
                             data: stackData.map(item => ({value: item.pending}))
                         },
                         {
-                            seriesname: fnT('In Process'),
+                            seriesname: fnT('Em processo'),
                             data: stackData.map(item => ({value: item.in_process}))
                         },
                         {
-                            seriesname: fnT('Completed'),
+                            seriesname: fnT('Concluído'),
                             data: stackData.map(item => ({value: item.completed}))
                         }
                     ]
@@ -479,11 +479,11 @@ const genActionCompletion = data => {
         theme: 'ocean',
         dataSource: {
             chart: {
-                caption: fnT('Action plan status'),
+                caption: fnT('Status do plano de ação'),
                 theme: 'ocean',
                 showBorder: '1',
                 plottooltext: '$seriesname, $percentValue, $value',
-                yAxisName: fnT('Audits'),
+                yAxisName: fnT('Auditorias'),
                 palettecolors: '5d62b5,29c3be,f2726f,A88CCC,EED482,FFAE91,FE93B5,D98ACF,7BCDE8,94A8E9'
             },
             categories: [
@@ -495,15 +495,15 @@ const genActionCompletion = data => {
                 {
                     dataset: [
                         {
-                            seriesname: fnT('In Process'),
+                            seriesname: fnT('Em processo'),
                             data: data.map(item => ({value: item['In Process'] || 0}))
                         },
                         {
-                            seriesname: fnT('Pending'),
+                            seriesname: fnT('Pendente'),
                             data: data.map(item => ({value: item.Pending}))
                         },
                         {
-                            seriesname: fnT('Completed'),
+                            seriesname: fnT('Concluído'),
                             data: data.map(item => ({value: item.Finished}))
                         }
                     ]

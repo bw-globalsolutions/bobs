@@ -3,8 +3,8 @@
 const addFile = async element => {
     if(Object.keys(stackFiles).length > 4){
         swal({
-            title: fnT('Alert'),
-            text: fnT('File limit reached'),
+            title: fnT('Alerta'),
+            text: fnT('Limite de arquivos atingido'),
             type: 'warning'
         });
         return;
@@ -22,8 +22,8 @@ const addFile = async element => {
     console.log(response);
     if(response.Message != 'SUCCESS'){
         swal({
-            title: fnT('Error'),
-            text: fnT('An error occurred in the process, if the problem persists please contact support'),
+            title: fnT('Erro'),
+            text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
             type: 'error'
         });
         return;
@@ -37,7 +37,7 @@ const addFile = async element => {
     };
 
     document.getElementById('form-panel-files').innerHTML += `<div class="alert alert-warning alert-dismissible fade show mb-1" role="alert" id="file${idImg}">
-        <strong>${file.name}</strong> / ${fnT('Size')}": ${file.size}b
+        <strong>${file.name}</strong> / ${fnT('Tamanho')}": ${file.size}b
         <button type="button" class="close" onclick="dropFile('${idImg}')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -54,8 +54,8 @@ const dropFile = (idImg) => {
 const sendFormAddFile = async element => {
     if(Object.keys(stackFiles).length < 1){
         swal({
-            title: fnT('Alert'),
-            text: fnT('Add at least one file'),
+            title: fnT('Alerta'),
+            text: fnT('Adicione pelo menos um arquivo'),
             type: 'warning'
         });
         return;
@@ -74,8 +74,8 @@ const sendFormAddFile = async element => {
     console.log(response);
     if(response.status == 0){
         swal({
-            title: fnT('Error'),
-            text: fnT('An error occurred in the process, if the problem persists please contact support'),
+            title: fnT('Erro'),
+            text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
             type: 'error'
         });
         return;
@@ -106,18 +106,18 @@ const fetchFiles = async () => {
                             </button>
                         </h2>
                         ${permissionDoc.u == 1 || permissionDoc.d == 1? `<div class="contOpsF">
-                            <button type="button" style="border-radius:var(--radius); background-color:var(--color1); padding: 5px 10px;" class="btn-s3" onclick="prepareUpdFile(${cur.id}); document.querySelector('#heading${cur.id} h2 button').click(); window.scrollTo({ top: 0, behavior: 'smooth' });" ${permissionDoc.u != 1? 'disabled' : ''}>${fnT('Edit')}&#160;&#160;<i class="fa fa-pencil"></i></button>
-                            <button type="button" style="border-radius:var(--radius); padding: 5px 10px;" class="btn-s3" onclick="removeFile(${cur.id})" ${permissionDoc.d != 1? 'disabled' : ''}>${fnT('Remove')}&#160;&#160;<i class="fa fa-trash"></i></button>
+                            <button type="button" style="border-radius:var(--radius); background-color:var(--color1); padding: 5px 10px;" class="btn-s3" onclick="prepareUpdFile(${cur.id}); document.querySelector('#heading${cur.id} h2 button').click(); window.scrollTo({ top: 0, behavior: 'smooth' });" ${permissionDoc.u != 1? 'disabled' : ''}>${fnT('Editar')}&#160;&#160;<i class="fa fa-pencil"></i></button>
+                            <button type="button" style="border-radius:var(--radius); padding: 5px 10px;" class="btn-s3" onclick="removeFile(${cur.id})" ${permissionDoc.d != 1? 'disabled' : ''}>${fnT('Remover')}&#160;&#160;<i class="fa fa-trash"></i></button>
                         </div>` : ''}
                     </div>
                     <div id="collapse${cur.id}" class="collapse ${first? 'show' : ''}" aria-labelledby="heading${cur.id}" data-parent="#accordionFile">
                         <div class="card-body">
                             <p>${cur.description}</p>
-                            <small>${fnT('Created')}: ${cur.created} &#124; ${fnT('By')}: ${cur.name}</small>
+                            <small>${fnT('Criado')}: ${cur.created} &#124; ${fnT('Por')}: ${cur.name}</small>
                         </div>
                         <ul class="list-group list-group-flush">
                             ${Object.values(cur.jfiles).reduce((_acc, _cur) => _acc + `<li class="list-group-item">
-                                <a href="${_cur.url}" target="_blank" download>${_cur.name} &#124; ${fnT('Size')}: ${_cur.size}b</a>
+                                <a href="${_cur.url}" target="_blank" download>${_cur.name} &#124; ${fnT('Tamanho')}: ${_cur.size}b</a>
                             </li>`, '')}
                         </ul>
                     </div>
@@ -126,17 +126,17 @@ const fetchFiles = async () => {
             first = false;
         }
         return acc;
-    }, "<h5 class='mt-2'>" + fnT('No files to show') + "</h5>");
+    }, "<h5 class='mt-2'>" + fnT('Nenhum arquivo para mostrar') + "</h5>");
 }
 
 const removeFile = id => {
     swal({
-        title: fnT('Alert'),
-        text: fnT('Do you want to remove this files?'),
+        title: fnT('Alerta'),
+        text: fnT('Deseja remover estes arquivos?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     },async function(isConfirm){
         if(isConfirm){
             const pet = fetch(base_url +  '/files/removeFile/' + id).then(res => res.json());
@@ -148,8 +148,8 @@ const removeFile = id => {
                 fetchFiles();
             } else{
                 swal({
-                    title: fnT('Error'),
-                    text: fnT('An error occurred in the process, if the problem persists please contact support'),
+                    title: fnT('Erro'),
+                    text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
                     type: 'error'
                 });
             }
@@ -182,7 +182,7 @@ const prepareUpdFile = id => {
     let tmp = '';
     Object.entries(currFile.jfiles).forEach(([key, value]) => {
         tmp += `<div class="alert alert-warning alert-dismissible fade show mb-1" role="alert" id="file${key}">
-            <strong>${value.name}</strong> / ${fnT('Size')}": ${value.size}b
+            <strong>${value.name}</strong> / ${fnT('Tamanho')}": ${value.size}b
             <button type="button" class="close" onclick="dropFile('${key}')">
                 <span aria-hidden="true">&times;</span>
             </button>

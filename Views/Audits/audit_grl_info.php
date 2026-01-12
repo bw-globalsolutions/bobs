@@ -26,7 +26,7 @@
             <h1>
                 <i class="fa fa-info" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             </h1>
-            <p><?=$fnT('Consult general information')?></p>
+            <p><?=$fnT('Consultar informações gerais')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -40,30 +40,30 @@
                 <input type="hidden" name="audit_id" value="<?=$_GET['id']?>" id="audit-id">
                 <div class="form-row">
                     <div class="col-lg-4 col-md-6 col-12 form-group">
-                        <label for="date-visit"><?=$fnT('Date visit')?></label>
+                        <label for="date-visit"><?=$fnT('Data da visita')?></label>
                         <input value="<?=$dateVisit?? date("Y-m-d")?>" type="date" class="form-control" name="date_visit" id="date-visit" required>
                     </div>
                     <div class="col-lg-4 col-md-6 col-12 form-group">
-                        <label for="start_time"><?=$fnT('Start time')?></label>
+                        <label for="start_time"><?=$fnT('Hora de início')?></label>
                         <input value="<?=$startTime?? date("H:i")?>" type="time" class="form-control" name="start_time" id="start_time" required>
                     </div>
                     <div class="col-lg-4 col-md-6 col-12 form-group">
-                        <label for="end_time"><?=$fnT('End Time')?></label>
+                        <label for="end_time"><?=$fnT('Hora de término')?></label>
                         <input value="<?= $endTime?? date('H:i', strtotime('+2 hours')) ?>" type="time" class="form-control" name="end_time" id="end_time" required>
                     </div>
 
                     <? if(ON_AA): ?>
                         <div class="col-lg-4 col-md-6 col-12 form-group">
-                            <label for="audited-areas" class="mr-3"><?=$fnT('Audited areas')?>: </label>
+                            <label for="audited-areas" class="mr-3"><?=$fnT('Áreas auditadas')?>: </label>
                             <? if(empty($data['audit']['visit_status'])): ?>
-                                <select class="selectpicker" multiple title="<?=$fnT('Select one or more areas')?>" data-width="275px" name="areas[]" required>
-                                    <option value="all"><?=$fnT('All areas')?></option>
+                                <select class="selectpicker" multiple title="<?=$fnT('Selecione uma ou mais áreas')?>" data-width="275px" name="areas[]" required>
+                                    <option value="all"><?=$fnT('Todas as áreas')?></option>
                                     <? foreach($data['areas'] as $area): ?>
                                         <option value="<?= $area ?>"><?= $area ?></option>
                                     <? endforeach; ?>
                                 </select>
                             <? else: ?>
-                                <b><?= empty($data['audit']['audited_areas']) || in_array($data['audit']['audited_areas'], ['[]', ' ["-Sin-Areas-"]'])? $fnT('All areas') : str_replace('|', ', ', $data['audit']['audited_areas']) ?></b> 
+                                <b><?= empty($data['audit']['audited_areas']) || in_array($data['audit']['audited_areas'], ['[]', ' ["-Sin-Areas-"]'])? $fnT('Todas as áreas') : str_replace('|', ', ', $data['audit']['audited_areas']) ?></b> 
                             <? endif ?>
                         </div>
                     <? endif; ?>
@@ -72,29 +72,29 @@
                 <hr>
                 <div class="form-row">
                     <div class="col-lg-4 col-md-6 col-12 form-group">
-                        <label for="name="visit-status"><?=$fnT('Visit status')?></label>
+                        <label for="name="visit-status"><?=$fnT('Status da visita')?></label>
                         <select class="form-control" name="visit_status" id="visit-status" required onchange="changueStatus(this.value)">
-                            <option value="" disabled selected><?=$fnT('Select an option')?></option>
-                            <option value="Visited" <?=$data['audit']['visit_status']=='Visited'? 'selected' : ''?>><?=$fnT('Visited')?></option>
-                            <option value="Closed" <?=$data['audit']['visit_status']=='Closed'? 'selected' : ''?>><?=$fnT('Closed')?></option>
+                            <option value="" disabled selected><?=$fnT('Selecione uma opção')?></option>
+                            <option value="Visited" <?=$data['audit']['visit_status']=='Visited'? 'selected' : ''?>><?=$fnT('Visitado')?></option>
+                            <option value="Closed" <?=$data['audit']['visit_status']=='Closed'? 'selected' : ''?>><?=$fnT('Fechado')?></option>
                         </select>
                     </div>
                     <div class="col-lg-4 col-md-6 col-12 form-group">
-                        <label for="manager-email"><?=$fnT('Manager email')?></label>
-                        <input value="<?=$data['audit']['manager_email']?>" type="email" class="form-control" name="manager_email" id="manager-email" placeholder="<?=$fnT('Manager email')?>" required>
+                        <label for="manager-email"><?=$fnT('E-mail do gerente')?></label>
+                        <input value="<?=$data['audit']['manager_email']?>" type="email" class="form-control" name="manager_email" id="manager-email" placeholder="<?=$fnT('E-mail do gerente')?>" required>
                     </div>
                     <div class="col-lg-4 col-md-6 col-12 form-group">
-                        <label for="manager-name"><?=$fnT('Manager name')?></label>
-                        <input value="<?=$data['audit']['manager_name']?>" type="text" class="form-control" name="manager_name" id="manager-name" placeholder="<?=$fnT('Manager name')?>" required>
+                        <label for="manager-name"><?=$fnT('Nome do gerente')?></label>
+                        <input value="<?=$data['audit']['manager_name']?>" type="text" class="form-control" name="manager_name" id="manager-name" placeholder="<?=$fnT('Nome do gerente')?>" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-lg-4 col-md-6 col-12 form-group">
-                        <label for="visit-comment"><?=$fnT('Additional comment')?></label>
+                        <label for="visit-comment"><?=$fnT('Comentário adicional')?></label>
                         <textarea class="form-control" id="visit-comment" rows="2" name="visit_comment"><?=$data['audit']['visit_comment']?></textarea>
                     </div>
                     <div class="col-lg-4 col-md-6 col-12 form-group">
-                        <label for="input-pic"><?=$fnT('Front door')?></label>
+                        <label for="input-pic"><?=$fnT('Porta da frente')?></label>
                         <input type="hidden" id="visit-pic">
                         <input type="file" class="form-control-file" id="visit-pic" onchange="uploadPic(this)">
                     </div>
@@ -103,7 +103,7 @@
                 <div class="mt-1 d-flex justify-content-between">
                     <div>
                         <? if(!empty($data['audit']['manager_signature']) && $data['audit']['manager_signature']!='Sin Firma'): ?>
-                            <label><?=$fnT('Manager signature')?></label>:&nbsp;&nbsp;&nbsp;
+                            <label><?=$fnT('Assinatura do gerente')?></label>:&nbsp;&nbsp;&nbsp;
                             <a href="<?=$data['audit']['manager_signature']?>" target="_blank">
                                 <img style="height:85px; width:85px" class="rounded shadow-sm of-cover cr-pointer" src="<?=$data['audit']['manager_signature']?>">
                             </a>
@@ -111,14 +111,14 @@
                     </div>
                     <div>
                         <? if(!empty($data['question']['url'])): ?>
-                            <label><?=$fnT('Manager comments')?></label>:&nbsp;&nbsp;&nbsp;
+                            <label><?=$fnT('Comentários do gerente')?></label>:&nbsp;&nbsp;&nbsp;
                             <a href="<?=$data['question']['url']?>" target="_blank">
                                 <img style="height:85px; width:85px" class="rounded shadow-sm of-cover cr-pointer" src="<?=$data['question']['url']?>">
                             </a>
                         <? endif ?>
                     </div>
                     <div class="d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary mr-1" form="form-grl-info" id="btn-send-grl-info"><?=$fnT('Save')?></button>
+                        <button type="submit" class="btn btn-primary mr-1" form="form-grl-info" id="btn-send-grl-info"><?=$fnT('Salvar')?></button>
                     </div>
                 </div>
             </form>

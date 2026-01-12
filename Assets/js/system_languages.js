@@ -102,12 +102,12 @@ function openModalAdd(dictionary_id, language_id, language, word){
 
 function sendTranslate(element){
     swal({
-        title: fnT('Alert'),
-        text: fnT('Are you sure you want to update this translation?'),
+        title: fnT('Alerta'),
+        text: fnT('Tem certeza de que deseja atualizar esta tradução?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     }, async function(isConfirm){
         if(isConfirm){
             const payload = new FormData(element);
@@ -125,8 +125,8 @@ function sendTranslate(element){
                 curItemTable(element['dictionary_id'].value, element['language_id'].value, element['word-translate'].value);  
             }else{
                 swal({
-                    title: fnT('Error'),
-                    text: fnT('Format not supported'),
+                    title: fnT('Erro'),
+                    text: fnT('Formato não suportado'),
                     type: 'An error occurred in the process, if the problem persists please contact support'
                 });
             }
@@ -151,12 +151,12 @@ function upItemTable(dictionary_id, language_id, word){
 
 function sendDelTranslate(){
     swal({
-        title: fnT('Alert'),
-        text: fnT('Are you sure you want to remove this translation?'),
+        title: fnT('Alerta'),
+        text: fnT('Tem certeza de que deseja remover esta tradução?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     }, async function(isConfirm){
         if(isConfirm){
             const dictionary_id = $("#input-dictionary_id").val();
@@ -186,8 +186,8 @@ function sendDelTranslate(){
 
             }else{
                 swal({
-                    title: fnT('Error'),
-                    text: fnT('An error occurred in the process, if the problem persists please contact support'),
+                    title: fnT('Erro'),
+                    text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
                     type: 'error'
                 });
             }
@@ -197,12 +197,12 @@ function sendDelTranslate(){
 
 function sendSynchronize(language_id){
     swal({
-        title: fnT('Alert'),
-        text: fnT('Are you sure you want to synchronize the language file?'),
+        title: fnT('Alerta'),
+        text: fnT('Tem certeza de que deseja sincronizar o arquivo de idioma?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     }, async function(isConfirm){
         if(isConfirm){
             const payload = new FormData();
@@ -219,14 +219,14 @@ function sendSynchronize(language_id){
 
             if(data.status == 1){
                 swal({
-                    title: fnT('success'),
-                    text: fnT('The file has been successfully updated'),
+                    title: fnT('sucesso'),
+                    text: fnT('O arquivo foi atualizado com sucesso'),
                     type: 'success'
                 });
             }else{
                 swal({
-                    title: fnT('Error'),
-                    text: fnT('An error occurred in the process, if the problem persists please contact support'),
+                    title: fnT('Erro'),
+                    text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
                     type: 'error'
                 });
             }

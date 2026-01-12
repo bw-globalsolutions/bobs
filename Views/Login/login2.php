@@ -38,7 +38,7 @@
         <div id="login-wrapper" class="col-lg-6 col-12 p-3 d-flex justify-content-center align-items-center">
           <form class="bg-white  rounded-top" onsubmit="logIn(this); return false;">
             <p class="text-center mb-4"><img id="client-log" width="250" src="<?=media()?>/images/logo.png?<?=rand(1, 15)?>" alt="<?=$data['cliente']['name']?>"></p>
-            <!-- <h2 class="text-center m-4 h1"><?=$fnT('Loggin Account')?></h2> -->
+            <!-- <h2 class="text-center m-4 h1"><?=$fnT('Iniciar sessão')?></h2> -->
             <div class="form-group">
               <input class="bg-light border-0 px-3 w-100" type="email" name="email" placeholder="Email ID" required>
             </div>
@@ -47,23 +47,23 @@
             </div>
             <div class="form-group form-check mb-4">
               <input type="checkbox" class="form-check-input" onchange="showPassword()" id="ck-show-input">
-              <label class="form-check-label mr-4" for="ck-show-input"><?=$fnT('Show Password')?></label>
-              <a class="float-right ml-4" href="#" onclick="recoverPass()"><?=$fnT('forget your password ?')?></a>
+              <label class="form-check-label mr-4" for="ck-show-input"><?=$fnT('Mostrar senha')?></label>
+              <a class="float-right ml-4" href="#" onclick="recoverPass()"><?=$fnT('Esqueceu sua senha?')?></a>
             </div>
             <button id="btn-submit-login" type="submit" class="btn btn-primary btn-lg btn-block mb-4">
-              <?=$fnT('Login')?>
+              <?=$fnT('Entrar')?>
               &nbsp;&nbsp;<img class="d-none" id='lodaer' src="<?=media()?>/images/loading-white.svg" alt="Loading">
             </button>
             <p class="text-center">
-              <?=$fnT('See our privacy policy')?>: 
-              <a target="_black" href="https://www.arguilea.com/assets/docs/<?=$fnT('privacyEN')?>.pdf"><?=$fnT('here')?></a>
+              <?=$fnT('Veja nossa política de privacidade')?>: 
+              <a target="_black" href="https://www.arguilea.com/assets/docs/<?=$fnT('privacyPT')?>.pdf"><?=$fnT('aqui')?></a>
             </p>
           </form>
         </div>
         <img id="argui-log" width="110" class="position-absolute" src="<?=media()?>/images/logo_min_arguilea.png" alt="Arguilea">
         <button type="button" class="btn btn-sm btn-outline-primary position-absolute" id="btn-language" data-toggle="modal" data-target="#modal-laguage">
           <i class="fa fa-language" aria-hidden="true"></i>
-          <?=$fnT('Language')?>
+          <?=$fnT('Idioma')?>
         </button>
       </div>
     </div>
@@ -72,23 +72,24 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><?=$fnT('Language menu')?></h5>
+            <h5 class="modal-title" id="exampleModalLabel"><?=$fnT('Menu de idioma')?></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label for="login-language"><?=$fnT('Select the language')?></label>
+              <label for="login-language"><?=$fnT('Selecione o idioma')?></label>
               <select class="form-control" id="login-language" onchange="location.replace(`/login?lan=${this.value}`)">
-                <option disabled selected><?=$fnT('Select a language')?></option>
-                <option value="esp">Spanish</option>
-                <option value="eng">English</option>
+                <option disabled selected><?=$fnT('Selecione um idioma')?></option>
+                <option value="esp">Espanhol</option>
+                <option value="eng">Inglês</option>
+                <option value="por">Português</option>
               </select>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$fnT('Close')?></button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$fnT('Fechar')?></button>
           </div>
         </div>
       </div>

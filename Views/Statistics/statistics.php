@@ -16,7 +16,7 @@
             <h1>
                 <i class="fa fa-pie-chart" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             </h1>
-            <p><?=$fnT('Visualize the information collected in the form of graphs')?></p>
+            <p><?=$fnT('Visualize as informações coletadas em forma de gráficos')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-list-ol fa-lg"></i></li>
@@ -30,7 +30,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Type')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Tipo')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_type" name="list_type[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
                                 <? foreach($data['audit_types'] as $type): ?>
@@ -42,7 +42,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Period')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Período')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_period" name="list_period[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                                 <? foreach($data['periods'] as $pd_key => $pd_val): ?>
@@ -58,7 +58,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Countrys')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Países')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_countrys" name="list_countrys[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                                 <? foreach($data['countrys'] as $f): ?>
@@ -70,7 +70,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Sub franchise entity name')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Nome da entidade subfranquia')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_subF" name="list_subF[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                                 <? foreach($data['subF'] as $f): ?>
@@ -82,7 +82,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Market leader')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Líder de mercado')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_ml" name="list_ml[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                                 <? foreach($data['ml'] as $f): ?>
@@ -94,7 +94,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Store')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Loja')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_franchise" name="list_franchise[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                                 <? foreach($data['franchissees'] as $f): ?>
@@ -118,7 +118,7 @@
                     <div class="col-lg-3 my-1">
                         <button type="submit" class="btn btn-primary">
                             <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
-                            <?=$fnT('Filter')?>
+                            <?=$fnT('Filtrar')?>
                         </button>
                     </div>
                 </div>
@@ -136,21 +136,21 @@
                                 <thead>
                                     <tr>
                                         <th colspan="2"></th>
-                                        <th colspan="8" class="bg-ws"><?=$fnT('Average scores')?></th>
+                                        <th colspan="8" class="bg-ws"><?=$fnT('Pontuações médias')?></th>
                                     </tr>
                                     <tr>
-                                        <th><?=$fnT('Store')?></th>
-                                        <th><?=$fnT('Visits')?></th>
-                                        <th><?=$fnT('Auto Fails')?></th>
-                                        <th class="bg-ws"><?=$fnT('Food safety')?></th>
-                                        <th class="bg-ws"><?=$fnT('Operations excellence')?></th>
-                                        <th class="bg-ws"><?=$fnT('Overall score')?></th>
+                                        <th><?=$fnT('Loja')?></th>
+                                        <th><?=$fnT('Visitas')?></th>
+                                        <th><?=$fnT('Falhas automáticas')?></th>
+                                        <th class="bg-ws"><?=$fnT('Segurança alimentar')?></th>
+                                        <th class="bg-ws"><?=$fnT('Excelência operacional')?></th>
+                                        <th class="bg-ws"><?=$fnT('Pontuação geral')?></th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr>
-                                        <th><?=$fnT('Average')?>:</th>
+                                        <th><?=$fnT('Média')?>:</th>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -165,10 +165,10 @@
                 <div class="col-12 col-lg-6 mb-4">
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Compare with period')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Comparar com o período')?></span>
                         </div>
                         <select class="form-control selectpicker" onchange="genCompare(this.value, 'ActionPlanStatus'); this.value='';">
-                            <option value='' selected><?= $fnT('Period to compare') ?></option>
+                            <option value='' selected><?= $fnT('Período a comparar') ?></option>
                             <? foreach($data['periods'] as $key=>$period){ 
                                 $val = implode(',', array_map(function($v) {
                                     return "'" . $v . "'";
@@ -183,10 +183,10 @@
                 <div class="col-12 col-lg-6 mb-4">
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Compare with period')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Comparar com o período')?></span>
                         </div>
                         <select class="form-control selectpicker" onchange="genCompare(this.value, 'Daypart'); this.value='';">
-                            <option value='' selected><?= $fnT('Period to compare') ?></option>
+                            <option value='' selected><?= $fnT('Período a comparar') ?></option>
                             <? foreach($data['periods'] as $key=>$period){ 
                                 $val = implode(',', array_map(function($v) {
                                     return "'" . $v . "'";
@@ -200,10 +200,10 @@
                 <div class="col-12 col-lg-6 mb-4">
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Compare with period')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Comparar com o período')?></span>
                         </div>
                         <select class="form-control selectpicker" onchange="genCompare(this.value, 'Weekday'); this.value='';">
-                            <option value='' selected><?= $fnT('Period to compare') ?></option>
+                            <option value='' selected><?= $fnT('Período a comparar') ?></option>
                             <? foreach($data['periods'] as $key=>$period){ 
                                 $val = implode(',', array_map(function($v) {
                                     return "'" . $v . "'";
@@ -217,10 +217,10 @@
                 <div class="col-12 col-lg-6 mb-4">
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Compare with period')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Comparar com o período')?></span>
                         </div>
                         <select class="form-control selectpicker" onchange="genCompare(this.value, 'Duration'); this.value='';">
-                            <option value='' selected><?= $fnT('Period to compare') ?></option>
+                            <option value='' selected><?= $fnT('Período a comparar') ?></option>
                             <? foreach($data['periods'] as $key=>$period){ 
                                 $val = implode(',', array_map(function($v) {
                                     return "'" . $v . "'";
@@ -234,11 +234,11 @@
                 <div class="col-12 col-lg-6 mb-4">
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Main section')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Seção principal')?></span>
                         </div>
                         <select class="form-control selectpicker" onchange="setTopOpp(this.value)" id="select-top-opp">
-                            <option value='Food safety' selected><?=$fnT('Food safety')?></option>
-                            <option value='Operations excellence' selected><?=$fnT('Operations Excellence')?></option>
+                            <option value='Food safety' selected><?=$fnT('Segurança alimentar')?></option>
+                            <option value='Operations excellence' selected><?=$fnT('Excelência operacional')?></option>
                         </select>
                     </div>
                     <div id="chart-top-opp"></div>
@@ -246,12 +246,12 @@
                 <div class="col-12 col-lg-6 mb-4">
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Group by')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Agrupar por')?></span>
                         </div>
                         <select class="form-control selectpicker" id='select-groupby' onchange="setProgressStatus(this.value)">
-                            <option value="Country" selected><?=$fnT('Country')?></option>
-                            <option value="Quarter" selected><?=$fnT('Period')?></option>
-                            <option value="Month" selected><?=$fnT('Month')?></option>
+                            <option value="Country" selected><?=$fnT('País')?></option>
+                            <option value="Quarter" selected><?=$fnT('Período')?></option>
+                            <option value="Month" selected><?=$fnT('Mês')?></option>
                         </select>
                     </div>
                     <div id="chart-progress-status"></div>
@@ -259,16 +259,16 @@
                 <div class="col-12 col-lg-6 mb-4">
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Rating score')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Pontuação')?></span>
                         </div>
                         <select class="selectpicker form-control" onchange="setScoreTopBottom(this.value)" id="select-score-topbutton">
                             <optgroup label="Food Safety">
-                                <option value="top|Food Safety" selected><?=$fnT('Top 10')?></option>
-                                <option value="bottom|Food Safety"><?=$fnT('Bottom 10')?></option>
+                                <option value="top|Food Safety" selected><?=$fnT('10 melhores')?></option>
+                                <option value="bottom|Food Safety"><?=$fnT('10 piores')?></option>
                             </optgroup>
                             <optgroup label="Operations Excellence">
-                                <option value="top|Operations Excellence" ><?=$fnT('Top 10')?></option>
-                                <option value="bottom|Operations Excellence"><?=$fnT('Bottom 10')?></option>
+                                <option value="top|Operations Excellence" ><?=$fnT('10 melhores')?></option>
+                                <option value="bottom|Operations Excellence"><?=$fnT('10 piores')?></option>
                             </optgroup>
                         </select>
                     </div>
@@ -276,9 +276,9 @@
                         <table class="table mt-4">
                             <thead>
                                 <tr class="bg-success text-white">
-                                    <th><?= $fnT('Location number') ?></th>
-                                    <th><?= $fnT('Location name') ?></th>
-                                    <th><?= $fnT('Score') ?></th>
+                                    <th><?= $fnT('Número da localização') ?></th>
+                                    <th><?= $fnT('Nome da localização') ?></th>
+                                    <th><?= $fnT('Pontuação') ?></th>
                                 </tr>
                             </thead>
                             <tbody id="table-score-topbutton"></tbody>
@@ -291,43 +291,43 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title"><?=$fnT('Downloads')?></h5> <br>
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportAuditGeneal', '<?=$fnT('General audit report')?>')">
-                                <?=$fnT('General audit report')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportAuditGeneal', '<?=$fnT('Relatório geral de auditoria')?>')">
+                                <?=$fnT('Relatório geral de auditoria')?>
                             </button>    
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportCompletedAudits', '<?=$fnT('Completed audits')?>')">
-                                <?=$fnT('Completed audits')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportCompletedAudits', '<?=$fnT('Auditorias concluídas')?>')">
+                                <?=$fnT('Auditorias concluídas')?>
                             </button>    
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportFrequencyOpp', '<?=$fnT('Frequency of opportunities')?>')">
-                                <?=$fnT('Frequency of opportunities')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportFrequencyOpp', '<?=$fnT('Frequência de oportunidades')?>')">
+                                <?=$fnT('Frequência de oportunidades')?>
                             </button>    
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportAddQuestions', '<?=$fnT('Additional Questions')?>')">
-                                <?=$fnT('Additional Questions')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportAddQuestions', '<?=$fnT('Perguntas adicionais')?>')">
+                                <?=$fnT('Perguntas adicionais')?>
                             </button>    
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportReportOpp', '<?=$fnT('Opportunity report')?>')">
-                                <?=$fnT('Opportunity report')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportReportOpp', '<?=$fnT('Relatório de oportunidade')?>')">
+                                <?=$fnT('Relatório de oportunidade')?>
                             </button>   
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportActionPlan', '<?=$fnT('Action plan')?>')">
-                                <?=$fnT('Action plan')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportActionPlan', '<?=$fnT('Plano de ação')?>')">
+                                <?=$fnT('Plano de ação')?>
                             </button> 
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportAppealItems', '<?=$fnT('Appeals')?>')">
-                                <?=$fnT('Appeals')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportAppealItems', '<?=$fnT('Apelações')?>')">
+                                <?=$fnT('Apelações')?>
                             </button> 
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportOppPerSection', '<?=$fnT('Opp per section')?>')">
-                                <?=$fnT('Opp per section')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportOppPerSection', '<?=$fnT('Op por seção')?>')">
+                                <?=$fnT('Op por seção')?>
                             </button> 
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportOppPerAuditor', '<?=$fnT('Opp per auditor')?>')">
-                                <?=$fnT('Opp per auditor')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportOppPerAuditor', '<?=$fnT('Op por auditor')?>')">
+                                <?=$fnT('Op por auditor')?>
                             </button> 
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportAuditorSurvey', '<?=$fnT('Auditor survey')?>')">
-                                <?=$fnT('Auditor survey')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportAuditorSurvey', '<?=$fnT('Pesquisa do auditor')?>')">
+                                <?=$fnT('Pesquisa do auditor')?>
                             </button>
                             <? if(in_array($_SESSION['userData']['role']['id'], [1])): ?>
                             <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportCerttis', '<?=$fnT('Certtis')?>')">
                                 <?=$fnT('Certtis')?>
                             </button>
                             <? endif ?>
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportPending', '<?=$fnT('Visit Pending')?>')">
-                                <?=$fnT('Visit Pending')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportPending', '<?=$fnT('Visita pendente')?>')">
+                                <?=$fnT('Visita pendente')?>
                             </button>  
 
 
@@ -336,24 +336,24 @@
                      
 
 
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportUserPass', '<?=$fnT('Restaurants Without Access')?>')">
-                                <?=$fnT('Restaurants Without Access')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportUserPass', '<?=$fnT('Restaurantes sem acesso')?>')">
+                                <?=$fnT('Restaurantes sem acesso')?>
                             </button> 
-                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportUserLogin', '<?=$fnT('Reporte login')?>')">
-                                <?=$fnT('Reporte login')?>
+                            <button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportUserLogin', '<?=$fnT('Relatório de login')?>')">
+                                <?=$fnT('Relatório de login')?>
                             </button>
-                            <!--<button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportLayoutReport', '<?=$fnT('Reporte layout')?>')">
-                                <?=$fnT('Reporte layout')?>
+                            <!--<button class="btn btn-primary mr-2 mb-2" onclick="getExportable('exportLayoutReport', '<?=$fnT('Relatório de layout')?>')">
+                                <?=$fnT('Relatório de layout')?>
                             </button>-->
                             
 
                             <a class="btn btn-primary mr-2 mb-2" href="<?=base_url()?>/usuariosTienda">
-                                <span class="app-menu__label"><?=$fnT('Reporte usuarios')?></span>
+                                <span class="app-menu__label"><?=$fnT('Relatório de usuários')?></span>
                             </a>
                             <? endif ?>
 
                             <button class="btn btn-success mr-2 mb-2" onclick="window.open('<?= base_url() ?>/audits/auditPrint/M3lONXlzczgvSW1oa0xYc0NYWU13Zz09', '_blank')">
-                                <?=$fnT('Print checklist')?>
+                                <?=$fnT('Imprimir checklist')?>
                             </button> 
                         </div>
                     </div>

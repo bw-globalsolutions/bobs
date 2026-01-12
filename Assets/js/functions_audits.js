@@ -142,12 +142,12 @@ function generarAutoEval(idTienda){
     $('#selectSE').selectpicker('val', '');
 
     swal({
-        title: fnT("Self-Evaluation"),
-        text: fnT("Do you really want to continue?"),
+        title: fnT("Autoavaliação"),
+        text: fnT("Deseja realmente continuar?"),
         type: "warning",
         showCancelButton: true,
-        confirmButtonText: fnT("Yes, accept"),
-        cancelButtonText: fnT("No, cancel"),
+        confirmButtonText: fnT("Sim, aceito"),
+        cancelButtonText: fnT("Não, cancelar"),
         closeOnConfirm: false,
         closeOnCancel: true
     }, function(isConfirm){
@@ -172,7 +172,7 @@ function generarAutoEval(idTienda){
                                 title: "",
                                 text: objData.msg,
                                 type: "success",
-                                confirmButtonText: fnT("Accept"),
+                                confirmButtonText: fnT("Aceitar"),
                                 closeOnConfirm: false,
                             }, function(isConfirm){
                                 if(isConfirm){

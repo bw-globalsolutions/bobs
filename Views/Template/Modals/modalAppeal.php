@@ -4,7 +4,7 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header text-center headerRegister">
-        <h5 class="modal-title" id="titleModal"><?=$fnT('New appeal')?></h5>
+        <h5 class="modal-title" id="titleModal"><?=$fnT('Nova apelação')?></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -15,7 +15,7 @@
                 <input type="hidden" id="id_audit" name="id_audit" value="">
                 <div class="form-row justify-content-center">
                   <div class="form-group col-md-10">
-                    <label for="listTiendas"><?=$fnT('Audit')?></label>
+                    <label for="listTiendas"><?=$fnT('Auditoria')?></label>
                     <select class="form-control selectpicker" id="listAudits" name="listAudits" onChange="cargarOportunidadesAll(this.value)" data-actions-box="true" data-live-search="true">
                     </select>
                   </div>
@@ -31,9 +31,9 @@
                                         <table class="table table-hover table-bordered" id="tableAppeals">
                                         <thead>
                                             <tr>
-                                                <th><?=$fnT('Id')?></th>
-                                                <th><?=$fnT('Opportunity')?></th>
-                                                <th><?=$fnT('Appeal')?></th>
+                                                <th><?=$fnT('ID')?></th>
+                                                <th><?=$fnT('Oportunidade')?></th>
+                                                <th><?=$fnT('Apelação')?></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -44,7 +44,7 @@
                                 <div class="form-row justify-content-center">
                                     <div class="form-group col-md-12 text-center">
                                         <input type="hidden" id="idAuditDT" name="idAuditDT" value="">
-                                        <button id="btnFormAddAllAppeals" class="btn btn-lg btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Send appeals')?></button>
+                                        <button id="btnFormAddAllAppeals" class="btn btn-lg btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Enviar apelações')?></button>
                                     </div>
                                 </div>
                             </form>
@@ -64,7 +64,7 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header headerUpdate bg-success">
-        <h5 class="modal-title text-white" id="titleModal"><?=$fnT('Appeal detail')?></h5>
+        <h5 class="modal-title text-white" id="titleModal"><?=$fnT('Detalhe da apelação')?></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -82,9 +82,9 @@
                               <table class="table table-hover table-bordered" id="tableAppealsUpd">
                               <thead>
                                   <tr>
-                                      <th><?=$fnT('Id')?></th>
-                                      <th><?=$fnT('Appeal')?></th>
-                                      <th><?=$fnT('Decision')?></th>
+                                      <th><?=$fnT('ID')?></th>
+                                      <th><?=$fnT('Apelação')?></th>
+                                      <th><?=$fnT('Decisão')?></th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -95,7 +95,7 @@
                       <div class="form-row justify-content-center">
                           <div class="form-group col-md-12 text-center">
                               <input type="hidden" id="id_appeal_upd" name="id_appeal_upd" value="">
-                              <button id="btnFormAddAllAppeals" class="btn btn-lg  btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Save decisions')?></button>
+                              <button id="btnFormAddAllAppeals" class="btn btn-lg  btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Salvar decisões')?></button>
                           </div>
                       </div>
                     </form>

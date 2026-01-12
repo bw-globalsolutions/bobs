@@ -16,7 +16,7 @@
                             <div class="col-md-6 col-lg-4" data-toggle="collapse" data-target="#collapseLocations" aria-expanded="true" aria-controls="collapseLocations">
                                 <div class="widget-small primary coloured-icon cr-pointer"><i class="icon fa fa-undo fa-3x"></i>
                                     <div class="info">
-                                        <h4><?= $fnT('Locations') ?></h4>
+                                        <h4><?= $fnT('Localizações') ?></h4>
                                         <p><b id="counter-locations"></b></p>
                                     </div>
                                 </div>
@@ -24,7 +24,7 @@
                             <div class="col-md-6 col-lg-4" data-toggle="collapse" data-target="#collapseErrors" aria-expanded="false" aria-controls="collapseErrors">
                                 <div class="widget-small danger coloured-icon cr-pointer"><i class="icon fa fa-exclamation-triangle fa-3x"></i>
                                     <div class="info">
-                                        <h4><?= $fnT('Errors') ?></h4>
+                                        <h4><?= $fnT('Erros') ?></h4>
                                         <p><b id="counter-errors"></b></p>
                                     </div>
                                 </div>
@@ -32,7 +32,7 @@
                             <div class="col-md-6 col-lg-4" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
                                 <div class="widget-small success coloured-icon cr-pointer"><i class="icon fa fa-users fa-3x"></i>
                                     <div class="info">
-                                        <h4><?= $fnT('Users') ?></h4>
+                                        <h4><?= $fnT('Usuários') ?></h4>
                                         <p><b id="counter-users"></b></p>
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@
                         </div>                     
                     </div>
                     <div class="tile-footer">
-                        <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Closed')?></button>
+                        <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Fechado')?></button>
                     </div>
                 </div>
             </div>

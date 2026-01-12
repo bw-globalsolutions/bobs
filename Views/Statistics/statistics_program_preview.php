@@ -16,7 +16,7 @@
             <h1>
                 <i class="fa fa-pie-chart" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             </h1>
-            <p><?=$fnT('View the progress of the program')?></p>
+            <p><?=$fnT('Ver o progresso do programa')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-list-ol fa-lg"></i></li>
@@ -30,7 +30,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Type')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Tipo')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_type" name="list_type[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
                                 <? foreach($data['audit_types'] as $type): ?>
@@ -42,7 +42,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Period')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Período')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_period" name="list_period" required>
                                 <? foreach($data['periods'] as $period): ?>
@@ -54,7 +54,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Franchise')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Franquia')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_franchise" name="list_franchise[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                                 <? foreach($data['franchissees'] as $f): ?>
@@ -78,7 +78,7 @@
                     <div class="col-lg-3 my-1">
                         <button type="submit" class="btn btn-primary float-right">
                             <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
-                            <?=$fnT('Filter')?>
+                            <?=$fnT('Filtrar')?>
                         </button>
                     </div>
                 </div>

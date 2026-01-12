@@ -15,43 +15,43 @@
                         <form id="form-location" onsubmit="addLocation(this); return false;">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-number"><?= $fnT('Number') ?>*</label>
+                                    <label for="input-number"><?= $fnT('Número') ?>*</label>
                                     <input type="text" class="input-s1 form-control" id="input-number" name="number" required>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-name"><?= $fnT('Name') ?>*</label>
+                                    <label for="input-name"><?= $fnT('Nome') ?>*</label>
                                     <input type="text" class="input-s1 form-control" id="input-name" name="name" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-phone"><?= $fnT('Phone number') ?></label>
+                                    <label for="input-phone"><?= $fnT('Número de telefone') ?></label>
                                     <input type="text" class="input-s1 form-control" id="input-phone" name="phone">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="input-status"><?= $fnT('Status') ?>*</label>
                                     <select class="input-s1 form-control" id="input-status" name="status" required>
-                                        <option value="Active"><?= $fnT('Active') ?></option>
-                                        <option value="Inactive"><?= $fnT('Inactive') ?></option>
+                                        <option value="Active"><?= $fnT('Ativo') ?></option>
+                                        <option value="Inactive"><?= $fnT('Inativo') ?></option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-status"><?= $fnT('Shop type') ?>*</label>
+                                    <label for="input-status"><?= $fnT('Tipo de loja') ?>*</label>
                                     <select class="input-s1 form-control" id="input-shop_type" name="shop_type" required>
                                         <option value="Corporativa"><?= $fnT('Corporativa') ?></option>
-                                        <option value="Franquicia"><?= $fnT('Franquicia') ?></option>
+                                        <option value="Franquicia"><?= $fnT('Franquia') ?></option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-email"><?= $fnT('Email') ?>*</label>
+                                    <label for="input-email"><?= $fnT('E-mail') ?>*</label>
                                     <input type="text" class="input-s1 form-control" id="input-email" name="email" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-country"><?= $fnT('Country') ?>*</label>
+                                    <label for="input-country"><?= $fnT('País') ?>*</label>
                                     <select class="input-s1 form-control" id="input-country" name="country" required>
                                         <option value="Mexico">Mexico</option>
 
@@ -65,21 +65,21 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-city"><?= $fnT('City') ?></label>
+                                    <label for="input-city"><?= $fnT('Cidade') ?></label>
                                     <input type="text" class="input-s1 form-control" id="input-city" name="city">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="input-address"><?= $fnT('Address') ?>*</label>
+                                <label for="input-address"><?= $fnT('Endereço') ?>*</label>
                                 <input type="text" class="input-s1 form-control" id="input-address" name="address_1" required>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-statecode"><?= $fnT('State code') ?></label>
+                                    <label for="input-statecode"><?= $fnT('Código do estado') ?></label>
                                     <input type="text" class="input-s1 form-control" id="input-statecode" name="state_code">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-statename"><?= $fnT('State name') ?></label>
+                                    <label for="input-statename"><?= $fnT('Nome do estado') ?></label>
                                     <input type="text" class="input-s1 form-control" id="input-statename" name="state_name">
                                 </div>
                             </div>
@@ -94,8 +94,8 @@
                         </form>
                     </div>
                     <div class="tile-footer">
-                        <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?= $fnT('Closed') ?></button>
-                        <button type="submit" class="btn-s1 btn btn-primary" form="form-location"><?= $fnT('Save changes') ?></button>
+                        <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?= $fnT('Fechado') ?></button>
+                        <button type="submit" class="btn-s1 btn btn-primary" form="form-location"><?= $fnT('Salvar alterações') ?></button>
                     </div>
                 </div>
             </div>

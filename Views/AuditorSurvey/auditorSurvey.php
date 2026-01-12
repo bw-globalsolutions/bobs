@@ -60,7 +60,7 @@
                             <? endforeach ?>
                             
                             <!--<div class="card mb-3">
-                                <h5 class="card-header bg-ws"><?=$fnT('AUDITOR COMMENT')?></h5>
+                                <h5 class="card-header bg-ws"><?=$fnT('COMENTÁRIO DO AUDITOR')?></h5>
                                 <div class="card-body p-2">        
                                     <textarea class="form-control comentario_auditor" name="comentario_auditor" ><?=$q['answer']?></textarea>
                                 </div>
@@ -71,7 +71,7 @@
                         </div>
                         <div class="col-lg-12">
                             <? if($data['ok']): ?>
-                                <button id="btnFormAuditorSurvey" class="btnFormAuditorSurvey float-right btn btn-primary" type="button" value="Button"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Send answers')?></button>
+                                <button id="btnFormAuditorSurvey" class="btnFormAuditorSurvey float-right btn btn-primary" type="button" value="Button"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Enviar respostas')?></button>
                             <? endif ?>
                         </div>
                     </div>

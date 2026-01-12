@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?=$fnT('Add Translate')?></h5>
+                <h5 class="modal-title"><?=$fnT('Adicionar tradução')?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -12,7 +12,7 @@
         <div class="modal-body">
             <form id="add-translate-form" onsubmit="sendTranslate(this); return false;">
                 <div class="form-group">
-                    <label for="input-word-translate"><?= $fnT('Translated to')?> <span id="to-language"></span>: <b id="word-translate"></b></label>
+                    <label for="input-word-translate"><?= $fnT('Traduzido para')?> <span id="to-language"></span>: <b id="word-translate"></b></label>
                     <input type="text" class="form-control" name="word-translate" id="input-word-translate" required <?$data['permission']['u']? '' : 'disabled' ?>>
                 </div>
                 <input type="text" class="d-none" name="dictionary_id" id="input-dictionary_id">
@@ -23,13 +23,13 @@
             <div class="modal-footer d-flex justify-content-between">
                 <div>
                     <? if($data['permission']['d']): ?>
-                        <button type="button" class="btn btn-danger" id="btn-remove" onclick="sendDelTranslate()"><?=$fnT('Remove')?></button>
+                        <button type="button" class="btn btn-danger" id="btn-remove" onclick="sendDelTranslate()"><?=$fnT('Remover')?></button>
                     <? endif ?>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$fnT('Close')?></button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$fnT('Fechar')?></button>
                     <? if($data['permission']['u']): ?>
-                        <button type="submit" class="btn btn-primary" form="add-translate-form"><?=$fnT('Save changes')?></button>
+                        <button type="submit" class="btn btn-primary" form="add-translate-form"><?=$fnT('Salvar alterações')?></button>
                     <? endif ?>
                 </div>
             </div>

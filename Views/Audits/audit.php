@@ -26,7 +26,7 @@
             <h1>
                 <i class="fa fa-list-ol" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             </h1>
-            <p><?=$fnT('Review the particular content of an audit')?></p>
+            <p><?=$fnT('Revisar o conteúdo específico de uma auditoria')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -57,7 +57,7 @@
                             <? foreach($data['question'] as $q): ?>
                                 <div data-snumber="<?=$q['snumber']?>" class="question-item">
                                     <div class="card-header d-flex justify-content-between">
-                                        <span data-na="<?=$q['na']?>" <?= $q['na'] && !$canUpdate? 'title="' . $fnT('This question is disabled') . '"' : "onclick=toggleQuestion('{$q['prefix']}')"  ?> style="cursor: pointer" id="bpicklist<?=$q['prefix']?>">
+                                        <span data-na="<?=$q['na']?>" <?= $q['na'] && !$canUpdate? 'title="' . $fnT('Esta pergunta está desativada') . '"' : "onclick=toggleQuestion('{$q['prefix']}')"  ?> style="cursor: pointer" id="bpicklist<?=$q['prefix']?>">
                                             <span class="badge badge-secondary"><?=$q['prefix']?></span> - 
                                             <? if(!empty($q['priority'])): ?>
                                                 <b class="<?=$q['priority']=='Critical'? 'text-danger' : '' ?>"><?=$fnT($q['priority'])?>:</b>&nbsp;
@@ -95,7 +95,7 @@
                                                 <? endforeach ?>
                                                 <? if($canUpdate && ON_NA): ?>
                                                     <li class="list-group-item list-group-item-action list-group-item-warning cr-pointer" onclick="sendInsertNA(<?=$q['snumber']?>, '<?=$q['prefix']?>', <?=$q['points']?>)">
-                                                        <b><?=$fnT('Mark question as not applicable')?></b>
+                                                        <b><?=$fnT('Marcar pergunta como não aplicável')?></b>
                                                     </li>
                                                 <? endif; ?>
                                             </ul>

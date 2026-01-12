@@ -97,8 +97,8 @@ function uploadPic(element, question_id){
             });
         }else{
             swal({
-                title: fnT('Error'),
-                text: fnT('Format not supported'),
+                title: fnT('Erro'),
+                text: fnT('Formato não suportado'),
                 type: 'error'
             });
         }
@@ -114,12 +114,12 @@ function dropImg(question_id){
 function editQuestion(question_id){
     if(editRestricted){
         swal({
-            title: fnT('Alert'),
-            text: fnT('Do you want to activate the editing mode?'),
+            title: fnT('Alerta'),
+            text: fnT('Deseja ativar o modo de edição?'),
             type: 'warning',
             showCancelButton: true,
-            confirmButtonText: fnT('Yes'),
-            cancelButtonText: fnT('No')
+            confirmButtonText: fnT('Sim'),
+            cancelButtonText: fnT('Não')
         }, function(isConfirm){
             if(isConfirm){
                 $(`#form-question${question_id} .control`).removeAttr('disabled');
@@ -129,8 +129,8 @@ function editQuestion(question_id){
         });
     } else{
         swal({
-            title: fnT('Error'),
-            text: fnT('It is not possible to edit a finished audit'),
+            title: fnT('Erro'),
+            text: fnT('Não é possível editar uma auditoria finalizada'),
             type: 'error'
         });
     }

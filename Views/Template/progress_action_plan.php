@@ -20,14 +20,14 @@
                                 $colorT = 'var(--color8)';
                             } ?>
                             <div style="display:flex; flex-direction:column; align-items:center;">
-                                <h2><?=$fnT('Total opportunities')?>: <?=$dataP['totalOpps']?></h2>
+                                <h2><?=$fnT('Total de oportunidades')?>: <?=$dataP['totalOpps']?></h2>
                                 <b><span style="font-size:<?=$size?>; color:<?=$colorT?>"><?=$totalFinished?></span><span style="font-size:60px;">/<?=$dataP['totalOpps']?></span></b>
                             </div>
                             <canvas id="myPieChart"></canvas>
                                             <script>
 
                                                 dataG = {
-                                                            labels: [fnT('Pending'), fnT('In Review'), fnT('Completed')],
+                                                            labels: [fnT('Pendente'), fnT('Em revisão'), fnT('Concluído')],
                                                             datasets: [{
                                                                 data: [0, 0, 0],
                                                                 backgroundColor: [
@@ -78,12 +78,12 @@
                                             </script>
                             <!--<li class="list-group-item">
                                 <div class="progress">
-                                    <div class="progress-bar bg-warning text-dark font-weight-bold" role="progressbar" style="width: <?=$dataP['totalPending']?>%" aria-valuenow="<?=$dataP['totalPending']?>" aria-valuemin="0" aria-valuemax="100"><?=$dataP['totalPending']?>% <?= $fnT('Pending') ?></div>
+                                    <div class="progress-bar bg-warning text-dark font-weight-bold" role="progressbar" style="width: <?=$dataP['totalPending']?>%" aria-valuenow="<?=$dataP['totalPending']?>" aria-valuemin="0" aria-valuemax="100"><?=$dataP['totalPending']?>% <?= $fnT('Pendente') ?></div>
                                 </div>
                             </li>
                             <li class="list-group-item">
                                 <div class="progress">
-                                    <div class="progress-bar bg-info text-dark font-weight-bold" role="progressbar" style="width: <?=$dataP['totalReview']?>%" aria-valuenow="<?=$dataP['totalReview']?>" aria-valuemin="0" aria-valuemax="100"><?=$dataP['totalReview']?>% <?= $fnT('In process') ?></div>
+                                    <div class="progress-bar bg-info text-dark font-weight-bold" role="progressbar" style="width: <?=$dataP['totalReview']?>%" aria-valuenow="<?=$dataP['totalReview']?>" aria-valuemin="0" aria-valuemax="100"><?=$dataP['totalReview']?>% <?= $fnT('Em processo') ?></div>
                                 </div>
                             </li>-->
                             <!--<li class="list-group-item">
@@ -93,7 +93,7 @@
                             </li>-->
                             <!--<li class="list-group-item">
                                 <div class="progress">
-                                    <div class="progress-bar bg-success text-dark font-weight-bold" role="progressbar" style="width: <?=$dataP['totalFinished']?>%" aria-valuenow="<?=$dataP['totalFinished']?>" aria-valuemin="0" aria-valuemax="100"><?=$dataP['totalFinished']?>% <?= $fnT('Finished') ?></div>
+                                    <div class="progress-bar bg-success text-dark font-weight-bold" role="progressbar" style="width: <?=$dataP['totalFinished']?>%" aria-valuenow="<?=$dataP['totalFinished']?>" aria-valuemin="0" aria-valuemax="100"><?=$dataP['totalFinished']?>% <?= $fnT('Finalizado') ?></div>
                                 </div>
                             </li>-->
                             <!--<li class="list-group-item">
@@ -103,7 +103,7 @@
                             </li>-->
                             <!--<li class="list-group-item">
                                 <div class="progress">
-                                    <div class="progress-bar bg-primary text-dark font-weight-bold" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><?= $fnT('Total opportunities') ?> (<?=$dataP['totalOpps']?>)</div>
+                                    <div class="progress-bar bg-primary text-dark font-weight-bold" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><?= $fnT('Total de oportunidades') ?> (<?=$dataP['totalOpps']?>)</div>
                                 </div>
                             </li>-->
                         </ul>

@@ -1,11 +1,11 @@
 const moveAuditStatus = (element) => {
     swal({
-        title: fnT('Alert'),
-        text: fnT('Are you sure you want to move the status of this audit, this action will not send emails?'),
+        title: fnT('Alerta'),
+        text: fnT('Tem certeza de que deseja mover o status desta auditoria? Esta ação não enviará e-mails.'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     }, function(isConfirm){
         if(isConfirm){
             $('#divLoading').css('display', 'flex');
@@ -19,8 +19,8 @@ const moveAuditStatus = (element) => {
                 console.log(dat);
                 if(dat.status != 1){
                     swal({
-                        title: fnT('Error'),
-                        text: fnT('An error has occurred'),
+                        title: fnT('Erro'),
+                        text: fnT('Ocorreu um erro'),
                         type: 'error'
                     });
                 }else{
@@ -35,12 +35,12 @@ const moveAuditStatus = (element) => {
 
 const moveAuditRound = (element) => {
     swal({
-        title: fnT('Alert'),
-        text: fnT('Are you sure you want to move this audit round?'),
+        title: fnT('Alerta'),
+        text: fnT('Tem certeza de que deseja mudar a rodada desta auditoria?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     }, function(isConfirm){
         if(isConfirm){
             $('#divLoading').css('display', 'flex');
@@ -54,8 +54,8 @@ const moveAuditRound = (element) => {
                 console.log(dat);
                 if(dat.status != 1){
                     swal({
-                        title: fnT('Error'),
-                        text: fnT('An error has occurred'),
+                        title: fnT('Erro'),
+                        text: fnT('Ocorreu um erro'),
                         type: 'error'
                     });
                 }else{
@@ -142,8 +142,8 @@ const setSignaturePic = async (element) => {
     }
 
     swal({
-        title: fnT('Error'),
-        text: fnT('An error has occurred'),
+        title: fnT('Erro'),
+        text: fnT('Ocorreu um erro'),
         type: 'error'
     });
     document.getElementById('signature_pic').value = '';
@@ -179,8 +179,8 @@ const setFrontDoorPic = async (element) => {
     }
 
     swal({
-        title: fnT('Error'),
-        text: fnT('An error has occurred'),
+        title: fnT('Erro'),
+        text: fnT('Ocorreu um erro'),
         type: 'error'
     });
     document.getElementById('front_door_pic').value = '';

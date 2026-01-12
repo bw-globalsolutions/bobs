@@ -15,43 +15,43 @@
                         <form id="form-location" onsubmit="sendLocation(this); return false;">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-number"><?= $fnT('Number') ?>*</label>
+                                    <label for="input-number"><?= $fnT('Número') ?>*</label>
                                     <input type="text" class="form-control" id="input-number" name="number" readonly>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-name"><?= $fnT('Name') ?>*</label>
+                                    <label for="input-name"><?= $fnT('Nome') ?>*</label>
                                     <input type="text" class="form-control" id="input-name" name="name" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-phone"><?= $fnT('Phone number') ?></label>
+                                    <label for="input-phone"><?= $fnT('Número de telefone') ?></label>
                                     <input type="text" class="form-control" id="input-phone" name="phone">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="input-status"><?= $fnT('Status') ?>*</label>
                                     <select class="form-control" id="input-status" name="status" required>
-                                        <option value="1"><?= $fnT('Open') ?></option>
-                                        <option value="0"><?= $fnT('Closed') ?></option>
+                                        <option value="1"><?= $fnT('Aberto') ?></option>
+                                        <option value="0"><?= $fnT('Fechado') ?></option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-status"><?= $fnT('Shop type') ?>*</label>
+                                    <label for="input-status"><?= $fnT('Tipo de loja') ?>*</label>
                                     <select class="form-control" id="input-shop_type" name="shop_type" required>
-                                        <option value="Franchise"><?= $fnT('Franchise') ?></option>
-                                        <option value="Corporative"><?= $fnT('Corporative') ?></option>
+                                        <option value="Franchise"><?= $fnT('Franquia') ?></option>
+                                        <option value="Corporative"><?= $fnT('Corporativo') ?></option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-email"><?= $fnT('Email') ?>*</label>
+                                    <label for="input-email"><?= $fnT('E-mail') ?>*</label>
                                     <input type="text" class="form-control" id="input-email" name="email" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-country"><?= $fnT('Country') ?>*</label>
+                                    <label for="input-country"><?= $fnT('País') ?>*</label>
                                     <select class="form-control" id="input-country" name="country" required>
                                         <? foreach($data['countries'] as $country): ?>
                                             <option value="<?= $country ?>"><?= $country ?></option>
@@ -59,21 +59,21 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-city"><?= $fnT('City') ?></label>
+                                    <label for="input-city"><?= $fnT('Cidade') ?></label>
                                     <input type="text" class="form-control" id="input-city" name="city">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="input-address"><?= $fnT('Address') ?>*</label>
+                                <label for="input-address"><?= $fnT('Endereço') ?>*</label>
                                 <input type="text" class="form-control" id="input-address" name="address_1" required>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-statecode"><?= $fnT('State code') ?></label>
+                                    <label for="input-statecode"><?= $fnT('Código do estado') ?></label>
                                     <input type="text" class="form-control" id="input-statecode" name="state_code">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-statename"><?= $fnT('State name') ?></label>
+                                    <label for="input-statename"><?= $fnT('Nome do estado') ?></label>
                                     <input type="text" class="form-control" id="input-statename" name="state_name">
                                 </div>
                             </div>
@@ -87,8 +87,8 @@
                         </form>
                     </div>
                     <div class="tile-footer">
-                        <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Closed')?></button>
-                        <button onclick="sendLocation(1);" class="btn btn-primary"><?=$fnT('Save changes')?></button>
+                        <button class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i><?=$fnT('Fechado')?></button>
+                        <button onclick="sendLocation(1);" class="btn btn-primary"><?=$fnT('Salvar alterações')?></button>
                     </div>
                 </div>
             </div>

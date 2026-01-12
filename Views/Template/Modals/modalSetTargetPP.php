@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?=$fnT('Set target')?></h5>
+                <h5 class="modal-title"><?=$fnT('Definir meta')?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -13,7 +13,7 @@
             <form id="set-target-form" onsubmit="sendTarget(this); return false;">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <label class="input-group-text" for="input-country"><?= $fnT('Country') ?></label>
+                        <label class="input-group-text" for="input-country"><?= $fnT('País') ?></label>
                     </div>
                     <select class="custom-select" id="input-country" name="country" onchange="getTarget()" required>
                         <option value="" disabled selected></option>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <label class="input-group-text" for="input-period"><?= $fnT('Period') ?></label>
+                        <label class="input-group-text" for="input-period"><?= $fnT('Período') ?></label>
                     </div>
                     <select class="custom-select" id="input-period" name="period" onchange="getTarget()" required>
                         <option value="" disabled selected></option>
@@ -35,15 +35,15 @@
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <label class="input-group-text" for="input-target"><?= $fnT('Target') ?></label>
+                        <label class="input-group-text" for="input-target"><?= $fnT('Meta') ?></label>
                     </div>
                     <input type="number" class="form-control" id="input-target" name="target" required>
                 </div>
             </form>
         </div>
             <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$fnT('Close')?></button>
-                <button type="submit" id="btn-send-target" class="btn btn-primary" form="set-target-form" disabled><?=$fnT('Save changes')?></button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$fnT('Fechar')?></button>
+                <button type="submit" id="btn-send-target" class="btn btn-primary" form="set-target-form" disabled><?=$fnT('Salvar alterações')?></button>
             </div>
         </div>
     </div>

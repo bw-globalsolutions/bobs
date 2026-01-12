@@ -169,17 +169,17 @@ class Appeals extends Controllers{
 
 						$datas['clarifications'] .= 
 							'<div class="mb-2" style="border-left: 8px solid '.$border.'; padding: 5px; border-top: 1px solid #CCC; border-right: 1px solid #CCC; border-bottom: 1px solid #CCC;">
-								<div class="bg-info p-3 text-center text-white">'.$fnT("Opportunity").'</div>
+								<div class="bg-info p-3 text-center text-white">'.$fnT("Oportunidade").'</div>
 								<b><span class="badge badge-secondary">'.$item['question_prefix'].'</span> '.$item['eng'].'</b>
 								<br><b><span class="text-primary"><i class="fa fa-comments"></i>  '.$item['auditor_comment'].'</span></b>
 								<br><div class="d-flex flex-wrap">'.$files.'</div>
-								<div class="bg-info p-3 text-center text-white"><i class="fa fa-exclamation-triangle"></i> '.$fnT("Appeal").'</div>
+								<div class="bg-info p-3 text-center text-white"><i class="fa fa-exclamation-triangle"></i> '.$fnT("Apelação").'</div>
 								<div class="text-center">
 									<h3><b><span class="badge badge-'.$badgeDes.'">'.$item['decision_result'].'</span></b></h3>
-									<br><b style="color:red !important;">GM '.$fnT("Comment").'</b>
+									<br><b style="color:red !important;">GM '.$fnT("Comentário").'</b>
 									<br><b style="color:red !important;">'.$item['author_comment'].'</b>
 									<hr class="border border-primary">
-									<b style="color:#F18E07 !important;">Decision '.$fnT("Comment").'</b>
+									<b style="color:#F18E07 !important;">Decision '.$fnT("Comentário").'</b>
 									<br><b style="color:#F18E07 !important;">'.$item['decision_comment'].'</b>
 									<hr class="border border-primary">
 									<div class="d-flex flex-wrap">'.$filesAppeals.'</div>
@@ -193,10 +193,10 @@ class Appeals extends Controllers{
 						$datas['id'] = $values['id'];
 						$datas['store'] = '<b>'.$values['location']['number'].' - '.$values['location']['name'].'</b>
 											<br><b>'.$values['gralInfo']['round_name'].'</b>
-											<br><b>'.$fnT("Region").': '.$values['gralInfo']['region'].'</b>
-											<br><b>'.$fnT("Date of visit").': '.date("Y-m-d", strtotime( $values['gralInfo']['date_visit'] )).'</b>
-											<br><b>'.$fnT("Audit type").': '.$fnT($values['gralInfo']['type']).'</b>
-											<br><b><a href="'.getURLReport($values['audit_id'], $values['gralInfo']['report_layout_id']).'" target="_blank">'.$fnT("View report").'</a>';
+											<br><b>'.$fnT("Região").': '.$values['gralInfo']['region'].'</b>
+											<br><b>'.$fnT("Data da visita").': '.date("Y-m-d", strtotime( $values['gralInfo']['date_visit'] )).'</b>
+											<br><b>'.$fnT("Tipo de auditoria").': '.$fnT($values['gralInfo']['type']).'</b>
+											<br><b><a href="'.getURLReport($values['audit_id'], $values['gralInfo']['report_layout_id']).'" target="_blank">'.$fnT("Ver relatório").'</a>';
 						//$datas['clarifications'] = '<div class="mb-2" style="border-left: 5px solid #28A745; padding: 5px; border-top: 1px solid #CCC; border-right: 1px solid #CCC; border-bottom: 1px solid #CCC;">'.$values['items'][0]['auditor_comment'].'<br>'.$values['items'][0]['author_comment'].'</div>';
 						$datas['date'] = date("Y-m-d", strtotime( $values['date_start'] ));
 						// $fechaAppeal= new DateTime(date("Y-m-d", strtotime( $values['date_start'] )));
@@ -206,11 +206,11 @@ class Appeals extends Controllers{
 						$strUsers = "";
 		
 						if( in_array( $_SESSION['userData']['role']['id'], [1, 2] )) {
-							$strUsers = '<br><b>'.$fnT("Author").': <i class="fa fa-user"></i>  '.$values['author'].'</b>
+							$strUsers = '<br><b>'.$fnT("Autor").': <i class="fa fa-user"></i>  '.$values['author'].'</b>
 										<br><b>'.$fnT("MBP").': <i class="fa fa-user"></i>  '.$values['owner'].'</b>
 										<br><b>'.$fnT("RBD").': <i class="fa fa-user"></i>  '.$values['user_desicion'].'</b>';
 						} else if( in_array( $_SESSION['userData']['role']['id'], [10] )) {
-							$strUsers = '<br><b>'.$fnT("Author").': <i class="fa fa-user"></i>  '.$values['author'].'</b>';
+							$strUsers = '<br><b>'.$fnT("Autor").': <i class="fa fa-user"></i>  '.$values['author'].'</b>';
 						} else if( in_array( $_SESSION['userData']['role']['id'], [14, 19, 20, 21] )) {
 							$strUsers = '<br><b>'.$fnT("MBP").': <i class="fa fa-user"></i>  '.$values['owner'].'</b>';
 						} else if( in_array( $_SESSION['userData']['role']['id'], [14, 19, 20, 21] )) {
@@ -219,10 +219,10 @@ class Appeals extends Controllers{
 		
 						$datas['options'] = 
 							'<b><span class="badge badge-info">'.$fnT( $values['status'] ).'</span></b>
-							<br><b><i class="fa fa-calendar"></i> '.$fnT("Date start").' '.date("Y-m-d", strtotime( $values['date_start'] )).'</b>'.$strUsers.'
+							<br><b><i class="fa fa-calendar"></i> '.$fnT("Data de início").' '.date("Y-m-d", strtotime( $values['date_start'] )).'</b>'.$strUsers.'
 							
-							<br><button class="btn btn-warning btnViewDetails" '.$disabled.' onclick="openModalUpd('.$values['id'].')" title="'.$fnT("Details").'">'.$fnT("Details").'</button><br>';
-						//dep ($datas); <br><b><i class="fa fa-calendar"></i> '.$fnT("Date finished").' '.date("Y-m-d", strtotime( $values['date_completed'] )).'</b>
+							<br><button class="btn btn-warning btnViewDetails" '.$disabled.' onclick="openModalUpd('.$values['id'].')" title="'.$fnT("Detalhes").'">'.$fnT("Detalhes").'</button><br>';
+						//dep ($datas); <br><b><i class="fa fa-calendar"></i> '.$fnT("Data de término").' '.date("Y-m-d", strtotime( $values['date_completed'] )).'</b>
 						array_push($dataAppeals,$datas);
 						//dep ($dataAppeals);
 					}
@@ -284,10 +284,10 @@ class Appeals extends Controllers{
 							<span class="badge badge-warning">'.$dataAppealItem['decision_result'].'</span>';
 			}else {
 				$options = '<div class="form-group col-md-12">
-								<label for="action" class="control-label">'.$fnT("Appeal").'</label>
+								<label for="action" class="control-label">'.$fnT("Apelação").'</label>
 								<textarea class="form-control" name="appeal['.$data[$i]['id_audit_opp'].']" id="appeal'.$data[$i]['id_audit_opp'].'" cols="40" rows="3" style="resize: both;"></textarea>
 								<span class="btn btn-info btn-sm my-2 input-in-btn">
-									<i class="fa fa-camera"></i>'.$fnT("Evidence").'
+									<i class="fa fa-camera"></i>'.$fnT("Evidência").'
 									<input type="file" id="appealNewFile['.$data[$i]['id_audit_opp'].'][]" name="appealNewFile['.$data[$i]['id_audit_opp'].'][]" multiple="" onchange="uploadPic(this,'.$data[$i]['id_audit_opp'].')">
 								</span>
 								<div class="form-row justify-content-center">
@@ -336,13 +336,13 @@ class Appeals extends Controllers{
 							<b><span class="badge badge-secondary">'.$data[$i]['question_prefix'].'</span> '.$data[$i]['eng'].'</b>
 							<br><b><span class="text-secondary"><i class="fa fa-comment"></i>  '.$data[$i]['auditor_comment'].'</span></b>
 							<div class="d-flex flex-wrap">'.$filesOpp.'</div>
-							<br><b><span class="text-danger"><i class="fa fa-exclamation-triangle"></i> '.$fnT("Appeal").': '.$data[$i]['author_comment'].'</span></b>
+							<br><b><span class="text-danger"><i class="fa fa-exclamation-triangle"></i> '.$fnT("Apelação").': '.$data[$i]['author_comment'].'</span></b>
 							<br><div class="d-flex flex-wrap">'.$filesApp.'</div>';
 			$data[$i]['decision'] = 
 				'<div>
 					<div class="input-group">
 						<div class="input-group-prepend">
-							<span class="input-group-text border-0">'.$fnT('Decision').'</span>
+							<span class="input-group-text border-0">'.$fnT('Decisão').'</span>
 						</div>
 						<select class="form-control" id="appealDes['.$data[$i]['id_appeal_item'].']" name="appealDes['.$data[$i]['id_appeal_item'].']" required>';
 			
@@ -350,9 +350,9 @@ class Appeals extends Controllers{
 			if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14, 19, 20, 21] ) ) {
 				$data[$i]['decision'] .='
 							<option value="" '.($data[$i]['decision_result']=='Pending'?'selected':'').'></option>
-							<option value="Proceeds by exception" '.(in_array($data[$i]['decision_result'], ['Proceeds', 'Proceeds by exception'])?'selected':'').'>'.$fnT('Proceeds by exception').'</option>
-							<option value="Proceeds by exception" '.(in_array($data[$i]['decision_result'], ['Proceeds by criterion'])?'selected':'').'>'.$fnT('Proceeds by criterion').'</option>
-							<option value="Not proceeds" '.($data[$i]['decision_result']=='Not proceeds'?'selected':'').'>'.$fnT('Not proceeds').'</option>';
+							<option value="Proceeds by exception" '.(in_array($data[$i]['decision_result'], ['Proceeds', 'Proceeds by exception'])?'selected':'').'>'.$fnT('Procede por exceção').'</option>
+							<option value="Proceeds by exception" '.(in_array($data[$i]['decision_result'], ['Proceeds by criterion'])?'selected':'').'>'.$fnT('Procede por critério').'</option>
+							<option value="Not proceeds" '.($data[$i]['decision_result']=='Not proceeds'?'selected':'').'>'.$fnT('Não procede').'</option>';
 			}
 
 			
@@ -360,12 +360,12 @@ class Appeals extends Controllers{
 					</div><br>
 					<div class="input-group">
 						<div class="input-group-prepend">
-							<span class="input-group-text border-0">'.$fnT('Comments').'</span>
+							<span class="input-group-text border-0">'.$fnT('Comentários').'</span>
 						</div>
 						<textarea class="form-control" id="appealDesCom['.$data[$i]['id_appeal_item'].']" name="appealDesCom['.$data[$i]['id_appeal_item'].']" cols="40" rows="3" style="resize: both;" required></textarea>
 					</div>
 					<span class="btn btn-info btn-sm my-2 input-in-btn">
-						<i class="fa fa-camera"></i>'.$fnT("Evidence").'
+						<i class="fa fa-camera"></i>'.$fnT("Evidência").'
 						<input type="file" id="appealNewFile['.$data[$i]['audit_opp_id'].'][]" name="appealNewFile['.$data[$i]['audit_opp_id'].'][]" multiple="" onchange="uploadPic(this,'.$data[$i]['audit_opp_id'].')">
 					</span>
 					<div class="form-row justify-content-center">

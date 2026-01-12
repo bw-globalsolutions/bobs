@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<title><?=$fnT('Action plan completed')?></title>
+	<title><?=$fnT('Plano de ação concluído')?></title>
 </head>
 <body>
     <table border='0' align='left' cellpadding='3' cellspacing='2'>
@@ -15,26 +15,26 @@
                         <tbody>
                             <tr><td width='717'></td></tr>
                             <tr><td style='padding:10px;background: #eab54c;color:#ffffff;font-size:11px'>
-                                <span><?=$fnT('We inform you that the action plan has been finalized.')?></span>
+                                <span><?=$fnT('Informamos que o plano de ação foi finalizado.')?></span>
                             </td></tr>
                             <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-church's"></center></td></tr>
                             <tr>
                                 <td style='font-size:14px;padding:0px'>
                                     <div style='border:1px solid #eee;padding:10px'>
-                                        <span><?=$fnT('Visit the portal to see all the details and follow up on the Action Plan.')?></span>
+                                        <span><?=$fnT('Acesse o portal para ver todos os detalhes e acompanhar o Plano de Ação.')?></span>
 										<ul>
-                                            <li><b><?=$fnT('Location')?>: <?=$data['location_number']?>, <?=$data['location_address']?></b></li>
-											<li><b><?=$fnT('Audit')?>: #<?=$data['audit_id']?>, <?=$data['type']?></b></li>
+                                            <li><b><?=$fnT('Localização')?>: <?=$data['location_number']?>, <?=$data['location_address']?></b></li>
+											<li><b><?=$fnT('Auditoria')?>: #<?=$data['audit_id']?>, <?=$data['type']?></b></li>
 										</ul>
                                         <hr style='margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee'>
                                         <div>
-                                            <span><?=$fnT('You can also view the report at the following link:')?></span> <b><a href="<?=$data['url_report']?>"><?=$data['url_report']?></a></b>
+                                            <span><?=$fnT('Você também pode ver o relatório no seguinte link:')?></span> <b><a href="<?=$data['url_report']?>"><?=$data['url_report']?></a></b>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td><b><?=$fnT('Created:')?></b> <?=date('M d - h:i', time())?></td>
+                                <td><b><?=$fnT('Criado:')?></b> <?=date('M d - h:i', time())?></td>
                             </tr>
                         </tbody>
                     </table>

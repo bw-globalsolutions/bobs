@@ -20,7 +20,7 @@
                             <tr>
                                 <td style='font-size:14px;padding:0px'>
                                     <div style='border:1px solid #eee;padding:10px'>
-                                        <span><?=$fnT('Visit the portal to see all the details and follow up on the Action Plan.')?></span>
+                                        <span><?=$fnT('Acesse o portal para ver todos os detalhes e acompanhar o Plano de Ação.')?></span>
 										<ul>
                                             <li><b>Location: <?=$data['location_number']?>, <?=$data['location_address']?></b></li>
 											<li><b>Score: <?=$data['score']?></li>

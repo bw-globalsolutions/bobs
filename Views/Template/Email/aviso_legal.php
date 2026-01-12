@@ -75,7 +75,7 @@
                             </tr>
 
                             <tr>
-                                <td><b><?=$fnT('Created:')?></b> <?=date('M d - h:i', time())?></td>
+                                <td><b><?=$fnT('Criado:')?></b> <?=date('M d - h:i', time())?></td>
                             </tr>
                         </tbody>
                     </table>

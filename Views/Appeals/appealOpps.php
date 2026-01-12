@@ -6,7 +6,7 @@
                 <div class="form-row justify-content-center">
                     <div class="form-group col-md-6">
                         <input type="text" id="idAuditDT" name="idAuditDT" value="">
-                        <button id="btnFormAddAllAppeals" class="btn btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Send appeals')?></button>
+                        <button id="btnFormAddAllAppeals" class="btn btn-success" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i><?=$fnT('Enviar apelações')?></button>
                     </div>
                 </div>
                 <div class="tile-body">
@@ -15,8 +15,8 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th><?=$fnT('Opportunity')?></th>
-                                <th><?=$fnT('Appeal')?></th>
+                                <th><?=$fnT('Oportunidade')?></th>
+                                <th><?=$fnT('Apelação')?></th>
                             </tr>
                         </thead>
                         <tbody>

@@ -28,7 +28,7 @@ const logIn = element => {
 			btnSubmitLogin.disabled = false;
 			swal({
 				title: 'Error',
-				text: fnT('The data entered is not correct'),
+				text: fnT('Os dados informados não estão corretos'),
 				type: 'error'
 			})
 		}
@@ -85,12 +85,12 @@ function cargarTema(){
 }*/
 
 const recoverPass = () => swal({
-	title: fnT('Recover password'),
-	text: fnT('Please enter your email'),
+	title: fnT('Recuperar senha'),
+	text: fnT('Por favor, informe seu e-mail'),
 	type: 'input',
-	confirmButtonText: fnT('Send'),
+	confirmButtonText: fnT('Enviar'),
 	showCancelButton: true,
-	cancelButtonText: fnT('Cancel'),
+	cancelButtonText: fnT('Cancelar'),
   }, function(inputValue){
 	if(inputValue){
 		if(validateEmail(inputValue)){
@@ -102,14 +102,14 @@ const recoverPass = () => swal({
 			}).then(res => res.json()).then(dat => {
 				if(dat.status == 1){
 					swal({
-						title: fnT('Success'),
-						text: fnT('If the entered email coincides with our registry, you will receive an email with further instructions'),
+						title: fnT('Sucesso'),
+						text: fnT('Se o e-mail informado coincidir com nosso registro, você receberá um e-mail com mais instruções'),
 						type: 'success'
 					})
 				} else{
 					swal({
 						title: 'Error',
-						text: fnT('An error occurred in the process, if the problem persists please contact support'),
+						text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
 						type: 'error'
 					})
 				}
@@ -117,7 +117,7 @@ const recoverPass = () => swal({
 		}else{
 			setTimeout(() => swal({
 				title: 'Error',
-				text: fnT('The email entered is not valid'),
+				text: fnT('O e-mail informado não é válido'),
 				type: 'error'
 			}), 250);
 		}
@@ -150,7 +150,7 @@ const resetPassword = element => {
 			} else{
 				swal({
 					title: 'Error',
-					text: fnT('An error occurred in the process, if the problem persists please contact support'),
+					text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
 					type: 'error'
 				});
 				loader.classList.add('d-none');
@@ -160,7 +160,7 @@ const resetPassword = element => {
 	} else{
 		swal({
 			title: 'Error',
-			text: fnT('Passwords do not match'),
+			text: fnT('As senhas não coincidem'),
 			type: 'error'
 		})
 	}

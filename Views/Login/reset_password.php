@@ -29,25 +29,25 @@
         </div>
         <div id="login-wrapper" class="col-lg-6 col-12 p-3 d-flex justify-content-center align-items-center">
           <form class="bg-white  rounded-top" onsubmit="resetPassword(this); return false;">
-            <h2 class="text-center m-4 h1"><?=$fnT('Reset Password')?></h2>
+            <h2 class="text-center m-4 h1"><?=$fnT('Redefinir senha')?></h2>
             <p class="text-center mb-5">
-              <?=$fnT('Before continuing, do not forget that you can review our')?>
-              <b> <?=$fnT('privacy notice')?></b> <?=$fnT('by clicking')?>:  
-              <a target="_black" href="https://www.arguilea.com/assets/docs/<?=$fnT('privacyEN')?>.pdf"><?=$fnT('here')?></a>
+              <?=$fnT('Antes de continuar, não se esqueça de que você pode consultar nosso')?>
+              <b> <?=$fnT('aviso de privacidade')?></b> <?=$fnT('clicando')?>:  
+              <a target="_black" href="https://www.arguilea.com/assets/docs/<?=$fnT('privacyPT')?>.pdf"><?=$fnT('aqui')?></a>
             </p>
             <div class="form-group">
-              <input class="bg-light border-0 px-3 w-100 toggle-pass" type="password" pattern="<?=$data['regExPass']?>" title="<?=$fnT('Minimum 12 characters, uppercase and lowercase, plus at least one number')?>" name="password" placeholder="<?=$fnT('New password')?>" maxlength="32" required>
+              <input class="bg-light border-0 px-3 w-100 toggle-pass" type="password" pattern="<?=$data['regExPass']?>" title="<?=$fnT('Mínimo de 12 caracteres, maiúsculas e minúsculas, e pelo menos um número')?>" name="password" placeholder="<?=$fnT('Nova senha')?>" maxlength="32" required>
             </div>
             <div class="form-group">
-              <input class="bg-light border-0 px-3 w-100 toggle-pass" type="password" pattern="<?=$data['regExPass']?>" title="<?=$fnT('Minimum 12 characters, uppercase and lowercase, plus at least one number')?>" name="password2" placeholder="<?=$fnT('Retype new password')?>" maxlength="32" required>
+              <input class="bg-light border-0 px-3 w-100 toggle-pass" type="password" pattern="<?=$data['regExPass']?>" title="<?=$fnT('Mínimo de 12 caracteres, maiúsculas e minúsculas, e pelo menos um número')?>" name="password2" placeholder="<?=$fnT('Digite novamente a nova senha')?>" maxlength="32" required>
             </div>
             <div class="form-group form-check mb-5">
               <input type="checkbox" class="form-check-input" id="ck-show-input" onchange="showPassword()">
-              <label class="form-check-label" for="ck-show-input"><?=$fnT('Show Password')?></label>
+              <label class="form-check-label" for="ck-show-input"><?=$fnT('Mostrar senha')?></label>
             </div>
             <input type="hidden" name="token" value="<?=$data['token']?>">
             <button id="btn-submit-login" type="submit" class="btn btn-primary btn-lg btn-block">
-              <?=$fnT('Save')?>
+              <?=$fnT('Salvar')?>
               &nbsp;&nbsp;<img class="d-none" id='lodaer' src="<?=media()?>/images/loading-white.svg" alt="Loading">
             </button>
           </form>
@@ -55,7 +55,7 @@
         <img id="argui-log" width="110" class="position-absolute" src="<?=media()?>/images/logo_min_arguilea.png" alt="Arguilea">
         <button type="button" class="btn btn-sm btn-outline-primary position-absolute" id="btn-language" data-toggle="modal" data-target="#modal-laguage">
           <i class="fa fa-language" aria-hidden="true"></i>
-          <?=$fnT('Language')?>
+          <?=$fnT('Idioma')?>
         </button>
       </div>
     </div>
@@ -64,23 +64,24 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><?=$fnT('Language menu')?></h5>
+            <h5 class="modal-title" id="exampleModalLabel"><?=$fnT('Menu de idioma')?></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label for="login-language"><?=$fnT('Select the language')?></label>
+              <label for="login-language"><?=$fnT('Selecione o idioma')?></label>
               <select class="form-control" id="login-language" onchange="location.replace(`/login/resetPassword?token=<?=$_GET['token']?>&lan=${this.value}`)">
-                <option disabled selected><?=$fnT('Select a language')?></option>
-                <option value="esp">Spanish</option>
-                <option value="eng">English</option>
+                <option disabled selected><?=$fnT('Selecione um idioma')?></option>
+                <option value="esp">Espanhol</option>
+                <option value="eng">Inglês</option>
+                <option value="por">Português</option>
               </select>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$fnT('Close')?></button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$fnT('Fechar')?></button>
           </div>
         </div>
       </div>
