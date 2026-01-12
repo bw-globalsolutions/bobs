@@ -15,7 +15,7 @@
             <h1>
                 <i class="fa fa-clock-o" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             </h1>
-            <p><?=$fnT('View the photos corresponding to the audit')?></p>
+            <p><?=$fnT('Ver as fotos correspondentes à auditoria')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-list-ol fa-lg"></i></li>
@@ -47,12 +47,12 @@
                 <? } ?>
             <? } ?>
             <div class="contTime" style="padding:10px; background-color:var(--color1); border-radius:10px;">
-                    <p style="margin:0;"><?=$fnT('average time')?>:</p>
+                    <p style="margin:0;"><?=$fnT('tempo médio')?>:</p>
                     <b id="averageM" style="font-size:50px;"></b><span style="font-size:20px;">:</span>
                     <b id="averageS" style="font-size:20px;"></b>
             </div>
         </div>
-        <button class="btn-s1 btn btn-md btn-primary" style="margin-top: 20px;" onclick="saveTimes(<?=$data['id']?>)"><?=$fnT('Save')?></button>
+        <button class="btn-s1 btn btn-md btn-primary" style="margin-top: 20px;" onclick="saveTimes(<?=$data['id']?>)"><?=$fnT('Salvar')?></button>
     </div>
     <a class="back-to-top"><i class="fa fa-arrow-up"></i></a>
 </main>

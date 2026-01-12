@@ -55,25 +55,25 @@ function exportTablesToExcel() {
 
     // Tabla 2 (sin totales)
  const headers2 = [
-    fnT('Branch number'),
-    fnT('Branch name'),
-    fnT('Type'),
-    fnT('Consult'),
+    fnT('Número da filial'),
+    fnT('Nome da filial'),
+    fnT('Tipo'),
+    fnT('Consultar'),
     fnT('Distrital'),
-	fnT('Audit') + ' ' + fnT('Q1'),
-  	fnT('Re-Audit') + ' ' + fnT('Q1'),
+	fnT('Auditoria') + ' ' + fnT('Q1'),
+  	fnT('Reauditoria') + ' ' + fnT('Q1'),
     fnT('Re-Aud 2') + ' ' + fnT('Q1'),
 
-	fnT('Audit') + ' ' + fnT('Q2'),
-  	fnT('Re-Audit') + ' ' + fnT('Q2'),
+	fnT('Auditoria') + ' ' + fnT('Q2'),
+  	fnT('Reauditoria') + ' ' + fnT('Q2'),
     fnT('Re-Aud 2') + ' ' + fnT('Q2'),
 
-	fnT('Audit') + ' ' + fnT('Q3'),
-  	fnT('Re-Audit') + ' ' + fnT('Q3'),
+	fnT('Auditoria') + ' ' + fnT('Q3'),
+  	fnT('Reauditoria') + ' ' + fnT('Q3'),
     fnT('Re-Aud 2') + ' ' + fnT('Q3'),
 
-	fnT('Audit') + ' ' + fnT('Q4'),
-  	fnT('Re-Audit') + ' ' + fnT('Q4'),
+	fnT('Auditoria') + ' ' + fnT('Q4'),
+  	fnT('Reauditoria') + ' ' + fnT('Q4'),
     fnT('Re-Aud 2') + ' ' + fnT('Q4'),
 
 
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		"aServerSide":true,
         "paging": false,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/statistics/districtReportGlobalTable",
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		"aServerSide":true,
         "paging": false,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/statistics/districtReportStoreTable",

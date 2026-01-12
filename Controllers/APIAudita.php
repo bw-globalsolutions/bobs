@@ -813,12 +813,12 @@ class APIAudita extends Controllers
                 }else{
                     $fnT = translate('eng');
                 }
-                $titulo=$fnT("Visit closed");
-                    $contentTitle = $fnT("We inform you that the visit was carried out, but the auditor found the store closed.");
-                    $contenido = '<p>'.$fnT('Round').': <b>'.$round['name'].' / '.$round['type'].'</b><br />
-                                             '.$fnT('Store name').': <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
-                                             '.$fnT('Audit date').': <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
-                                             '.$fnT('Auditors name').': <b>' . $isAudit['auditor_name'] . '</b></p>';
+                $titulo=$fnT("Visita fechada");
+                    $contentTitle = $fnT("Informamos que a visita foi realizada, mas o auditor encontrou a loja fechada.");
+                    $contenido = '<p>'.$fnT('Rodada').': <b>'.$round['name'].' / '.$round['type'].'</b><br />
+                                             '.$fnT('Nome da loja').': <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
+                                             '.$fnT('Data da auditoria').': <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
+                                             '.$fnT('Nome do auditor').': <b>' . $isAudit['auditor_name'] . '</b></p>';
 
                 $data_closed_visit = [
                     'asunto'            => "$appdata[brand] #".$location['number']." ($country[name]) @ $titulo",
@@ -842,13 +842,13 @@ class APIAudita extends Controllers
                     $url_audit_report = getURLReport($isAudit['id'], $isAudit['report_layout_id'], 'eng');
                 }
 
-                $titulo = $fnT('Preliminary Results');
-                    $contentTitle = $fnT("Preliminary results are available at the following link");
-                    $contenido = '<p>'.$fnT('Round').': <b>'.$round['name'].' / '.$round['type'].'</b><br />
-                                             '.$fnT('Store name').': <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
-                                             '.$fnT('Audit date').': <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
-                                             '.$fnT('Audit status').': <b>' . $isAudit['visit_status'] . '</b><br />
-                                             '.$fnT('Auditors name').': <b>' . $isAudit['auditor_name'] . '</b></p>';
+                $titulo = $fnT('Resultados preliminares');
+                    $contentTitle = $fnT("Os resultados preliminares estão disponíveis no seguinte link");
+                    $contenido = '<p>'.$fnT('Rodada').': <b>'.$round['name'].' / '.$round['type'].'</b><br />
+                                             '.$fnT('Nome da loja').': <b>('.$country['name'].') '.$location['name'].' #'.$location['number'].'</b><br />
+                                             '.$fnT('Data da auditoria').': <b>' . date('F d Y, H:i', strtotime($isAudit['date_visit'])) . '</b><br />
+                                             '.$fnT('Status da auditoria').': <b>' . $isAudit['visit_status'] . '</b><br />
+                                             '.$fnT('Nome do auditor').': <b>' . $isAudit['auditor_name'] . '</b></p>';
 
                 $data_preliminary_email = [
                     'asunto'            => "$appdata[brand] #".$location['number']." ($country[name]) @ $titulo",

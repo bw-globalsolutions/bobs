@@ -10,7 +10,7 @@ tableCerttis = $('#tableCerttis').dataTable({
 		"aProcessing":true,
 		"aServerSide":true,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/certtis/getOppsPlanCerttis?idAudit="+idAudit,
@@ -63,7 +63,7 @@ tableCerttis = $('#tableCerttis').dataTable({
 
 				//formCerttis.reset();
 			}else{
-				swal(fnT('Error'), fnT(dat.msg), "error");
+				swal(fnT('Erro'), fnT(dat.msg), "error");
 			}
 			divLoading.style.display = "none";
 		});
@@ -75,7 +75,7 @@ tableCerttis = $('#tableCerttis').dataTable({
 		"aProcessing":true,
 		"aServerSide":true,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/certtis/selectCerttis?idAudit="+idAudit,
@@ -116,7 +116,7 @@ tableCerttis = $('#tableCerttis').dataTable({
 
 				//formCerttis.reset();
 			}else{
-				swal(fnT('Error'), fnT(dat.msg), "error");
+				swal(fnT('Erro'), fnT(dat.msg), "error");
 			}
 			divLoading.style.display = "none";
 		});

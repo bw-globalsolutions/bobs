@@ -19,7 +19,7 @@
     </head>
     <body>
         <div class="container">
-            <button type="button" class="btn btn-primary btn-lg btn-block d-print-none my-2" onclick="window.print()"><?= $fnT('Press this button or CTRL + P to print') ?></button>
+            <button type="button" class="btn btn-primary btn-lg btn-block d-print-none my-2" onclick="window.print()"><?= $fnT('Pressione este botão ou CTRL + P para imprimir') ?></button>
             <? foreach($data['checklist_item'] as $section => $questions): ?>
                 <h2 class="h4 mt-4"><?= $section ?></h2>                
                 <hr class="mb-4">

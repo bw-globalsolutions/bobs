@@ -10,7 +10,7 @@
                 <div class="col-lg-3 my-1">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Type')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Tipo')?></span>
                         </div>
                         <select class="form-control selectpicker" id="filter_type" name="list_type[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
                             <? foreach($data['audit_types'] as $type): ?>
@@ -24,7 +24,7 @@
                 <div class="col-lg-3 my-1">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Period')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Período')?></span>
                         </div>
                         <select class="form-control selectpicker" id="filter_period" name="list_period[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                             <? foreach($data['periods'] as $pd_key => $pd_val): ?>
@@ -42,7 +42,7 @@
 <div class="col-lg-3 my-1 ">
     <div class="input-group">
         <div class="input-group-prepend">
-            <span class="input-group-text border-0"><?=$fnT('Country')?></span>
+            <span class="input-group-text border-0"><?=$fnT('País')?></span>
         </div>
 
         <select class="form-control selectpicker" 
@@ -72,7 +72,7 @@
                 <div class="col-lg-3 my-1">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Franchise')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Franquia')?></span>
                         </div>
                         <select class="form-control selectpicker" id="filter_franchise" name="list_franchise[]" multiple data-actions-box="true" data-selected-text-format="count>2" required data-live-search="true">
                             <? foreach($data['franchissees'] as $f): ?>
@@ -91,7 +91,7 @@
                 <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2,3,17])? 'd-none' : '' ?>">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Area')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Área')?></span>
                         </div>
                         <select class="form-control selectpicker" id="list_area" name="list_area[]"  multiple data-actions-box="true" data-selected-text-format="count>2" required data-live-search = "true">                             
                             <? foreach($data['area'] as $area): ?>
@@ -106,7 +106,7 @@
                 <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2,3,17])? 'd-none' : '' ?>">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Concept')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Conceito')?></span>
                         </div>
                         <select class="form-control selectpicker" id="list_concept" name="list_concept[]"  multiple data-actions-box="true" data-selected-text-format="count>2" required data-live-search = "true">
                             <? foreach($data['concept'] as $concept): ?>
@@ -121,7 +121,7 @@
                 <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2,3])? 'd-none' : '' ?>" >
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Shop Type')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Tipo de loja')?></span>
                         </div>
                         <select class="form-control selectpicker" id="list_shop_type" name="list_shop_type[]"  multiple data-actions-box="true" data-selected-text-format="count>2" required data-live-search = "true">
                             <? foreach($data['shop_type'] as $shop_type): ?>
@@ -151,7 +151,7 @@
                 <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2,3,17, 14,19,18])? 'd-none' : '' ?>">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Area Manager')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Gerente de área')?></span>
                         </div>
                         <select class="form-control selectpicker" id="list_area_manager" name="list_area_manager[]"  multiple data-actions-box="true" data-selected-text-format="count>2" required data-live-search = "true">
                             <? foreach($data['email_area_manager'] as $email_area_manager): ?>
@@ -166,7 +166,7 @@
                 <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2,3,17])? 'd-none' : '' ?>">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Escalation 1')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Escalonamento 1')?></span>
                         </div>
                         <select class="form-control selectpicker" id="list_escalation1"  name="list_escalation1[]" multiple data-actions-box="true" data-selected-text-format="count>2" required data-live-search = "true">
                             <? foreach($data['email_ops_leader'] as $email_ops_leader): ?>
@@ -181,7 +181,7 @@
                 <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2,3,17])? 'd-none' : '' ?>">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Escalation 2')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Escalonamento 2')?></span>
                         </div>
                         <select class="form-control selectpicker" id="list_escalation2" name="list_escalation2[]"  multiple data-actions-box="true" data-selected-text-format="count>2" required data-live-search = "true">
                             <? foreach($data['email_ops_director'] as $email_ops_director): ?>
@@ -196,7 +196,7 @@
                 <div class="col-lg-3 my-1">
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
-                        <?=$fnT('Filter')?>
+                        <?=$fnT('Filtrar')?>
                     </button>
                 </div>
             </div>

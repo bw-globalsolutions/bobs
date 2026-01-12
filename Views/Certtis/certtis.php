@@ -23,7 +23,7 @@
             <h1>
                 <i class="fa fa-id-card-o" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             </h1>
-            <p><?=$fnT('Review the particular content of an audit')?></p>
+            <p><?=$fnT('Revisar o conteúdo específico de uma auditoria')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -58,9 +58,9 @@
                     <thead class="colorBase">
                         <tr>
                         <th><?=$fnT('#')?></th>
-                        <th><?=$fnT('Opportunity')?></th>
+                        <th><?=$fnT('Oportunidade')?></th>
                         <th><?=$fnT('Status')?></th>
-                        <th><?=$fnT('Action')?></th>
+                        <th><?=$fnT('Ação')?></th>
                         </tr>
                     </thead>
                     <tbody>

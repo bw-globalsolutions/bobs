@@ -18,7 +18,7 @@
                 <i class="fa fa-map-marker" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
                 <button class="btn btn-sm btn-primary" type="button" onclick="openModal();"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo</button>
             </h1>
-            <p><?=$fnT('Register, update and delete locations')?></p>
+            <p><?=$fnT('Cadastrar, atualizar e excluir localizações')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -34,15 +34,15 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th><?=$fnT('Number')?></th>
-                                    <th><?=$fnT('Name')?></th>
-                                    <th><?=$fnT('Country')?></th>
-                                    <th><?=$fnT('City')?></th>
-                                    <th><?=$fnT('Address')?></th>
-                                    <th><?=$fnT('Email')?></th>
-                                    <th><?=$fnT('Type')?></th>
+                                    <th><?=$fnT('Número')?></th>
+                                    <th><?=$fnT('Nome')?></th>
+                                    <th><?=$fnT('País')?></th>
+                                    <th><?=$fnT('Cidade')?></th>
+                                    <th><?=$fnT('Endereço')?></th>
+                                    <th><?=$fnT('E-mail')?></th>
+                                    <th><?=$fnT('Tipo')?></th>
                                     <th><?=$fnT('Status')?></th>
-                                    <th><?=$fnT('Actions')?></th>
+                                    <th><?=$fnT('Ações')?></th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -55,13 +55,13 @@
             <div class="col-12 col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><?= $fnT('Bulk import') ?> &#124; <a href="<?=base_url()."/plantilla_tiendas.xlsx"?>" target="_blank"><!--<a href="https://ws.bw-globalsolutions.com/WSAAA/S3_view_file/?ZBWEhaITQ3vFTtGYqZPQAtfuMwgCgZdSffRsIF/uuQ5lMAFe2AD3N+BQPJce07DDrUCk56jJAooSJAhrgjiIvg==" target="_blank">--><?= $fnT('Download template') ?></a></h5> 
+                        <h5 class="card-title"><?= $fnT('Importação em massa') ?> &#124; <a href="<?=base_url()."/plantilla_tiendas.xlsx"?>" target="_blank"><!--<a href="https://ws.bw-globalsolutions.com/WSAAA/S3_view_file/?ZBWEhaITQ3vFTtGYqZPQAtfuMwgCgZdSffRsIF/uuQ5lMAFe2AD3N+BQPJce07DDrUCk56jJAooSJAhrgjiIvg==" target="_blank">--><?= $fnT('Baixar modelo') ?></a></h5> 
                         <form onsubmit="sendStoreFile(); return false;">
                             <div class="form-group"> 
-                                <label for="store-file"><?= $fnT('Store archive') ?></label>
+                                <label for="store-file"><?= $fnT('Arquivo da loja') ?></label>
                                 <input type="file" class="form-control-file" id="store-file" onchange="readStoreFile(this)" id="store-file" required>
                             </div>
-                            <button type="submit" class="btn btn-primary"><?= $fnT('Send') ?></button>
+                            <button type="submit" class="btn btn-primary"><?= $fnT('Enviar') ?></button>
                         </form>
                     </div>
                 </div>

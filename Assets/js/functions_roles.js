@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		"aProcessing":true,
 		"aServerSide":true,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/roles/getRoles",
@@ -41,10 +41,10 @@ document.addEventListener('DOMContentLoaded', function(){
 			if(dat.status){
 				$('#modalFormRol').modal("hide");
 				tableRoles.api().ajax.reload();
-				swal(fnT('User roles'), fnT(dat.msg), "success");
+				swal(fnT('Funções de usuário'), fnT(dat.msg), "success");
 				formRole.reset();
 			}else{
-				swal(fnT('Error'),fnT(dat.msg),"error");
+				swal(fnT('Erro'),fnT(dat.msg),"error");
 			}
 			divLoading.style.display = "none";
 		});
@@ -101,8 +101,8 @@ function cargarTema(){
 function openModal(){
 	document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
 	document.querySelector('#btnActionForm').classList.replace("btn-info", "btn-primary");
-	document.querySelector('#titleModal').innerHTML = fnT('New role');
-	document.querySelector('#btnText').innerHTML = fnT('Save');
+	document.querySelector('#titleModal').innerHTML = fnT('Nova função');
+	document.querySelector('#btnText').innerHTML = fnT('Salvar');
 	formRole['id'].value = "";
 	formRole.reset();	
 
@@ -110,10 +110,10 @@ function openModal(){
 }
 
 function fntEditRol(idrol){
-	document.querySelector('#titleModal').innerHTML = fnT('Update role');
+	document.querySelector('#titleModal').innerHTML = fnT('Atualizar função');
 	document.querySelector('.modal-header').classList.replace("headerRegister", "headerUpdate");
 	document.querySelector('#btnActionForm').classList.replace("btn-primary", "btn-info");
-	document.querySelector('#btnText').innerHTML = fnT('Update');
+	document.querySelector('#btnText').innerHTML = fnT('Atualizar');
 	divLoading.style.display = "flex";
 
 	//var idrol = this.getAttribute("rl");
@@ -136,7 +136,7 @@ function fntEditRol(idrol){
 				formRole['level'].value = objData.data.level;
 				$('#modalFormRol').modal('show');
 			}else{
-				swal(fnT('Error'), fnT(objData.msg), "error");
+				swal(fnT('Erro'), fnT(objData.msg), "error");
 			}
 			divLoading.style.display = "none";
 		}
@@ -161,12 +161,12 @@ function fntEditNotifications(role_id){
 
 function fntDelRol(idrol){
 	swal({
-		title: fnT('Delete role'),
-		text: fnT('Do you really want to delete the Role ?'),
+		title: fnT('Excluir função'),
+		text: fnT('Deseja realmente excluir a função?'),
 		type: "warning",
 		showCancelButton: true,
-		confirmButtonText: fnT('Yes, delete'),
-		cancelButtonText: fnT('No, cancel'),
+		confirmButtonText: fnT('Sim, excluir'),
+		cancelButtonText: fnT('Não, cancelar'),
 		closeOnConfirm: false,
 		closeOnCancel: true
 	}, function(isConfirm){
@@ -185,10 +185,10 @@ function fntDelRol(idrol){
 					var objData = JSON.parse(request.responseText);
 					if(objData.status)
 					{
-						swal(fnT('Delete'), fnT(objData.msg), "success");
+						swal(fnT('Excluir'), fnT(objData.msg), "success");
 						tableRoles.api().ajax.reload();
 					}else{
-						swal(fnT('Attention'), fnT(objData.msg), "error");
+						swal(fnT('Atenção'), fnT(objData.msg), "error");
 					}
 				}
 			}
@@ -234,9 +234,9 @@ function sendPermission(role_id){
 		body: payload
 	}).then(res => res.json()).then(dat => {
 		if(dat.status){
-			swal(fnT('Role permits'), fnT(dat.msg), "success");
+			swal(fnT('Permissões da função'), fnT(dat.msg), "success");
 		}else{
-			swal(fnT('Error'), fnT(dat.msg), "error");
+			swal(fnT('Erro'), fnT(dat.msg), "error");
 		}
 		divLoading.style.display = "none";
 	});
@@ -261,9 +261,9 @@ function sendNotifications(role_id){
 		body: payload
 	}).then(res => res.json()).then(dat => {
 		if(dat.status){
-			swal(fnT('Role permits'), fnT(dat.msg), "success");
+			swal(fnT('Permissões da função'), fnT(dat.msg), "success");
 		}else{
-			swal(fnT('Error'), fnT(dat.msg), "error");
+			swal(fnT('Erro'), fnT(dat.msg), "error");
 		}
 		divLoading.style.display = "none";
 	});

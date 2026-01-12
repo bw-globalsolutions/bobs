@@ -18,7 +18,7 @@ const reloadAll = async (element) => {
         showElements();
         showElementsQuestion();
     }else{
-        panelGallery.innerHTML = `<h2>${fnT('No images to show')}</h2>`;
+        panelGallery.innerHTML = `<h2>${fnT('Nenhuma imagem para mostrar')}</h2>`;
     }
 }
 
@@ -134,7 +134,7 @@ function showElements(){
                                             </span>
                                         </h2>
                                         <p class='mb-3'>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;${fnT('Audit id')}: ${item.id},&nbsp;&nbsp;${fnT('Auditor')}: ${item.auditor_name},&nbsp;&nbsp;${fnT('Status')}: ${fnT(item.status)}
+                                            &nbsp;&nbsp;&nbsp;&nbsp;${fnT('ID da auditoria')}: ${item.id},&nbsp;&nbsp;${fnT('Auditor')}: ${item.auditor_name},&nbsp;&nbsp;${fnT('Status')}: ${fnT(item.status)}
                                         </p>
                                         ${carryAudit}
                                     </div>`;

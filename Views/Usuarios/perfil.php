@@ -33,7 +33,7 @@
           <div class="tile p-0">
             <ul class="nav flex-column nav-tabs user-tabs">
               <li class="nav-item">
-                <a class="nav-link active" href="#user-data" data-toggle="tab"><?=$fnT('Personal information')?></a>
+                <a class="nav-link active" href="#user-data" data-toggle="tab"><?=$fnT('Informações pessoais')?></a>
               </li>
             </ul>
           </div>
@@ -45,32 +45,32 @@
                   <table class="table table-bordered">
                     <tbody>
                       <tr>
-                        <td style="width:150px;"><?=$fnT('Name')?>:</td>
+                        <td style="width:150px;"><?=$fnT('Nome')?>:</td>
                         <td><?=$_SESSION['userData']['name']?></td>
                       </tr>
                       <tr>
-                        <td style="width:150px;"><?=$fnT('Email')?>:</td>
+                        <td style="width:150px;"><?=$fnT('E-mail')?>:</td>
                         <td><?=$_SESSION['userData']['email']?></td>
                       </tr>
                       <tr>
-                        <td style="width:150px;"><?=$fnT('Brand')?>:</td>
+                        <td style="width:150px;"><?=$fnT('Marca')?>:</td>
                         <td><?=implode(', ', $_SESSION['userData']['brand'])?></td>
                       </tr>
                       <tr>
-                        <td style="width:150px;"><?=$fnT('Country')?>:</td>
+                        <td style="width:150px;"><?=$fnT('País')?>:</td>
                         <td><?=$data['countries']?></td>
                       </tr>
                       <tr>
-                        <td style="width:150px;"><?=$fnT('Language')?>:</td>
+                        <td style="width:150px;"><?=$fnT('Idioma')?>:</td>
                         <td class="text-uppercase"><?=$_SESSION['userData']['default_language']?></td>
                       </tr>
                       <tr>
-                        <td style="width:150px;"><?=$fnT('Role')?>:</td>
+                        <td style="width:150px;"><?=$fnT('Função')?>:</td>
                         <td><?=$_SESSION['userData']['role']['name']?></td>
                       </tr>
                     </tbody>
                   </table>
-                  <button class="btn btn-sm btn-info" type="button" onclick="openModalPerfil()"><i class="fa fa-pencil" aria-hidden="true"></i> <?=$fnT('Edit')?></button>
+                  <button class="btn btn-sm btn-info" type="button" onclick="openModalPerfil()"><i class="fa fa-pencil" aria-hidden="true"></i> <?=$fnT('Editar')?></button>
               </div>
             </div>
           </div>

@@ -10,7 +10,7 @@ const color7v = rootStyles.getPropertyValue('--color7').trim();
 const color8v = rootStyles.getPropertyValue('--color8').trim();
 const color9v = rootStyles.getPropertyValue('--color9').trim();
 const data = {
-            labels: [fnT('Pending'), fnT('In Process'), fnT('Completed'), fnT('Failed')],
+            labels: [fnT('Pendente'), fnT('Em processo'), fnT('Concluído'), fnT('Reprovado')],
             datasets: [{
                 data: [0, 0, 0, 0],
                 backgroundColor: [
@@ -174,14 +174,14 @@ const setTopOpp = mainSection => {
         dataSource: {
             "chart": {
                 "caption": fnT(mainSection),
-                "xAxisName": fnT('Questions'),
-                "yAxisName": fnT('Incidence'),
+                "xAxisName": fnT('Perguntas'),
+                "yAxisName": fnT('Incidência'),
                 "theme": 'ocean',
                 "palettecolors": "5d62b5,29c3be,f2726f,A88CCC,EED482,FFAE91,FE93B5,D98ACF,7BCDE8,94A8E9",
                 "showBorder": "1",
                 numberSuffix: "%"
             },
-            "data": currTopOpp[mainSection].map(item => ({label: item.question_prefix, value: `${Math.round(item.frecuency * 100 / item.count)}%`, tooltext: `${fnT('Audits')}: ${item.frecuency}<br><br> ${item.text}`}))
+            "data": currTopOpp[mainSection].map(item => ({label: item.question_prefix, value: `${Math.round(item.frecuency * 100 / item.count)}%`, tooltext: `${fnT('Auditorias')}: ${item.frecuency}<br><br> ${item.text}`}))
         },
         events: {
             "dataPlotClick": (eventObj, dataObj) => swal('', dataObj.toolText.split('<br><br> ')[1], "info")
@@ -200,10 +200,10 @@ const genProgressActionPlan = data => {
         theme: 'ocean',
         dataSource: {
             chart: {
-                caption: fnT('Action plan status'),
+                caption: fnT('Status do plano de ação'),
                 theme: 'ocean',
                 showBorder: '1',
-                "yAxisName": fnT('Audits'),
+                "yAxisName": fnT('Auditorias'),
                 plottooltext: '<b>$label</b>, $percentValue, $value',
             },
             categories: [
@@ -215,15 +215,15 @@ const genProgressActionPlan = data => {
                 {
                     dataset: [
                         {
-                            seriesname: fnT('Pending'),
+                            seriesname: fnT('Pendente'),
                             data: data.map(item => ({value: item.pending}))
                         },
                         {
-                            seriesname: fnT('In Process'),
+                            seriesname: fnT('Em processo'),
                             data: data.map(item => ({value: item.in_process}))
                         },
                         {
-                            seriesname: fnT('Finished'),
+                            seriesname: fnT('Finalizado'),
                             data: data.map(item => ({value: item.finished}))
                         }
                     ]
@@ -244,11 +244,11 @@ const genAVGScore = data => {
         theme: 'ocean',
         dataSource: {
             chart: {
-                caption: fnT('Quarterly average total'),
+                caption: fnT('Média trimestral total'),
                 theme: 'ocean',
                 showBorder: '1',
                 valueFontSize: "12",
-                yAxisName: fnT('Audits'),
+                yAxisName: fnT('Auditorias'),
                 numberSuffix: "%",
                 palettecolors: '778899,008000,F1C40F,FF0000'
             },
@@ -259,7 +259,7 @@ const genAVGScore = data => {
             ],
             dataset: [
                 {
-                    seriesname: fnT('Platino'),
+                    seriesname: fnT('Platina'),
                     data: data.map(item => ({value: Math.round(item.sum_platino * 100 / item.sum_total)}))
                 },
                 {
@@ -267,11 +267,11 @@ const genAVGScore = data => {
                     data: data.map(item => ({value: Math.round(item.sum_verde * 100 / item.sum_total)}))
                 },
                 {
-                    seriesname: fnT('Amarillo'),
+                    seriesname: fnT('Amarelo'),
                     data: data.map(item => ({value: Math.round(item.sum_amarillo * 100 / item.sum_total)}))
                 },
                 {
-                    seriesname: fnT('Rojo'),
+                    seriesname: fnT('Vermelho'),
                     data: data.map(item => ({value: Math.round(item.sum_rojo * 100 / item.sum_total)}))
                 }
             ]
@@ -283,8 +283,8 @@ const genAVGScore = data => {
 const addFile = async element => {
     if(Object.keys(stackFiles).length > 4){
         swal({
-            title: fnT('Alert'),
-            text: fnT('File limit reached'),
+            title: fnT('Alerta'),
+            text: fnT('Limite de arquivos atingido'),
             type: 'warning'
         });
         return;
@@ -302,8 +302,8 @@ const addFile = async element => {
     
     if(response.Message != 'SUCCESS'){
         swal({
-            title: fnT('Error'),
-            text: fnT('An error occurred in the process, if the problem persists please contact support'),
+            title: fnT('Erro'),
+            text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
             type: 'error'
         });
         return;
@@ -317,7 +317,7 @@ const addFile = async element => {
     };
 
     document.getElementById('form-panel-files').innerHTML += `<div class="alert alert-warning alert-dismissible fade show mb-1" role="alert" id="file${idImg}">
-        <strong>${file.name}</strong> / ${fnT('Size')}": ${file.size}b
+        <strong>${file.name}</strong> / ${fnT('Tamanho')}": ${file.size}b
         <button type="button" class="close" onclick="dropFile('${idImg}')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -334,8 +334,8 @@ const dropFile = (idImg) => {
 const sendFormAddFile = async element => {
     if(Object.keys(stackFiles).length < 1){
         swal({
-            title: fnT('Alert'),
-            text: fnT('Add at least one file'),
+            title: fnT('Alerta'),
+            text: fnT('Adicione pelo menos um arquivo'),
             type: 'warning'
         });
         return;
@@ -354,8 +354,8 @@ const sendFormAddFile = async element => {
 
     if(response.status == 0){
         swal({
-            title: fnT('Error'),
-            text: fnT('An error occurred in the process, if the problem persists please contact support'),
+            title: fnT('Erro'),
+            text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
             type: 'error'
         });
         return;
@@ -386,32 +386,32 @@ const fetchFiles = async () => {
             <div id="collapse${cur.id}" class="collapse ${first? 'show' : ''}" aria-labelledby="headingTwo" data-parent="#accordionFile">
                 <div class="card-body">
                     <p>${cur.description}</p>
-                    <small>${fnT('Created')}: ${cur.created} &#124; ${fnT('By')}: ${cur.name}</small>
+                    <small>${fnT('Criado')}: ${cur.created} &#124; ${fnT('Por')}: ${cur.name}</small>
                 </div>
                 <ul class="list-group list-group-flush">
                     ${Object.values(cur.jfiles).reduce((_acc, _cur) => _acc + `<li class="list-group-item">
-                        <a href="${_cur.url}" target="_blank" download>${_cur.name} &#124; ${fnT('Size')}: ${_cur.size}b</a>
+                        <a href="${_cur.url}" target="_blank" download>${_cur.name} &#124; ${fnT('Tamanho')}: ${_cur.size}b</a>
                     </li>`, '')}
                 </ul>
                 ${permissionDoc.u == 1 || permissionDoc.d == 1? `<div class="card-footer bg-white text-right">
-                    <button type="button" class="btn btn-warning btn-sm mr-2" onclick="prepareUpdFile(${cur.id})" ${permissionDoc.u != 1? 'disabled' : ''}>${fnT('Edit')}&#160;&#160;<i class="fa fa-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="removeFile(${cur.id})" ${permissionDoc.d != 1? 'disabled' : ''}>${fnT('Remove')}&#160;&#160;<i class="fa fa-trash"></i></button>
+                    <button type="button" class="btn btn-warning btn-sm mr-2" onclick="prepareUpdFile(${cur.id})" ${permissionDoc.u != 1? 'disabled' : ''}>${fnT('Editar')}&#160;&#160;<i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeFile(${cur.id})" ${permissionDoc.d != 1? 'disabled' : ''}>${fnT('Remover')}&#160;&#160;<i class="fa fa-trash"></i></button>
                 </div>` : ''}
             </div>
         </div>`;
         first = false;
         return acc;
-    }, "<h5 class='mt-2'>" + fnT('No files to show') + "</h5>");
+    }, "<h5 class='mt-2'>" + fnT('Nenhum arquivo para mostrar') + "</h5>");
 }
 
 const removeFile = id => {
     swal({
-        title: fnT('Alert'),
-        text: fnT('Do you want to remove this files?'),
+        title: fnT('Alerta'),
+        text: fnT('Deseja remover estes arquivos?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     },async function(isConfirm){
         if(isConfirm){
             const pet = fetch(base_url +  '/files/removeFile/' + id).then(res => res.json());
@@ -423,8 +423,8 @@ const removeFile = id => {
                 fetchFiles();
             } else{
                 swal({
-                    title: fnT('Error'),
-                    text: fnT('An error occurred in the process, if the problem persists please contact support'),
+                    title: fnT('Erro'),
+                    text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
                     type: 'error'
                 });
             }
@@ -435,7 +435,7 @@ const removeFile = id => {
 const prepareNewFile = () => {
     document.getElementById('form-panel-files').innerHTML = '';
     document.getElementById('form-files').reset();
-    $('#btn-send-af').html(fnT('Insert record'));
+    $('#btn-send-af').html(fnT('Inserir registro'));
     stackFiles = {};
     $('#collapseFormFile').collapse('show');
 }
@@ -453,7 +453,7 @@ const prepareUpdFile = id => {
     let tmp = '';
     Object.entries(currFile.jfiles).forEach(([key, value]) => {
         tmp += `<div class="alert alert-warning alert-dismissible fade show mb-1" role="alert" id="file${key}">
-            <strong>${value.name}</strong> / ${fnT('Size')}": ${value.size}b
+            <strong>${value.name}</strong> / ${fnT('Tamanho')}": ${value.size}b
             <button type="button" class="close" onclick="dropFile('${key}')">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -461,7 +461,7 @@ const prepareUpdFile = id => {
     });
     document.getElementById('form-panel-files').innerHTML = tmp;
     
-    $('#btn-send-af').html(fnT('Update record'));
+    $('#btn-send-af').html(fnT('Atualizar registro'));
     $('#collapseFormFile').collapse('show');
 }
 

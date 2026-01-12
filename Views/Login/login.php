@@ -50,12 +50,12 @@
           <form class="bg-white  rounded-top" onsubmit="logIn(this); return false;">
             <? if (strpos($_SERVER['HTTP_HOST'], '-stage.') !== false): ?>
               <div style="display:none;" class="bg-white text-center text-danger">
-                <h4><?=$fnT('You are in a development environment')?>
+                <h4><?=$fnT('Você está em um ambiente de desenvolvimento')?>
               </div>
             <? endif ?>
             
             <p class="text-center mb-4"><img id="client-log" width="250" src="<?=media()?>/images/logo.png?<?=rand(1, 15)?>" alt="<?=$data['cliente']['name']?>"></p>
-            <!-- <h2 class="text-center m-4 h1"><?=$fnT('Loggin Account')?></h2> -->
+            <!-- <h2 class="text-center m-4 h1"><?=$fnT('Iniciar sessão')?></h2> -->
             <div class="form-group">
               <div class="drop-icon" style="position:absolute;">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icono" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4a4 4 0 1 1 0 8a4 4 0 0 1 0-8m0 16s8 0 8-2c0-2.4-3.9-5-8-5s-8 2.6-8 5c0 2 8 2 8 2"/></svg>
@@ -74,24 +74,24 @@
                   <input id="ch1" onchange="showPassword()" type="checkbox">
                   <div class="transition"></div>
                 </label>
-                <label class="form-check-label" for="ch1"><?=$fnT('Show Password')?></label>
+                <label class="form-check-label" for="ch1"><?=$fnT('Mostrar senha')?></label>
               </div>
-              <a class="float-right ml-4" href="#" onclick="recoverPass()"><?=$fnT('forget your password ?')?></a>
+              <a class="float-right ml-4" href="#" onclick="recoverPass()"><?=$fnT('Esqueceu sua senha?')?></a>
             </div>
             <button id="btn-submit-login" type="submit" class="btn btn-lg btn-block mb-4 btn-s1">
-              <?=$fnT('Login')?>
+              <?=$fnT('Entrar')?>
               &nbsp;&nbsp;<img class="d-none" id='lodaer' src="<?=media()?>/images/loading-white.svg" alt="Loading">
             </button>
             <p class="text-center">
-              <?=$fnT('See our privacy policy')?>: 
-              <a target="_black" href="https://www.arguilea.com/assets/docs/<?=$fnT('privacyEN')?>.pdf"><?=$fnT('here')?></a>
+              <?=$fnT('Veja nossa política de privacidade')?>: 
+              <a target="_black" href="https://www.arguilea.com/assets/docs/<?=$fnT('privacyPT')?>.pdf"><?=$fnT('aqui')?></a>
             </p>
           </form>
         </div>
         <img id="argui-log" width="110" class="position-absolute" src="<?=media()?>/images/logo_min_arguilea.png" alt="Arguilea">
         <button type="button" class="btn btn-sm btn-s2 position-absolute" id="btn-language" data-toggle="modal" data-target="#modal-laguage">
           <i class="fa fa-language" aria-hidden="true"></i>
-          <?=$fnT('Language')?>
+          <?=$fnT('Idioma')?>
         </button>
       </div>
     </div>
@@ -100,23 +100,24 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><?=$fnT('Language menu')?></h5>
+            <h5 class="modal-title" id="exampleModalLabel"><?=$fnT('Menu de idioma')?></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label for="login-language"><?=$fnT('Select the language')?></label>
+              <label for="login-language"><?=$fnT('Selecione o idioma')?></label>
               <select class="form-control input-s1" id="login-language" onchange="location.replace(`/login?lan=${this.value}`)">
-                <option disabled selected><?=$fnT('Select a language')?></option>
-                <option value="esp">Spanish</option>
-                <option value="eng">English</option>
+                <option disabled selected><?=$fnT('Selecione um idioma')?></option>
+                <option value="esp">Espanhol</option>
+                <option value="eng">Inglês</option>
+                <option value="por">Português</option>
               </select>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-s2" data-dismiss="modal"><?=$fnT('Close')?></button>
+            <button type="button" class="btn btn-s2" data-dismiss="modal"><?=$fnT('Fechar')?></button>
           </div>
         </div>
       </div>

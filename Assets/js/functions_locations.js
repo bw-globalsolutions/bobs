@@ -2,12 +2,12 @@ let storeData = [];
 
 const UpdStatusLocation = (id, status) => {
     swal({
-        title: fnT('Alert'),
-        text: fnT('Are you sure you want to change the status?'),
+        title: fnT('Alerta'),
+        text: fnT('Tem certeza de que deseja alterar o status?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     }, function(isConfirm){
         if(isConfirm){
             $('#divLoading').css('display', 'flex');
@@ -24,7 +24,7 @@ const UpdStatusLocation = (id, status) => {
                 } else{
                     swal({
 						title: 'Error',
-						text: fnT('An error occurred in the process, if the problem persists please contact support'),
+						text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
 						type: 'error'
 					})
                 }
@@ -80,12 +80,12 @@ function cargarTema(){
 
 const delLocation = (id) => {
     swal({
-        title: fnT('Alert'),
-        text: fnT('Are you sure you want to delete location?'),
+        title: fnT('Alerta'),
+        text: fnT('Tem certeza de que deseja excluir a localização?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     }, function(isConfirm){
         if(isConfirm){
             $('#divLoading').css('display', 'flex');
@@ -101,13 +101,13 @@ const delLocation = (id) => {
                 } else if(dat.status == -1){
 					swal({
 						title: 'Error',
-						text: fnT('It is not possible to delete a location with assigned audits'),
+						text: fnT('Não é possível excluir uma localização com auditorias atribuídas'),
 						type: 'warning'
 					});
 				}else{
                     swal({
 						title: 'Error',
-						text: fnT('An error occurred in the process, if the problem persists please contact support'),
+						text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
 						type: 'error'
 					});
                 }
@@ -138,7 +138,7 @@ const readStoreFile = element => {
         } else{
             swal({
                 title: 'Error',
-                text: fnT('The file is empty'),
+                text: fnT('O arquivo está vazio'),
                 type: 'error'
             });
             storeData = [];
@@ -182,13 +182,13 @@ const sendStoreFile = async () => {
         $('#divLoading').css('display', 'none');
 
         document.getElementById('list-locations').innerHTML = !locations.length?
-            `<li class="list-group-item list-group-item-secondary">${fnT('No items')}</li>` :
+            `<li class="list-group-item list-group-item-secondary">${fnT('Nenhum item')}</li>` :
             locations.reduce((acc, cur) => {
-                return `${acc} <li data-location="${cur[0] || ''}" class="item-locations list-group-item"><b>${cur[0]}</b> &#187; ${fnT('Action')}: ${fnT(cur[1])}</li>`
+                return `${acc} <li data-location="${cur[0] || ''}" class="item-locations list-group-item"><b>${cur[0]}</b> &#187; ${fnT('Ação')}: ${fnT(cur[1])}</li>`
             }, `<li class="list-group-item list-group-item-secondary d-flex justify-content-between">
-                ${fnT('Renew Locations')}
+                ${fnT('Renovar localizações')}
                 <div class="input-group rounded" style="width: 200px;">
-                    <input class="form-control rounded" id="filter_search" placeholder="${fnT('Search number')}" onkeyup="searchInTable(this.value, 'locations')">
+                    <input class="form-control rounded" id="filter_search" placeholder="${fnT('Pesquisar número')}" onkeyup="searchInTable(this.value, 'locations')">
                     <span class="input-group-text border-0 bg-transparent" id="search-addon">
                         <i class="fa fa-search"></i>
                     </span>
@@ -217,7 +217,7 @@ addEventListener("DOMContentLoaded", (event) => {
 		"aProcessing":true,
 		"aServerSide":true,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/location/getLocations",
@@ -242,7 +242,7 @@ addEventListener("DOMContentLoaded", (event) => {
         "buttons": [
             {
               className: 'btn btn-primary',
-              text: fnT('Download Database'),
+              text: fnT('Baixar base de dados'),
               action: () => getExportable('exportLocations', 'Locations')
             }
         ],
@@ -306,7 +306,7 @@ async function sendLocation(element){
         console.log('res:'+response);
         swal({
             title: 'Error',
-            text: fnT('An error occurred in the process, if the problem persists please contact support'),
+            text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
             type: 'error'
         });
     }
@@ -360,7 +360,7 @@ async function openModal() {
         }
 
         // Actualizar el título del modal
-        document.getElementById('titleModal').innerHTML = fnT("New Location");
+        document.getElementById('titleModal').innerHTML = fnT("Nova localização");
 
         // Mostrar el modal
         $('#modalFormUser').modal('show');
@@ -395,7 +395,7 @@ async function addLocation(element){
         console.log(response);
         swal({
             title: 'Error',
-            text: fnT('An error occurred in the process, if the problem persists please contact support'),
+            text: fnT('Ocorreu um erro no processo; se o problema persistir, entre em contato com o suporte'),
             type: 'error'
         });
     }

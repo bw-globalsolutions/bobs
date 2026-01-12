@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		"aProcessing":true,
 		"aServerSide":true,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/announced_Visits/getVisits",
@@ -31,20 +31,20 @@ document.addEventListener('DOMContentLoaded', function(){
 		// "dom": "lfBrtip",
         // "buttons": [
         // 	//{ 	"extend": "copyHtml5",
-        // 	//	"text": "<i class='fa fa-files-o'></i> " + fnT('Copy'),
-        // 	//	"titleAttr": fnT('Copy'),
+        // 	//	"text": "<i class='fa fa-files-o'></i> " + fnT('Copiar'),
+        // 	//	"titleAttr": fnT('Copiar'),
         // 	//	"className": "btn btn-secondary" },
 		// 	{	"extend": "excelHtml5",
         // 		"text": "<i class='fa fa-file-excel-o'></i> Excel",
-        // 		"titleAttr": fnT('Export to') + " Excel",
+        // 		"titleAttr": fnT('Exportar para') + " Excel",
         // 		"className": "btn btn-success" },
 		// 	{	"extend": "pdfHtml5",
         // 		"text": "<i class='fa fa-file-pdf-o'></i> PDF",
-        // 		"titleAttr": fnT('Export to') + "  PDF",
+        // 		"titleAttr": fnT('Exportar para') + "  PDF",
         // 		"className": "btn btn-danger" }
 		// 	//{	"extend": "csvHtml5",
         // 	//	"text": "<i class='fa fa-file-text-o'></i> CSV",
-        // 	//	"titleAttr": fnT('Export to') + "  CSV",
+        // 	//	"titleAttr": fnT('Exportar para') + "  CSV",
         // 	//	"className": "btn btn-info" }
         // ],
 		"responsive":true,
@@ -115,7 +115,7 @@ function fntSendNotificationGlobal(){
 	request.onreadystatechange = function(){
 		if(request.readyState == 4 && request.status == 200){
 			var objData = JSON.parse(request.responseText);
-			swal(fnT('Announced visit'), fnT(objData.msg), "success");
+			swal(fnT('Visita anunciada'), fnT(objData.msg), "success");
 			tableAnnouncedVisits.api().ajax.reload();
 		}
 	}
@@ -139,7 +139,7 @@ function fntSendNotification(idVisit, location_id){
 	request.onreadystatechange = function(){
 		if(request.readyState == 4 && request.status == 200){
 			var objData = JSON.parse(request.responseText);
-			swal(fnT('Announced visit'), fnT(objData.msg), "success");
+			swal(fnT('Visita anunciada'), fnT(objData.msg), "success");
 			tableAnnouncedVisits.api().ajax.reload();
 		}
 	}
@@ -156,7 +156,7 @@ function fntSendNotificationGeneral(month,idCountry){
 	request.onreadystatechange = function(){
 		if(request.readyState == 4 && request.status == 200){
 			var objData = JSON.parse(request.responseText);
-			swal(fnT('Announced visit'), fnT(objData.msg), "success");
+			swal(fnT('Visita anunciada'), fnT(objData.msg), "success");
 			tableAnnouncedVisits.api().ajax.reload();
 		}
 	}
@@ -182,7 +182,7 @@ function editHour(event, id){
 		if(request.readyState == 4 && request.status == 200){
 			console.log(request.responseText);
 			if(request.responseText=='ok'){
-				swal(fnT('Announced visit'), fnT('Time saved successfully'), "success");
+				swal(fnT('Visita anunciada'), fnT('Tempo salvo com sucesso'), "success");
 			}
 		}
 	}

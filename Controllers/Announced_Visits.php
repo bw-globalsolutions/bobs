@@ -114,18 +114,18 @@ class Announced_Visits extends Controllers{
 									<b>'.$country['name'].'</b>	
 									<span style="font-size: 13px;"><b>'.$data[$i]['round_name'].'</b><br></span>';
 
-			$data[$i]['date'] = '	<span style="font-size: 14px;"><b><span class="strFecha'.$data[$i]['id_visit'].'">'.date("Y-m-d", strtotime( $data[$i]['announced_date'] )) .'</span> - '.$fnT("Week").' '.$data[$i]['select_week'].'</b></span><br>';
+			$data[$i]['date'] = '	<span style="font-size: 14px;"><b><span class="strFecha'.$data[$i]['id_visit'].'">'.date("Y-m-d", strtotime( $data[$i]['announced_date'] )) .'</span> - '.$fnT("Semana").' '.$data[$i]['select_week'].'</b></span><br>';
 			if(in_array($_SESSION['userData']['role']['id'], [1,2])){
 				$data[$i]['date'] .= '<input type="time" hidden onchange="editHour(event, '.$data[$i]['id_visit'].')" id="hora'.$data[$i]['id_visit'].'">
 									<label for="hora'.$data[$i]['id_visit'].'" onclick="document.getElementById(\'hora'.$data[$i]['id_visit'].'\').showPicker()" style="background-color: var(--color1); color:#fff; padding:5px; border-radius:6px; cursor: pointer;"><span style="font-size: 14px;">Hora: <b class="strHour'.$data[$i]['id_visit'].'">'.date("H:i", strtotime( $data[$i]['announced_date'] )).'</b><i class="fa fa-pencil" style="margin-left: 5px;"></i></span></label><br>
 									<span style="font-size: 14px;">Auditor: <b>'.$data[$i]['auditor_name'].'</b></span>';
 			}else{
 				$data[$i]['date'] .= '
-									<label><span style="font-size: 14px;">'.$fnT('Hour').': <b class="strHour">'.date("H:i", strtotime( $data[$i]['announced_date'] )).'</b></span></label><br>
+									<label><span style="font-size: 14px;">'.$fnT('Hora').': <b class="strHour">'.date("H:i", strtotime( $data[$i]['announced_date'] )).'</b></span></label><br>
 									<span style="font-size: 14px;">Auditor: <b>'.$data[$i]['auditor_name'].'</b></span>';
 			}
 									
-			$btnAction = '<button class="btn btn-warning btnSendNotification" onclick="fntSendNotification('.$data[$i]['id_visit'].', '.$data[$i]['location_id'].')" title="'.$fnT("Send notification").'">'.$fnT("Send notification").'</button><br>';
+			$btnAction = '<button class="btn btn-warning btnSendNotification" onclick="fntSendNotification('.$data[$i]['id_visit'].', '.$data[$i]['location_id'].')" title="'.$fnT("Enviar notificação").'">'.$fnT("Enviar notificação").'</button><br>';
 
 			
 			
@@ -136,7 +136,7 @@ class Announced_Visits extends Controllers{
 				$autor = $obj->selectUsuario(intval($dataLog['user_id']));
 				$data[$i]['send'] = '<div class="contSendLbl"><p>'.$aud['notification_date'].'</p><b>By: '.$autor['name'].'</b></div>';
 			}else{
-				$data[$i]['send'] = '<div class="contSendLbl"><p>'.$fnT('Not sent yet').'</p></div>';
+				$data[$i]['send'] = '<div class="contSendLbl"><p>'.$fnT('Ainda não enviado').'</p></div>';
 			}
 			
 		}
@@ -362,9 +362,9 @@ class Announced_Visits extends Controllers{
 									<br>'.$data[$i]['location_name'].'</b><br>		
 									<span style="font-size: 13px;"><b>'.$data[$i]['round_name'].'</b><br></span>';
 
-			$data[$i]['date'] = '	<span style="font-size: 14px;"><b>'.date("Y-m-d", strtotime( $data[$i]['announced_date'] )) .' - '.$fnT("Week").' '.$data[$i]['select_week'].'</b></span><br>
+			$data[$i]['date'] = '	<span style="font-size: 14px;"><b>'.date("Y-m-d", strtotime( $data[$i]['announced_date'] )) .' - '.$fnT("Semana").' '.$data[$i]['select_week'].'</b></span><br>
 									<span style="font-size: 14px;">Auditor: <b>'.$data[$i]['auditor_name'].'</b></span>';
-			$btnAction = '<button class="btn btn-warning btnSendNotification" disabled title="'.$fnT("Send notification").'">'.$fnT("Send notification").'</button><br>';
+			$btnAction = '<button class="btn btn-warning btnSendNotification" disabled title="'.$fnT("Enviar notificação").'">'.$fnT("Enviar notificação").'</button><br>';
 
 			
 			

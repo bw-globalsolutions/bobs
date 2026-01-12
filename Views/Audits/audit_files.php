@@ -15,7 +15,7 @@
             <h1>
                 <i class="fa fa-camera" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             </h1>
-            <p><?=$fnT('View the photos corresponding to the audit')?></p>
+            <p><?=$fnT('Ver as fotos correspondentes à auditoria')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-list-ol fa-lg"></i></li>
@@ -41,7 +41,7 @@
                 <? endforeach ?>
             </ul>
         <? else: ?>
-            <h2 class="h4 mb-3"><?=$fnT('There are no images to show')?></h2>
+            <h2 class="h4 mb-3"><?=$fnT('Não há imagens para mostrar')?></h2>
         <? endif ?>
         </div>
     </div>

@@ -57,9 +57,9 @@
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
             <!--<li><a class="dropdown-item" href="<?=base_url()?>/opciones"><i class="fa fa-cog fa-lg"></i> Settings</a></li>-->
             <?php if($_SESSION['userData']['profile'] != 'dmanager' && $_SESSION['userData']['profile'] != 'tienda'){?>
-            <li><a class="dropdown-item" href="<?=base_url()?>/usuarios/perfil"><i class="fa fa-user fa-lg"></i> <?=$fnT('Profile')?></a></li>
+            <li><a class="dropdown-item" href="<?=base_url()?>/usuarios/perfil"><i class="fa fa-user fa-lg"></i> <?=$fnT('Perfil')?></a></li>
             <?php }?>
-            <li><a class="dropdown-item" href="<?=base_url()?>/logout"><i class="fa fa-sign-out fa-lg"></i> <?=$fnT('Exit')?></a></li>
+            <li><a class="dropdown-item" href="<?=base_url()?>/logout"><i class="fa fa-sign-out fa-lg"></i> <?=$fnT('Sair')?></a></li>
           </ul>
         </li>
       </ul>

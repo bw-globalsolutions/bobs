@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			success: function(response) {
 			
 				console.log('Éxito:', response);
-				swal(fnT('Exito'), 'Manual registrado correctamente', "success");
+				swal(fnT('Êxito'), 'Manual registrado correctamente', "success");
 				manualesAutomatico();	
 				  $('#modalFormManual').modal('hide');
 			

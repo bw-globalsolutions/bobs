@@ -15,7 +15,7 @@
                 <h1>
                     <i class="fa fa-id-card-o" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
                 </h1>
-                <p><?=$fnT('Manage system languages')?></p>
+                <p><?=$fnT('Gerenciar idiomas do sistema')?></p>
             </div>
             <ul class="app-breadcrumb breadcrumb">
                 <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -27,7 +27,7 @@
                 <div class="tile">
                     <div class="tile-body">
                         <h6>
-                            <?= $fnT('Words') ?>:
+                            <?= $fnT('Palavras') ?>:
                             <span class="ml-2"><?= count($data['dictionary']) ?></span>
                         </h6>
                         <div class="btn-group-toggle d-flex flex-column" data-toggle="buttons">
@@ -44,7 +44,7 @@
                 <? if($data['permission']['u']): ?>
                     <div class="btn-group dropright w-100 mb-3" role="group">
                         <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <?= $fnT('Synchronize translation') ?>
+                            <?= $fnT('Sincronizar tradução') ?>
                         </button>
                         <div class="dropdown-menu">
                             <? foreach($data['languagues'] as $l): ?>
@@ -59,7 +59,7 @@
                     <div class="tile-body">
                         <div class="d-flex justify-content-center">
                             <div class="input-group rounded mt-3" style="width: 270px;">
-                                <input class="input-s1 form-control rounded" style="padding-left: 20px;" id="filter_search" placeholder="<?= $fnT('Search') ?>" onkeyup="searchString(this.value)">
+                                <input class="input-s1 form-control rounded" style="padding-left: 20px;" id="filter_search" placeholder="<?= $fnT('Pesquisar') ?>" onkeyup="searchString(this.value)">
                                 <div class="drop-icon" style="position:absolute; top:-7px; left:-40px">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M11 2a9 9 0 1 0 5.618 16.032l3.675 3.675a1 1 0 0 0 1.414-1.414l-3.675-3.675A9 9 0 0 0 11 2m-6 9a6 6 0 1 1 12 0a6 6 0 0 1-12 0" clip-rule="evenodd"></path></svg>
                                 </div>
@@ -71,9 +71,9 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th><?=$fnT('Word')?></th>
-                                        <th><?=$fnT('Translation')?></th>
-                                        <th><?=$fnT('Actions')?></th>
+                                        <th><?=$fnT('Palavra')?></th>
+                                        <th><?=$fnT('Tradução')?></th>
+                                        <th><?=$fnT('Ações')?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,7 +89,7 @@
                                             <td>
                                                 <div class="btn-group dropdown" role="group">
                                                     <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <?= $fnT('Edit') ?>
+                                                        <?= $fnT('Editar') ?>
                                                     </button>
                                                     <div class="dropdown-menu">
                                                         <? foreach($data['languagues'] as $l): ?>

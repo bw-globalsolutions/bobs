@@ -69,7 +69,7 @@ function openOpportunity(picklist_id, qprefix, snumber, isAutoFail=0){
                 <span>${cur.text}</span>
                 <div class="toggle-flip success-danger ml-3">
                     <label class="m-0"><input value="${cur.text}" type="checkbox" ${cur.opp?'checked':''} ${editRestricted? '' : 'disabled'}>
-                        <span class="flip-indecator" data-toggle-on="${fnT('No')}" data-toggle-off="${fnT('Yes')}"></span>
+                        <span class="flip-indecator" data-toggle-on="${fnT('Não')}" data-toggle-off="${fnT('Sim')}"></span>
                     </label>
                 </div>
             </li>`;
@@ -84,7 +84,7 @@ function openOpportunity(picklist_id, qprefix, snumber, isAutoFail=0){
                     <img style="height:85px; width:85px" class="rounded shadow-sm of-cover cr-pointer" src="${cur.url}">
                 </a><br>
                 <span class ="badge badge-pill badge-danger mt-1 cr-pointer sw-he" onclick="removeImg(${cur.id})">
-                    <i class="fa fa-trash"></i>&nbsp; ${fnT('Delete')}
+                    <i class="fa fa-trash"></i>&nbsp; ${fnT('Excluir')}
                 </span>
             </div>`;
             return acc;
@@ -122,7 +122,7 @@ function uploadPic(element){
                             <img style="height:85px; width:85px" class="rounded shadow-sm of-cover cr-pointer" src="${dat.Info.location}">
                         </a><br>
                         <span class ="badge badge-pill badge-danger mt-1 cr-pointer" onclick="dropImg(${idImg}, '${dat.Info.location}')">
-                            <i class="fa fa-trash"></i>&nbsp; ${fnT('Delete')}
+                            <i class="fa fa-trash"></i>&nbsp; ${fnT('Excluir')}
                         </span>
                     </div>`);
                     stackImg.push(dat.Info.location);
@@ -130,8 +130,8 @@ function uploadPic(element){
             });
         }else{
             swal({
-                title: fnT('Error'),
-                text: fnT('Format not supported'),
+                title: fnT('Erro'),
+                text: fnT('Formato não suportado'),
                 type: 'error'
             });
         }
@@ -171,8 +171,8 @@ function sendAnswers(element){
 		});
     }else{
         swal({
-            title: fnT('Error'),
-            text: fnT('To mark an opportunity, it is necessary to select a reason'),
+            title: fnT('Erro'),
+            text: fnT('Para marcar uma oportunidade, é necessário selecionar um motivo'),
             type: 'error'
         }); 
     }
@@ -192,12 +192,12 @@ function sendImg(opp_id){
 
 function removeOpp(){
     swal({
-        title: fnT('Alert'),
-        text: fnT('Are you sure you want to eliminate this opportunity?'),
+        title: fnT('Alerta'),
+        text: fnT('Tem certeza de que deseja eliminar esta oportunidade?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     }, function(isConfirm){
         if(isConfirm){
             $('#divLoading').css('display', 'flex');
@@ -245,12 +245,12 @@ function refreshScore(score){
 
 function removeImg(file_id){
     swal({
-        title: fnT('Alert'),
-        text: fnT('Are you sure you want to delete this image?'),
+        title: fnT('Alerta'),
+        text: fnT('Tem certeza de que deseja excluir esta imagem?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     }, function(isConfirm){
         if(isConfirm){
             $('#divLoading').css('display', 'flex');
@@ -277,12 +277,12 @@ function dropImg(idImg, url){
 function sendInsertNA(snumber, qprefix, points){
     if(editRestricted){
         swal({
-            title: fnT('Alert'),
-            text: fnT('Are you sure you want to remove this question?'),
+            title: fnT('Alerta'),
+            text: fnT('Tem certeza de que deseja remover esta pergunta?'),
             type: 'warning',
             showCancelButton: true,
-            confirmButtonText: fnT('Yes'),
-            cancelButtonText: fnT('No')
+            confirmButtonText: fnT('Sim'),
+            cancelButtonText: fnT('Não')
         }, function(isConfirm){
             if(isConfirm){
                 $('#divLoading').css('display', 'flex');
@@ -298,8 +298,8 @@ function sendInsertNA(snumber, qprefix, points){
                     $('#divLoading').css('display', 'none');
                     if(dat.status != 1){
                         swal({
-                            title: fnT('Error'),
-                            text: fnT('An error has occurred'),
+                            title: fnT('Erro'),
+                            text: fnT('Ocorreu um erro'),
                             type: 'error'
                         });
                     }else{
@@ -319,8 +319,8 @@ function sendInsertNA(snumber, qprefix, points){
         });
     } else{
         swal({
-            title: fnT('Error'),
-            text: fnT('It is not possible to edit a finished audit'),
+            title: fnT('Erro'),
+            text: fnT('Não é possível editar uma auditoria finalizada'),
             type: 'error'
         });
     }
@@ -336,12 +336,12 @@ function toggleQuestion(qprefix){
 
 function sendRemoveNA(qprefix){
     swal({
-        title: fnT('Alert'),
-        text: fnT('This question is disabled, do you want to enable it?'),
+        title: fnT('Alerta'),
+        text: fnT('Esta pergunta está desativada; deseja habilitá-la?'),
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: fnT('Yes'),
-        cancelButtonText: fnT('No')
+        confirmButtonText: fnT('Sim'),
+        cancelButtonText: fnT('Não')
     }, function(isConfirm){
         if(isConfirm){
             $('#divLoading').css('display', 'flex');
@@ -355,8 +355,8 @@ function sendRemoveNA(qprefix){
                 $('#divLoading').css('display', 'none');
                 if(dat.status != 1){
                     swal({
-                        title: fnT('Error'),
-                        text: fnT('An error has occurred'),
+                        title: fnT('Erro'),
+                        text: fnT('Ocorreu um erro'),
                         type: 'error'
                     });
                 }else{
@@ -449,7 +449,7 @@ function lineaTiempoCerttis(audit_id,id_audit_opp){
 
 				//formCerttis.reset();
 			}else{
-				swal(fnT('Error'), fnT(dat.msg), "error");
+				swal(fnT('Erro'), fnT(dat.msg), "error");
 			}
 			divLoading.style.display = "none";
 		});

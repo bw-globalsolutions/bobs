@@ -34,7 +34,7 @@
                 <i class="fa fa-id-card-o" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
                 <!-- Definir que roles pueden crear apelaciones -->
                 <? if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 10] ) ): ?>
-                    <button class="btn btn-md btn-primary" type="button" onclick="openModalNew();"><i class="fa fa-plus-circle" aria-hidden="true"></i><?=$fnT('New appeal')?></button>
+                    <button class="btn btn-md btn-primary" type="button" onclick="openModalNew();"><i class="fa fa-plus-circle" aria-hidden="true"></i><?=$fnT('Nova apelação')?></button>
                 <? endif ?>
             </h1>
         </div>
@@ -50,7 +50,7 @@
                 <div class="col-lg-3 my-1">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Round')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Rodada')?></span>
                         </div>
                         <select class="form-control selectpicker" id="fRound" name="fRound" multiple data-actions-box="true" data-selected-text-format="count>1">
                             <? foreach($data['rounds'] as $id => $r): ?>
@@ -62,7 +62,7 @@
                 <div class="col-lg-3 my-1">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Store')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Loja')?></span>
                         </div>
                         <select class="form-control selectpicker" id="fStore" name="fStore" multiple data-actions-box="true" data-selected-text-format="count>1">
                             <? foreach($data['stores'] as $id => $sto): ?>
@@ -86,7 +86,7 @@
                 <div class="col-lg-3 my-1">
                     <button id="btnFilterAnnouncedVisit" class="form-control btn btn-primary" type="button" onclick="recargaDTAppeals();">
                         <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
-                        <?=$fnT('Filter')?>
+                        <?=$fnT('Filtrar')?>
                     </button>
                 </div>
             </div>
@@ -101,10 +101,10 @@
                     <table class="table table-hover table-bordered" id="tableOpps">
                     <thead>
                         <tr>
-                            <th><?=$fnT('Id')?></th>
-                            <th><?=$fnT('Store')?></th>
-                            <th><?=$fnT('Appeals')?></th>
-                            <th><?=$fnT('Options')?></th>
+                            <th><?=$fnT('ID')?></th>
+                            <th><?=$fnT('Loja')?></th>
+                            <th><?=$fnT('Apelações')?></th>
+                            <th><?=$fnT('Opções')?></th>
                         </tr>
                     </thead>
                     <tbody>

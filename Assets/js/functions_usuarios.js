@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		"aProcessing":true,
 		"aServerSide":true,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/usuarios/getUsuarios",
@@ -209,10 +209,10 @@ document.addEventListener('DOMContentLoaded', function(){
 			if(dat.status){
 				$('#modalFormUser').modal("hide");
 				tableUsuarios.api().ajax.reload();
-				swal(fnT('Users'), fnT(dat.msg), "success");
+				swal(fnT('Usuários'), fnT(dat.msg), "success");
 				formUser.reset();
 			}else{
-				swal(fnT('Error'), fnT(dat.msg), "error");
+				swal(fnT('Erro'), fnT(dat.msg), "error");
 			}
 			divLoading.style.display = "none";
 		});
@@ -244,7 +244,7 @@ function fntViewUsuario(idUser){
 				document.getElementById('cel-regDate').innerHTML = objData.data.created;
 				$('#modalViewUser').modal('show');
 			}else{
-				swal(fnT('Error'),fnT(objData.msg),"error");
+				swal(fnT('Erro'),fnT(objData.msg),"error");
 			}
 		}
 	}
@@ -256,8 +256,8 @@ function fntEditUsuario(element, idUser){
 
 	document.querySelector('.modal-header').classList.replace("headerRegister", "headerUpdate");
 	document.querySelector('#btnActionForm').classList.replace("btn-primary", "btn-info");
-	document.querySelector('#titleModal').innerHTML = fnT('Update user');
-	document.querySelector('#btnText').innerHTML = fnT('Save');
+	document.querySelector('#titleModal').innerHTML = fnT('Atualizar usuário');
+	document.querySelector('#btnText').innerHTML = fnT('Salvar');
 
 	var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
 	var ajaxUrl = base_url+'/usuarios/getUsuario/'+idUser;
@@ -298,12 +298,12 @@ function fntEditUsuario(element, idUser){
 function fntDelUsuario(idUser){
 	var iduser = idUser;
 	swal({
-		title: fnT('Delete user'),
-		text: fnT('Do you really want to delete this User ?'),
+		title: fnT('Excluir usuário'),
+		text: fnT('Deseja realmente excluir este usuário?'),
 		type: "warning",
 		showCancelButton: true,
-		confirmButtonText: fnT('Yes, delete'),
-		cancelButtonText: fnT('No, cancel'),
+		confirmButtonText: fnT('Sim, excluir'),
+		cancelButtonText: fnT('Não, cancelar'),
 		closeOnConfirm: false,
 		closeOnCancel: true
 	}, function(isConfirm){
@@ -319,10 +319,10 @@ function fntDelUsuario(idUser){
 					var objData = JSON.parse(request.responseText);
 					if(objData.status)
 					{
-						swal(fnT('Delete'), fnT(objData.msg), "success");
+						swal(fnT('Excluir'), fnT(objData.msg), "success");
 						tableUsuarios.api().ajax.reload();
 					}else{
-						swal(fnT('Attention'), fnT(objData.msg), "error");
+						swal(fnT('Atenção'), fnT(objData.msg), "error");
 					}
 				}
 			}
@@ -333,12 +333,12 @@ function fntDelUsuario(idUser){
 function fntStatusUsuario(idUser, status){
 	var iduser = idUser;
 	swal({
-		title: (status==1?fnT('Activate user'):fnT('Inactivate user')),
-		text: (status==1?fnT('Do you really want to active this User ?'):fnT('Do you really want to inactive this User ?')),
+		title: (status==1?fnT('Ativar usuário'):fnT('Inativar usuário')),
+		text: (status==1?fnT('Deseja realmente ativar este usuário?'):fnT('Deseja realmente inativar este usuário?')),
 		type: "warning",
 		showCancelButton: true,
-		confirmButtonText: fnT('Yes'),
-		cancelButtonText: fnT('No'),
+		confirmButtonText: fnT('Sim'),
+		cancelButtonText: fnT('Não'),
 		closeOnConfirm: false,
 		closeOnCancel: true
 	}, function(isConfirm){
@@ -354,10 +354,10 @@ function fntStatusUsuario(idUser, status){
 					var objData = JSON.parse(request.responseText);
 					if(objData.status)
 					{
-						swal(fnT('Delete'), fnT(objData.msg), "success");
+						swal(fnT('Excluir'), fnT(objData.msg), "success");
 						tableUsuarios.api().ajax.reload();
 					}else{
-						swal(fnT('Attention'), fnT(objData.msg), "error");
+						swal(fnT('Atenção'), fnT(objData.msg), "error");
 					}
 				}
 			}
@@ -370,8 +370,8 @@ function openModal(){
 	document.getElementById('user_id').value = "";
 	document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
 	document.getElementById('btnActionForm').classList.replace("btn-info", "btn-primary");
-	document.getElementById('titleModal').innerHTML = fnT("New user");
-	document.getElementById('btnText').innerHTML = fnT("Save");
+	document.getElementById('titleModal').innerHTML = fnT("Novo usuário");
+	document.getElementById('btnText').innerHTML = fnT("Salvar");
 	formUser.reset();
 
 	limitRole();

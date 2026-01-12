@@ -63,7 +63,7 @@
       <? if(!empty($_SESSION['userData']['permission']['Archivos']['r'])): ?>
         <li>
           <a class="app-menu__item" href="<?=base_url()?>/files">
-          <i class="app-menu__icon fa fa-file"></i><span class="app-menu__label"><?=$fnT('Files')?></span>
+          <i class="app-menu__icon fa fa-file"></i><span class="app-menu__label"><?=$fnT('Arquivos')?></span>
           </a>
         </li>
       <? endif ?>
@@ -76,7 +76,7 @@
       <? if(!empty($_SESSION['userData']['permission']['Auditorias']['r'])): ?>
         <li>
           <a class="app-menu__item" href="<?=base_url()?>/audits">
-            <i class="app-menu__icon fa fa-list-alt"></i><span class="app-menu__label"><?=$fnT('Audits')?></span>
+            <i class="app-menu__icon fa fa-list-alt"></i><span class="app-menu__label"><?=$fnT('Auditorias')?></span>
           </a>
         </li>
       <? endif ?>
@@ -84,24 +84,24 @@
       <? if(!empty($_SESSION['userData']['permission']['Estadisticas']['r'])): ?>
         <li class="treeview">
           <a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label lang"><?=$fnT('Statistics')?></span><i class="treeview-indicator fa fa-angle-right"></i>
+            <i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label lang"><?=$fnT('Estatísticas')?></span><i class="treeview-indicator fa fa-angle-right"></i>
           </a>
           <ul class="treeview-menu">
             <li>
               <a class="treeview-item" href="<?=base_url()?>/statistics"><i class="icon fa fa-circle-o">
-                </i> <span><?=$fnT('Main')?></span>
+                </i> <span><?=$fnT('Principal')?></span>
               </a>
             </li>
             <? if(!empty($_SESSION['userData']['permission']['Estadisticas']['u'])): ?>
               <li>
                 <a class="treeview-item" href="<?=base_url()?>/statistics/programPreview"><i class="icon fa fa-circle-o">
-                  </i> <span><?=$fnT('Program preview')?></span>
+                  </i> <span><?=$fnT('Prévia do programa')?></span>
                 </a>
               </li>
             <? endif; ?>
             <li>
               <a class="treeview-item" href="<?=base_url()?>/statistics/gallery"><i class="icon fa fa-circle-o">
-                </i> <span><?=$fnT('Gallery')?></span>
+                </i> <span><?=$fnT('Galeria')?></span>
               </a>
             </li>
           </ul>
@@ -111,7 +111,7 @@
       <? if(!empty($_SESSION['userData']['permission']['Aclaraciones']['r'])): ?>
         <li>
           <a class="app-menu__item" href="<?=base_url()?>/appeals">
-            <i class="app-menu__icon fa fa-bolt"></i><span class="app-menu__label"><?=$fnT('Appeals')?></span>
+            <i class="app-menu__icon fa fa-bolt"></i><span class="app-menu__label"><?=$fnT('Apelações')?></span>
           </a>
         </li>
       <? endif ?>
@@ -120,18 +120,18 @@
       <? if(!empty($_SESSION['userData']['permission']['Usuarios']['r'])): ?>
         <li class="treeview">
           <a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label lang"><?=$fnT('Management')?></span><i class="treeview-indicator fa fa-angle-right"></i>
+            <i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label lang"><?=$fnT('Administração')?></span><i class="treeview-indicator fa fa-angle-right"></i>
           </a>
           <ul class="treeview-menu">
             <li>
               <a class="treeview-item" href="<?=base_url()?>/usuarios">
-                <i class="icon fa fa-circle-o"></i> <span><?=$fnT('Users')?></span>
+                <i class="icon fa fa-circle-o"></i> <span><?=$fnT('Usuários')?></span>
               </a>
             </li>
             <li>
               <? if($_SESSION['userData']['role']['id'] == 1 || $_SESSION['userData']['role']['id'] == 2): ?>
                 <a class="treeview-item" href="<?=base_url()?>/roles"><i class="icon fa fa-circle-o">
-                  </i> <span><?=$fnT('Roles')?></span>
+                  </i> <span><?=$fnT('Funções')?></span>
                 </a>
               <? endif ?>
 
@@ -143,7 +143,7 @@
 
 
                 <a class="treeview-item" href="<?=base_url()?>/usuariosTienda"><i class="icon fa fa-circle-o">
-                  </i> <span><?=$fnT('Reporte Feed')?></span>
+                  </i> <span><?=$fnT('Relatório Feed')?></span>
                 </a>
 
                       
@@ -156,7 +156,7 @@
       <? if(!empty($_SESSION['userData']['permission']['Traducciones']['r'])): ?>
         <li>
           <a class="app-menu__item" href="<?=base_url()?>/systemLanguages">
-            <i class="app-menu__icon fa fa-language"></i><span class="app-menu__label"><?=$fnT('Languages')?></span>
+            <i class="app-menu__icon fa fa-language"></i><span class="app-menu__label"><?=$fnT('Idiomas')?></span>
           </a>
         </li>
       <? endif ?>
@@ -165,7 +165,7 @@
         <li>
           <a class="app-menu__item" href="<?=base_url()?>/location">
             <i class="app-menu__icon fa fa-map-marker"></i>
-            <span class="app-menu__label"><?=$fnT('Locations')?></span>
+            <span class="app-menu__label"><?=$fnT('Localizações')?></span>
           </a>
         </li>
       <? endif ?>
@@ -173,7 +173,7 @@
       <? if(!empty($_SESSION['userData']['permission']['Visitas Anunciadas']['r'])): ?>
         <li>
           <a class="app-menu__item" href="<?=base_url()?>/announced_Visits">
-            <i class="app-menu__icon fa fa-calendar"></i><span class="app-menu__label"><?=$fnT('Announced visits')?></span>
+            <i class="app-menu__icon fa fa-calendar"></i><span class="app-menu__label"><?=$fnT('Visitas anunciadas')?></span>
           </a>
         </li>
       <? endif ?>
@@ -181,7 +181,7 @@
       <? if(!empty($_SESSION['userData']['permission']['Encuesta de auditor']['r']) && false): ?>
         <li>
           <a class="app-menu__item" href="<?=base_url()?>/auditorSurvey">
-            <i class="app-menu__icon fa fa-pencil-square-o"></i><span class="app-menu__label"><?=$fnT('Auditor survey')?></span>
+            <i class="app-menu__icon fa fa-pencil-square-o"></i><span class="app-menu__label"><?=$fnT('Pesquisa do auditor')?></span>
           </a>
         </li>
       <? endif ?>
@@ -189,7 +189,7 @@
       <? if(!empty($_SESSION['userData']['permission']['Personalizacion']['r'])): ?>
         <li>
           <a class="app-menu__item" href="<?=base_url()?>/personalization">
-            <i class="app-menu__icon fa fa-sliders"></i><span class="app-menu__label"><?=$fnT('Personalization')?></span>
+            <i class="app-menu__icon fa fa-sliders"></i><span class="app-menu__label"><?=$fnT('Personalização')?></span>
           </a>
         </li>
       <? endif ?>

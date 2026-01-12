@@ -28,51 +28,51 @@
                 <div class="row">
                     <div class="col-lg-5">
                         <div class="card mb-3">
-                            <h5 class="card-header hd-ss"><?=$fnT('Assesment info')?></h5>
+                            <h5 class="card-header hd-ss"><?=$fnT('Informações da avaliação')?></h5>
                             <div class="card-body p-2">
                                 <table class="w-100" cellpadding="3">
                                     <tr>
-                                        <td align="right"><?=$fnT('Type')?>:</td>
+                                        <td align="right"><?=$fnT('Tipo')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$fnT($data['audit']['type'])?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Round')?>:</td>
+                                        <td align="right"><?=$fnT('Rodada')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$data['audit']['round_name']?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Stard')?>:</td>
+                                        <td align="right"><?=$fnT('Início')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=date_format(date_create($data['audit']['date_visit']), "M d, Y H:i")?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('End')?>:</td>
+                                        <td align="right"><?=$fnT('Fim')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=date_format(date_create($data['audit']['date_visit_end']), "M d, Y H:i")?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Front door')?>:</td>
+                                        <td align="right"><?=$fnT('Porta da frente')?>:</td>
                                         <td>
                                             &nbsp;&nbsp;
                                             <img class="of-contain" width="92" height="121" src="<?=$data['audit']['picture_front']?? media().'/images/no-image-available.jpg' ?>" alt="Picture of the Front Door/Entrance of the Restaurant">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Location')?>:</td>
+                                        <td align="right"><?=$fnT('Localização')?>:</td>
                                         <td>&nbsp;&nbsp; <b>#<?=$data['audit']['location_number']?> - <?=$data['audit']['location_name']?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Address')?>:</td>
+                                        <td align="right"><?=$fnT('Endereço')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$data['audit']['location_address']?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Auditor name')?>:</td>
+                                        <td align="right"><?=$fnT('Nome do auditor')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$data['audit']['auditor_name']?></b></td>
                                     </tr>
                                     <tr><td colspan="2"><hr></td></tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Manager')?>:</td>
+                                        <td align="right"><?=$fnT('Gerente')?>:</td>
                                         <td>&nbsp;&nbsp; <b><?=$data['audit']['manager_name']?></b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><?=$fnT('Signature')?>:</td>
+                                        <td align="right"><?=$fnT('Assinatura')?>:</td>
                                         <td>&nbsp;&nbsp; 
                                             <img width="121" height="92" class="of-contain" src="<?= empty($data['audit']['manager_signature']) || $data['audit']['manager_signature']=='Sin Firma'? media().'/images/no-image-available.jpg' : $data['audit']['manager_signature'] ?>" alt="Manager signature">
                                         </td>
@@ -84,9 +84,9 @@
                     <div class="col-lg-7">
                         <div class="card mb-3">
                             <div class="card-header hd-ss d-flex text-center">
-                                <h6 class="col border-right d-none d-md-block"><?=$fnT('Maintenance')?></h6>
-                                <h6 class="col border-right d-none d-md-block"><?=$fnT('Cleaning')?></h6>
-                                <h6 class="col"><?=$fnT('Security')?></h6>
+                                <h6 class="col border-right d-none d-md-block"><?=$fnT('Manutenção')?></h6>
+                                <h6 class="col border-right d-none d-md-block"><?=$fnT('Limpeza')?></h6>
+                                <h6 class="col"><?=$fnT('Segurança')?></h6>
                             </div>
                             <div class="card-body d-flex p-2">
                                 <div class="col d-none d-md-flex justify-content-center align-items-center"><b class="display-5"><?=$data['scoring']['Mantenimiento']??0?></b><span>#</span></div>
@@ -94,7 +94,7 @@
                                 <div class="col d-none d-md-flex justify-content-center align-items-center"><b class="display-5"><?=round($data['scoring']['Seguridad']??0, 0, PHP_ROUND_HALF_DOWN)?></b><span>%</span></div>
                             </div>
                             <div class="card-footer hd-ss text-center">
-                                <?= $fnT('Calification') ?>: <b><?=$data['scoring']['OverallScore']??'NA'?></b>
+                                <?= $fnT('Pontuação') ?>: <b><?=$data['scoring']['OverallScore']??'NA'?></b>
                             </div>
                         </div>
                         <? 
@@ -107,10 +107,10 @@
                                     <table class="w-100 score" cellpadding="4">
                                         <thead class="border-bottom">
                                             <tr>
-                                                <th><?=$fnT('Name')?></th>
-                                                <th><?=$fnT('Opportunities')?></th>
-                                                <th><?=$fnT('Lost points')?></th>
-                                                <th><?=$fnT('Target')?></th>
+                                                <th><?=$fnT('Nome')?></th>
+                                                <th><?=$fnT('Oportunidades')?></th>
+                                                <th><?=$fnT('Pontos perdidos')?></th>
+                                                <th><?=$fnT('Meta')?></th>
                                             </tr>
                                         </thead>
                                         <tbody class="border-bottom">
@@ -143,7 +143,7 @@
                 </div>
             </div>
             <div class="card mb-5">
-                <h4 class="card-header bg-danger text-white"><i class="fa fa-bolt"></i>&nbsp;&nbsp;<?=$fnT('Opportunity detail')?></h4>
+                <h4 class="card-header bg-danger text-white"><i class="fa fa-bolt"></i>&nbsp;&nbsp;<?=$fnT('Detalhe da oportunidade')?></h4>
                 <div class="card-body pb-0">
                     <? foreach($data['questions'] as $s => $questions): ?>
                         <ul class="list-group mb-4">

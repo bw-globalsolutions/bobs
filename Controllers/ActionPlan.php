@@ -78,32 +78,32 @@ class ActionPlan extends Controllers{
 			}
 
 			if (count($dataActions)) {
-				$actions .= '<span class="badge badge-info"> '.$fnT("Previous actions").'</span><br>';
+				$actions .= '<span class="badge badge-info"> '.$fnT("Ações anteriores").'</span><br>';
 				foreach ($dataActions as $key) {
 					if ( $key['action_status'] == 'In Review' ) {
 						$auxStatus = $key['action_status'];
 						$auxId = $key['id'];
 						$badgeStatus = '<span class="badge badge-primary">'.$fnT($key['action_status']).'</span>';
-						$actions .= ' <span class="text-primary"><i class="fa fa-question"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Selected options').':</span><br>'.$key['checks']:'').'</span><br>';
+						$actions .= ' <span class="text-primary"><i class="fa fa-question"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Opções selecionadas').':</span><br>'.$key['checks']:'').'</span><br>';
 					} else if ( $key['action_status'] == 'Approved' ) {
 						$auxId = $key['id'];
 						$auxStatus = $key['action_status'];
 						$badgeStatus = '<span class="badge badge-success">'.$fnT($key['action_status']).'</span>';
-						$actions .= ' <span class="text-success"><i class="fa fa-check-square"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Selected options').':</span><br>'.$key['checks']:'').'</span> <br>';
+						$actions .= ' <span class="text-success"><i class="fa fa-check-square"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Opções selecionadas').':</span><br>'.$key['checks']:'').'</span> <br>';
 					} else if ( $key['action_status'] == 'Rejected' ) {
 						$auxStatus = $key['action_status'];
 						$badgeStatus = '<span class="badge badge-danger">'.$fnT($key['action_status']).'</span>';
-						$actions .= ' <span class="text-danger"><i class="fa fa-minus-square"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Selected options').':</span><br>'.$key['checks']:'').'</span> <br>';
+						$actions .= ' <span class="text-danger"><i class="fa fa-minus-square"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Opções selecionadas').':</span><br>'.$key['checks']:'').'</span> <br>';
 					} else if ( $key['action_status'] == 'Finished' ) {
 						$auxStatus = $key['action_status'];
 						$badgeStatus = '<span class="badge badge-success">'.$fnT($key['action_status']).'</span>';
-						$actions .= ' <span class="text-success"><i class="fa fa-check-square"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Selected options').':</span><br>'.$key['checks']:'').'</span> <br>';
+						$actions .= ' <span class="text-success"><i class="fa fa-check-square"></i> '.$fnT($key['action_comment']).($key['checks']!=''?'<br><span class="badge badge-info">'.$fnT('Opções selecionadas').':</span><br>'.$key['checks']:'').'</span> <br>';
 					}
 					
 				}
 			} else {
 				$auxStatus = 'Pending';
-				$badgeStatus = '<span class="badge badge-warning">'.$fnT("Pending").'</span>';
+				$badgeStatus = '<span class="badge badge-warning">'.$fnT("Pendente").'</span>';
 			}
 			
 			//echo $actions;
@@ -162,15 +162,15 @@ class ActionPlan extends Controllers{
 
 			if ($auxStatus == 'Pending' || $auxStatus == 'Rejected') {
 				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 10] ) ) {
-					$btnAction = '<button '.$temporalidad.' class="btn btn-success btnAddAction" onClick="fntAddAction('.$data[$i]['id_audit_opp'].','.$audit.')" title="'.$fnT("Add action").'"><i class="fa fa-plus-circle"></i> '.$fnT("Add action").'</button>';
+					$btnAction = '<button '.$temporalidad.' class="btn btn-success btnAddAction" onClick="fntAddAction('.$data[$i]['id_audit_opp'].','.$audit.')" title="'.$fnT("Adicionar ação").'"><i class="fa fa-plus-circle"></i> '.$fnT("Adicionar ação").'</button>';
 				}
 			} else if ($auxStatus == 'In Review') {
 				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14, 19, 20] ) ) {
-					$btnAction = '<button class="btn btn-info btnChangeStatus" onClick="fntChangeStatusAction('.$auxId.','.$auxIdOpp.')" title="'.$fnT("Approve / Decline").'"> '.$fnT("Approve / Decline").'</button>';
+					$btnAction = '<button class="btn btn-info btnChangeStatus" onClick="fntChangeStatusAction('.$auxId.','.$auxIdOpp.')" title="'.$fnT("Aprovar / Recusar").'"> '.$fnT("Aprovar / Recusar").'</button>';
 				}
 			} else if ($auxStatus == 'Approved') {
 				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14, 19, 20] ) ) {
-					$btnAction = '<button class="btn btn-primary btnCloseAction" onClick="fntCloseAction('.$auxId.','.$auxIdOpp.')" title="'.$fnT("Finish action").'"> '.$fnT("Finish action").'</button>';
+					$btnAction = '<button class="btn btn-primary btnCloseAction" onClick="fntCloseAction('.$auxId.','.$auxIdOpp.')" title="'.$fnT("Finalizar ação").'"> '.$fnT("Finalizar ação").'</button>';
 				}
 			}
 

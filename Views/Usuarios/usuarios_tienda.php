@@ -9,10 +9,10 @@
         <div>
           <h1><i class="fa fa-users" aria-hidden="true"></i> <?=$fnT($data['page_title'])?> 
             <? if($data['permission']['w']): ?>
-              &nbsp;<button class="btn btn-sm btn-primary" type="button" onclick="openModal();"><i class="fa fa-plus-circle" aria-hidden="true"></i> <?=$fnT('New')?></button>
+              &nbsp;<button class="btn btn-sm btn-primary" type="button" onclick="openModal();"><i class="fa fa-plus-circle" aria-hidden="true"></i> <?=$fnT('Novo')?></button>
             <? endif ?>
           </h1>
-          <p><?=$fnT('Register, update and delete users')?></p>
+          <p><?=$fnT('Cadastrar, atualizar e excluir usuários')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -28,13 +28,13 @@
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th><?=$fnT('Name')?></th>
+                      <th><?=$fnT('Nome')?></th>
                       <th>Email</th>
-                      <th><?=$fnT('Brand')?></th>
-                      <th><?=$fnT('Country')?></th>
+                      <th><?=$fnT('Marca')?></th>
+                      <th><?=$fnT('País')?></th>
                       <th><?=$fnT('Status')?></th>
-                      <th><?=$fnT('Role')?></th>
-                      <th><?=$fnT('Action')?></th>
+                      <th><?=$fnT('Função')?></th>
+                      <th><?=$fnT('Ação')?></th>
                     </tr>
                   </thead>
                   <tbody>

@@ -5,7 +5,7 @@ function sendProfile(element){
         if(element['password'].value != element['cpassword'].value){
             swal({
                 title: 'Error!!!',
-                text: fnT('Passwords do not match'),
+                text: fnT('As senhas não coincidem'),
                 type: 'error'
             });
             return;
@@ -22,8 +22,8 @@ function sendProfile(element){
             window.location.reload();
         }else{
             swal({
-                title: fnT('Error'),
-                text: fnT(dat.msg) || fnT('It was not possible to update your preferences, if the problem persists please contact support'),
+                title: fnT('Erro'),
+                text: fnT(dat.msg) || fnT('Não foi possível atualizar suas preferências; se o problema persistir, entre em contato com o suporte'),
                 type: 'error'
             });
         }
@@ -97,7 +97,7 @@ passChange.setDate(lastUpdPassword.getDate() - 60);
 if(lastUpdPassword < passChange){
     swal({
         title: 'Warning!!!',
-        text: fnT('To continue using this platform it is necessary to update your password every 60 days'),
+        text: fnT('Para continuar usando esta plataforma, é necessário atualizar sua senha a cada 60 dias'),
         type: 'warning'
     });
     openModalPerfil();
@@ -118,8 +118,8 @@ function uploadPic(element){
         });
     }else{
         swal({
-            title: fnT('Error'),
-            text: fnT('Format not supported'),
+            title: fnT('Erro'),
+            text: fnT('Formato não suportado'),
             type: 'error'
         });
         element.value = '';

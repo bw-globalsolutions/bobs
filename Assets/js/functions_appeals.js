@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		"aProcessing":true,
 		"aServerSide":true,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/appeals/getAppeals",
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				if(dat.status){
 					refreshStores();
 					tableOpps.api().ajax.reload();
-					swal(fnT('Appeal'), fnT(dat.msg), "success");
+					swal(fnT('Apelação'), fnT(dat.msg), "success");
 				}else{
 					swal('Error', fnT(dat.msg), "error");
 				}
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				divLoading.style.display = "none";
 			});
 		} else{
-			swal('Error', fnT('Please complete the form'), "error");
+			swal('Error', fnT('Por favor, complete o formulário'), "error");
 		}
 	});
 
@@ -180,7 +180,7 @@ function cargarOportunidades(id_audit){
 			"aProcessing":true,
 			"aServerSide":true,
 			"language": {
-				"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+				"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 			},
 			"ajax":{
 				"url": " "+base_url+"/appeals/getOppsDT?idAudit="+id_audit,
@@ -213,7 +213,7 @@ function cargarOportunidadesAll(id_audit){
 		"aProcessing":true,
 		"aServerSide":true,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/appeals/getOppsDT?idAudit="+id_audit,
@@ -253,7 +253,7 @@ function openModalUpd(id_appeal) {
 		"aProcessing":true,
 		"aServerSide":true,
 		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
 		},
 		"ajax":{
 			"url": " "+base_url+"/appeals/getAppealsUpd?idAppeal="+id_appeal,
@@ -297,7 +297,7 @@ function uploadPic(element,opp_id){
 								<a href="${dat.Info.location}" target="_blank">
 								<img style="height:100px; width:100px" class="rounded shadow-sm of-cover cr-pointer" src="${dat.Info.location}"> </a><br>
 								<span class ="badge badge-pill badge-danger mt-1 cr-pointer" onclick="dropImg(${idImg})">
-									<i class="fa fa-trash"></i>&nbsp; ${fnT('Delete')}
+									<i class="fa fa-trash"></i>&nbsp; ${fnT('Excluir')}
 								</span>
 								<input type="hidden" name="urlFile[${opp_id}][]" value="${dat.Info.location}"><br>
 								<input type="hidden" name="typeFile[${opp_id}][]" value="${dat.Info.mimetype}"><br>

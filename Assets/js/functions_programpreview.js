@@ -72,7 +72,7 @@ function cargarTema(){
 const genTable = data => {
 
     if(!data.length){
-        $('#cotainer-table-pp').html(`<h4>${fnT('No records were found with these parameters')} :(</h4>`);
+        $('#cotainer-table-pp').html(`<h4>${fnT('Nenhum registro foi encontrado com estes parâmetros')} :(</h4>`);
         return;
     }
 
@@ -87,7 +87,7 @@ const genTable = data => {
                 <th colspan=2></th>
             </tr>
             <tr>
-                <th>${fnT('Auditor email')}</th>
+                <th>${fnT('E-mail do auditor')}</th>
                 ${Object.keys(data[0].periods).reduce((acc, cur) => `${acc}<th>${cur}</th>`, '')}
                 <th>${fnT('Total')}</th>
             </tr>
@@ -97,7 +97,7 @@ const genTable = data => {
     $('#table-pp').DataTable({
         dom: 'Bfrtip',
         "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('English') + ".json"
+            "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/" + fnT('Portuguese-Brasil') + ".json"
         },
         "data": data.map(item => {
             let tmp = [];

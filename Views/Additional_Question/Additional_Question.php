@@ -14,7 +14,7 @@
             <h1>
                 <i class="fa fa-question" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             </h1>
-            <p><?=$fnT('Review the additional questions of an audit')?></p>
+            <p><?=$fnT('Revisar as perguntas adicionais de uma auditoria')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -71,7 +71,7 @@
                                                     <? break;
                                                     case 'SELECT_OPTIONS': ?>
                                                         <select class="form-control control" name="answer" disabled>
-                                                            <option value="" disabled selected><?=$fnT('Select an option')?></option>
+                                                            <option value="" disabled selected><?=$fnT('Selecione uma opção')?></option>
                                                             <? foreach(explode('|', $q['qanswer']) as $a): ?>
                                                                 <option value="<?=$a?>" <?=$q['answer']==$a? 'selected' : ''?>><?=$a?></option>
                                                             <? endforeach ?>
@@ -80,9 +80,9 @@
                                                 endswitch; ?>
                                                 </div>
                                                 <? if($data['permission']['u'] or isMySelfEvaluation($_GET['id'])): ?>
-                                                    <button type="button" class="btn btn-danger d-none clean" onclick="cleanQuestion(<?=$q['id']?>)"><?=$fnT('Clean up')?></button>
-                                                    <button type="submit" class="btn btn-primary d-none save"><?=$fnT('Save')?></button>
-                                                    <button type="button" class="btn btn-warning edit" onclick="editQuestion(<?=$q['id']?>)"><?=$fnT('Edit')?></button>
+                                                    <button type="button" class="btn btn-danger d-none clean" onclick="cleanQuestion(<?=$q['id']?>)"><?=$fnT('Limpar')?></button>
+                                                    <button type="submit" class="btn btn-primary d-none save"><?=$fnT('Salvar')?></button>
+                                                    <button type="button" class="btn btn-warning edit" onclick="editQuestion(<?=$q['id']?>)"><?=$fnT('Editar')?></button>
                                                 <? endif ?>
                                             </form>                                          
                                         </div>

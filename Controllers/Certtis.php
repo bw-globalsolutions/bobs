@@ -80,7 +80,7 @@ class Certtis extends Controllers{
 			}
 
 			if (count($dataActions)) {
-				$actions .= '<span class="badge badge-info"> '.$fnT("Previous actions").'</span><br>';
+				$actions .= '<span class="badge badge-info"> '.$fnT("Ações anteriores").'</span><br>';
 				foreach ($dataActions as $key) {
 					if ( $key['action_status'] == 'In Review' ) {
 						$auxStatus = $key['action_status'];
@@ -105,7 +105,7 @@ class Certtis extends Controllers{
 				}
 			} else {
 				$auxStatus = 'Pending';
-				$badgeStatus = '<span class="badge badge-warning">'.$fnT("Pending").'</span>';
+				$badgeStatus = '<span class="badge badge-warning">'.$fnT("Pendente").'</span>';
 			}
 			
 			//echo $actions;
@@ -135,15 +135,15 @@ class Certtis extends Controllers{
 			//$data[$i]['status'] = '<span class="badge badge-success">Finished</span>';
 			if ($auxStatus == 'Pending' || $auxStatus == 'Rejected') {
 				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 10, 14] ) ) {
-					$btnAction = '<button class="btn btn-success btnAddAction" onClick="fntAddAction('.$data[$i]['id_audit_opp'].','.$audit.')" title="'.$fnT("Add action").'"><i class="fa fa-plus-circle"></i> '.$fnT("Add action").'</button>';
+					$btnAction = '<button class="btn btn-success btnAddAction" onClick="fntAddAction('.$data[$i]['id_audit_opp'].','.$audit.')" title="'.$fnT("Adicionar ação").'"><i class="fa fa-plus-circle"></i> '.$fnT("Adicionar ação").'</button>';
 				}
 			} else if ($auxStatus == 'In Review') {
 				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 14] ) ) {
-					$btnAction = '<button class="btn btn-info btnChangeStatus" onClick="fntChangeStatusAction('.$auxId.','.$auxIdOpp.')" title="'.$fnT("Approve / Decline").'"> '.$fnT("Approve / Decline").'</button>';
+					$btnAction = '<button class="btn btn-info btnChangeStatus" onClick="fntChangeStatusAction('.$auxId.','.$auxIdOpp.')" title="'.$fnT("Aprovar / Recusar").'"> '.$fnT("Aprovar / Recusar").'</button>';
 				}
 			} else if ($auxStatus == 'Approved') {
 				if( in_array( $_SESSION['userData']['role']['id'], [1, 2, 10, 14] ) ) {
-					$btnAction = '<button class="btn btn-primary btnCloseAction" onClick="fntCloseAction('.$auxId.','.$auxIdOpp.')" title="'.$fnT("Finish action").'"> '.$fnT("Finish action").'</button>';
+					$btnAction = '<button class="btn btn-primary btnCloseAction" onClick="fntCloseAction('.$auxId.','.$auxIdOpp.')" title="'.$fnT("Finalizar ação").'"> '.$fnT("Finalizar ação").'</button>';
 				}
 			}
 

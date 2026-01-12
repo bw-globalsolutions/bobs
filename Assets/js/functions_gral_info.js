@@ -3,8 +3,8 @@ async function sendGrlInfo(element){
     const payloadInfo = new FormData(element);
     if(!validTime(payloadInfo.get('start_time'), payloadInfo.get('end_time'))){
         swal({
-            title: fnT('Error'),
-            text: fnT('The initial time cannot be longer than the end'),
+            title: fnT('Erro'),
+            text: fnT('O horário inicial não pode ser maior que o final'),
             type: 'error'
         });
         return;
@@ -126,7 +126,7 @@ function uploadPic(element){
                         <img style="height:85px; width:85px" class="rounded shadow-sm of-cover cr-pointer" src="${dat.Info.location}">
                     </a><br>
                     <span class ="badge badge-pill badge-danger mt-1 cr-pointer" onclick="dropImg()">
-                        <i class="fa fa-trash"></i>&nbsp; ${fnT('Delete')}
+                        <i class="fa fa-trash"></i>&nbsp; ${fnT('Excluir')}
                     </span>
                 </div>`);
                 $('#visit-pic').val(dat.Info.location);
@@ -134,8 +134,8 @@ function uploadPic(element){
         });
     }else{
         swal({
-            title: fnT('Error'),
-            text: fnT('Format not supported'),
+            title: fnT('Erro'),
+            text: fnT('Formato não suportado'),
             type: 'error'
         });
     }

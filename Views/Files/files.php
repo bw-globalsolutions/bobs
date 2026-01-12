@@ -58,13 +58,13 @@
                   <div class="card-body">
                     <form onsubmit="sendFormAddFile(this); return false;" id="form-files">
                       <div class="form-group row">
-                        <label for="input-title" class="col-sm-2 col-form-label"><?=$fnT('Title')?></label>
+                        <label for="input-title" class="col-sm-2 col-form-label"><?=$fnT('Título')?></label>
                         <div class="col-sm-10">
                           <input type="text" class="form-control input-s1" id="input-title" name="title" maxlength="128" required>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="input-description" class="col-sm-2 col-form-label"><?=$fnT('Description')?></label>
+                        <label for="input-description" class="col-sm-2 col-form-label"><?=$fnT('Descrição')?></label>
                         <div class="col-sm-10">
                           <textarea class="form-control input-s1" rows="3" id="input-description" name="description" maxlength="512" required></textarea>
                         </div>
@@ -74,13 +74,13 @@
                         <div class="col-sm-10">
                           <div class="custom-file mb-2">
                             <input type="file" class="custom-file-input" id="customFile" onchange="addFile(this)" accept=".xlsx,.pdf,.png,.jpg">
-                            <label class="custom-file-label input-s1" for="customFile"><?=$fnT('Select files')?></label>
+                            <label class="custom-file-label input-s1" for="customFile"><?=$fnT('Selecionar arquivos')?></label>
                           </div>
                           <div id="form-panel-files"></div>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="input-files" class="col-sm-2 col-form-label"><?=$fnT('Countrys')?></label>
+                        <label for="input-files" class="col-sm-2 col-form-label"><?=$fnT('Países')?></label>
                         <div style="display:flex; gap:10px; align-items: center;" class="col-sm-10">
                         <input hidden id="countrys" name="countrys">
                         <? foreach($data['paises'] as $pais): ?>
@@ -90,7 +90,7 @@
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="input-files" class="col-sm-2 col-form-label"><?=$fnT('Roles')?></label>
+                        <label for="input-files" class="col-sm-2 col-form-label"><?=$fnT('Funções')?></label>
                         <div style="display:flex; gap:20px; align-items: center; flex-wrap:wrap;" class="col-sm-10">
                         <input hidden id="roles" name="roles">
                         <? foreach($data['roles'] as $rol): ?>
@@ -109,11 +109,11 @@
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="input-files" class="col-sm-2 col-form-label"><?=$fnT('Expiration date')?></label>
+                        <label for="input-files" class="col-sm-2 col-form-label"><?=$fnT('Data de expiração')?></label>
                         <div style="display:flex; gap:20px; align-items: center; flex-wrap:wrap;" class="col-sm-10">
                           <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Date')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Data')?></span>
                             </div>
                             <input type="date" name="expirationDate" id="expirationDate" class="inpFecha" value="<?php echo date('Y-m-d', strtotime('+1 month')); ?>">
                           </div>
@@ -123,7 +123,7 @@
                       <div class="form-group row">
                         <div class="col-sm-10">
                           <button type="submit" class="btn btn-s1" id="btn-send-af">Guardar</button>
-                          <!--<button type="button" class="btn btn-danger" onclick="$('#collapseFormFile').collapse('hide')"><?=$fnT('Cancel')?></button>-->
+                          <!--<button type="button" class="btn btn-danger" onclick="$('#collapseFormFile').collapse('hide')"><?=$fnT('Cancelar')?></button>-->
                         </div>
                       </div>
                     </form>

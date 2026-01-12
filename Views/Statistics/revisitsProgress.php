@@ -7,7 +7,7 @@
     <div class="app-title">
         <div>
             <h1> <i class="fa fa-id-card-o" aria-hidden="true"></i> <?=$fnT($data['page_title'])?> </h1>
-            <p><?=$fnT('Consult revisits progress')?></p>
+            <p><?=$fnT('Consultar progresso das revisitas')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -20,7 +20,7 @@
                 <div class="col-lg-3 my-1">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Country')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('País')?></span>
                         </div>
                         <select class="form-control selectpicker" id="filter_country" name="filter_country[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                             <? foreach($data['countries'] as $country): ?>
@@ -33,7 +33,7 @@
                 <div class="col-lg-3 my-1">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Period')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Período')?></span>
                         </div>
                         <select class="form-control selectpicker" id="filter_period" name="filter_period" required>
                             <? foreach($data['periods'] as $period): ?>
@@ -46,7 +46,7 @@
                 <div class="col-lg-3 my-1">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Type')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Tipo')?></span>
                         </div>
                         <select class="form-control selectpicker" id="filter_type" name="filter_type[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
                         <? foreach($data['audits_types'] as $auditType): ?>
@@ -60,7 +60,7 @@
                 <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Franchise')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Franquia')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_franchise" name="list_franchise[]" multiple data-actions-box="true" data-selected-text-format="count>2" required data-live-search = "true">
                                 <? foreach($data['franchissees'] as $f): ?>
@@ -75,7 +75,7 @@
                     <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2,3,17, 14,19,18])? 'd-none' : '' ?>">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Area Manager')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Gerente de área')?></span>
                             </div>
                             <select class="form-control selectpicker" id="list_area_manager" name="list_area_manager[]"  multiple data-actions-box="true" data-selected-text-format="count>2" required data-live-search = "true">
                                 <? foreach($data['email_area_manager'] as $email_area_manager): ?>
@@ -90,10 +90,10 @@
                 <div class="col-lg-3 my-1">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text border-0"><?=$fnT('Number of previous audits')?></span>
+                            <span class="input-group-text border-0"><?=$fnT('Número de auditorias anteriores')?></span>
                         </div>
                         <select class="form-control selectpicker" id="filter_number" name="filter_number" required>
-                            <option value="0"><?=$fnT('All')?></option>
+                            <option value="0"><?=$fnT('Todos')?></option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3" selected>3</option>
@@ -109,7 +109,7 @@
                 <div class="col-lg-4 my-1">
                     <button id="btnFilterAnnouncedVisit" class="form-control btn btn-primary" type="button" onclick="reloadData();">
                         <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
-                        <?=$fnT('Filter')?>
+                        <?=$fnT('Filtrar')?>
                     </button>
                 </div>
             </div>
@@ -125,12 +125,12 @@
                         <table class="table table-hover table-bordered" id="tableRevisitsProgress">
                         <thead>
                             <tr>
-                                <th><?=$fnT('Id')?></th>
-                                <th><?=$fnT('Visit info')?></th>
-                                <th><?=$fnT('Progress')?></th>
-                                <!-- <th><?=$fnT('End visit time')?></th>
-                                <th><?=$fnT('Progress')?></th> -->
-                                <th><?=$fnT('Historical')?></th>
+                                <th><?=$fnT('ID')?></th>
+                                <th><?=$fnT('Informações da visita')?></th>
+                                <th><?=$fnT('Progresso')?></th>
+                                <!-- <th><?=$fnT('Hora de término da visita')?></th>
+                                <th><?=$fnT('Progresso')?></th> -->
+                                <th><?=$fnT('Histórico')?></th>
                             </tr>
                         </thead>
                         <tbody>

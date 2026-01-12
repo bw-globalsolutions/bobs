@@ -16,7 +16,7 @@
             <h1>
                 <i class="fa fa-pie-chart" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             </h1>
-            <p><?=$fnT('Visualize the information collected in the form of graphs')?></p>
+            <p><?=$fnT('Visualize as informações coletadas em forma de gráficos')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-list-ol fa-lg"></i></li>
@@ -30,7 +30,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Type')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Tipo')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_type" name="list_type" required>
                                 <? foreach($data['audit_types'] as $type): ?>
@@ -42,7 +42,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Period')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Período')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_period" name="list_period[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                                 <? foreach($data['periods'] as $pd_key => $pd_val): ?>
@@ -58,7 +58,7 @@
                     <div class="col-lg-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Franchise')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Franquia')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_franchise" name="list_franchise[]" multiple data-actions-box="true" data-selected-text-format="count>2" required>
                                 <? foreach($data['franchissees'] as $f): ?>
@@ -97,7 +97,7 @@
                     <div class="col-lg-3 my-1 <?= !in_array($_SESSION['userData']['role']['id'], [1, 2])? 'd-none' : '' ?>">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text border-0"><?=$fnT('Checklist item')?></span>
+                                <span class="input-group-text border-0"><?=$fnT('Item do checklist')?></span>
                             </div>
                             <select class="form-control selectpicker" id="filter_checklist_item" name="list_checklist_item[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
                                     <? foreach($data['checklist_item'] as $checklist_item): ?>
@@ -112,7 +112,7 @@
                     <div class="col-lg-3 my-1">
                         <button type="submit" class="btn btn-primary">
                             <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
-                            <?=$fnT('Filter')?>
+                            <?=$fnT('Filtrar')?>
                         </button>
                     </div>
                 </div>

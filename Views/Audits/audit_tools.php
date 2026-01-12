@@ -17,7 +17,7 @@
             <h1>
                 <i class="fa fa-cogs" aria-hidden="true"></i> <?=$fnT($data['page_title'])?>
             </h1>
-            <p><?=$fnT('Consult general information')?></p>
+            <p><?=$fnT('Consultar informações gerais')?></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -31,7 +31,7 @@
                 <? if($data['audit']['status'] != 'Closed'): ?>
                     <div class="col-12 col-lg-4">
                         <form onchange="moveAuditStatus(this)">
-                            <label for="input-status"><?= $fnT('Move audit status') ?></label>
+                            <label for="input-status"><?= $fnT('Mudar status da auditoria') ?></label>
                             <select class="form-control" id="input-status" name="audit_status">
                                 <option value="" disabled selected><?= $data['audit']['status'] ?></option>
                                 <? foreach($status as $st): ?>
@@ -44,11 +44,11 @@
                 <? else: ?>
                     <div class="col-12 col-lg-4">
                         <form onchange="moveAuditStatus(this)">
-                            <label for="input-status"><?= $fnT('Move audit status') ?></label>
+                            <label for="input-status"><?= $fnT('Mudar status da auditoria') ?></label>
                             <select class="form-control" id="input-status" name="audit_status">
                                 <option value="" disabled selected><?= $data['audit']['status'] ?></option>
-                                <option value="Pending"><?= $fnT('Pending') ?></option>
-                                <option value="Deleted!"><?= $fnT('Deleted!') ?></option>
+                                <option value="Pending"><?= $fnT('Pendente') ?></option>
+                                <option value="Deleted!"><?= $fnT('Excluído!') ?></option>
                             </select>
                             <input type="hidden" name="audit_id" value="<?= $data['audit']['id'] ?>">
                         </form>
@@ -56,7 +56,7 @@
                 <? endif; ?>
                 <div class="col-12 col-lg-4">
                         <form onchange="moveAuditRound(this)">
-                            <label for="input-round"><?= $fnT('Move audit round') ?></label>
+                            <label for="input-round"><?= $fnT('Mudar rodada da auditoria') ?></label>
                             <select class="form-control" id="input-round" name="audit_round">
                                 <? foreach($data['rounds'] as $r): ?>
                                     <option value="<?= $r['id'] ?>" <?=($data['round']==$r['id']?'selected':'')?>><?= $r['prefix'].' '.$r['name'].' '.$r['type'].' '.$r['country'] ?></option>
@@ -68,9 +68,9 @@
                 <div class="col-12 col-lg-4">
                     <form onchange="setSignaturePic(this)">
                         <div class="form-group">
-                            <label for="signature_pic"><?= $fnT('Signature image') ?> 
+                            <label for="signature_pic"><?= $fnT('Imagem da assinatura') ?> 
                                 <? if(!filter_var($data['audit']['manager_signature'], FILTER_VALIDATE_URL) === false): ?>
-                                    &#124; <a href="<?= $data['audit']['manager_signature'] ?>" target="_blank"><?= $fnT('View signature') ?></a>
+                                    &#124; <a href="<?= $data['audit']['manager_signature'] ?>" target="_blank"><?= $fnT('Ver assinatura') ?></a>
                                 <? endif ?>
                             </label>
                             <input type="file" class="form-control-file" id="signature_pic" accept="image/*">
@@ -82,9 +82,9 @@
                 <div class="col-12 col-lg-4">
                     <form onchange="setFrontDoorPic(this)">
                         <div class="form-group">
-                            <label for="front_door_pic"><?= $fnT('Front door image') ?> 
+                            <label for="front_door_pic"><?= $fnT('Imagem da porta da frente') ?> 
                                 <? if(!empty($data['audit']['front_door_pic'])): ?>
-                                    &#124; <a href="<?= $data['audit']['front_door_pic'][0]['url'] ?>" target="_blank"><?= $fnT('View front door') ?></a>
+                                    &#124; <a href="<?= $data['audit']['front_door_pic'][0]['url'] ?>" target="_blank"><?= $fnT('Ver porta da frente') ?></a>
                                 <? endif ?>
                             </label>
                             <input type="file" class="form-control-file" id="front_door_pic" accept="image/*">
