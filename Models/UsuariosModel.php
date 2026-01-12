@@ -223,6 +223,7 @@ class UsuariosModel extends Mysql{
 		foreach($numbers as $number){
 			$sql = "SELECT id FROM user WHERE FIND_IN_SET((SELECT id FROM location WHERE number = $number), location_id)";
 			$request = $this->select_all($sql);
+			if($request){
 			foreach($request as $r){
 				$query_update = "UPDATE user SET location_id = DROP_FROM_SET((SELECT id FROM location WHERE number = ?) , location_id) WHERE id=?";
 				$this->update($query_update, [$number, $r['id']]);
@@ -232,6 +233,7 @@ class UsuariosModel extends Mysql{
 					$query_update = "UPDATE user SET status=0 WHERE id=?";
 					$this->update($query_update, [$r['id']]);
 				}
+			}
 			}
 		}
 	}

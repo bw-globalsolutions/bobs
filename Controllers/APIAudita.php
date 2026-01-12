@@ -63,7 +63,7 @@ class APIAudita extends Controllers
             //Recorrer cada visita del sync
             foreach ($audita_data['audita_data'] as $x => $row) {
 
-                $location = LocationModel::getLocation(['id', 'country_id', 'shop_type', 'address_1'], "number='$row[Numero_Tienda]' AND brand_id='$brand[id]' AND status = 'Active'")[0];
+                $location = LocationModel::getLocation(['id', 'country_id', 'shop_type', 'address_1'], "number='$row[Numero_Tienda]' AND brand_id='$brand[id]' AND (status = 'Active' OR status = 1)")[0];
                 //Excepcion en caso de que los checklist sean por tipo de tienda
                 // if(!empty($location['shop_type'])){
                 //     $checklist = ChecklistModel::getChecklist(['id'], "brand_id=$brand[id] AND name like '%$location[shop_type]%' AND date_start <= '{$audita_data['periodo']}-01')")[0];
@@ -363,7 +363,7 @@ class APIAudita extends Controllers
                 $summary = array();
                 foreach ($audita_data['audita_data'] as $x => $row) {
     
-                    $location = LocationModel::getLocation(['id', 'country_id', 'address_1', 'shop_type'], "number='$row[Numero_Tienda]' AND brand_id='$brand[id]' (and status = 'Active' or status = '1')")[0];
+                    $location = LocationModel::getLocation(['id', 'country_id', 'address_1', 'shop_type'], "number='$row[Numero_Tienda]' AND brand_id='$brand[id]' (and status = 'Active' or status = 1)")[0];
     
                     // if(!empty($location['shop_type'])){
                     //     $checklist = ChecklistModel::getChecklist(['id'], "brand_id=$brand[id] AND name like '%$location[shop_type]%' AND date_start <= '{$audita_data['periodo']}-01')")[0];

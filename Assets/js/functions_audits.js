@@ -92,12 +92,12 @@ const rootStyles = getComputedStyle(document.documentElement);
         }
     });
 
-/*window.onload = function() {
+window.onload = function() {
     setTimeout(()=>{
         document.getElementById('selectSE').nextElementSibling.setAttribute('class','addSelf');
     }, 500)
     
-}*/
+}
 
 function abrirAdd(event){
     event.preventDefault();
