@@ -48,8 +48,6 @@
                   <div class="form-group col-md-6">
                     <label for="profile_language"><?=$fnT('Idioma')?></label>
                     <select class="input-s1 form-control" id="profile_language" data-defvalue="<?=$_SESSION['userData']['default_language']?>" name="language" required>
-                      <option value="eng">Inglês</option>
-                      <option value="esp">Espanhol</option>
                       <option value="por">Português</option>
                     </select>
                   </div>  

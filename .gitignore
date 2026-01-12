@@ -1,4 +1,6 @@
 .vscode
 Secrets.php
 Config/Secrets.php
+!Config/Languages/
+!Config/Languages/**
 .DS_Store

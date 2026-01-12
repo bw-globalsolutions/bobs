@@ -184,7 +184,7 @@
                                                     <div class="row">
                                                         <div class="col-md-8">
                                                             <span style="font-size: 13px;">
-                                                                <?=$fnT('Status')?>: <b class="etlbl etlbls" style="margin-left:5px;"><?=$fnT($audit['status'])?></b><br>
+                                                                <?=$fnT('Status')?>: <b style="margin-left:5px;"><?=$fnT($audit['status'])?></b><br>
                                                                 <?=$fnT('Data da visita')?>: <b><?=$fnT($audit['date_visit'])?? $fnT('Sem registro')?></b><br>
                                                                 <?=$fnT('Auditor')?>: <b data-toggle="tooltip" data-placement="top" title="<?=$audit['auditor_email']?>"><?=$audit['auditor_name']?></b><br>
                                                                 <?=$fnT('Tipo de auditoria')?>: <b><?= $fnT($data['type']) ?></b><br>

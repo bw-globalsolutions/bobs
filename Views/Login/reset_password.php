@@ -74,8 +74,6 @@
               <label for="login-language"><?=$fnT('Selecione o idioma')?></label>
               <select class="form-control" id="login-language" onchange="location.replace(`/login/resetPassword?token=<?=$_GET['token']?>&lan=${this.value}`)">
                 <option disabled selected><?=$fnT('Selecione um idioma')?></option>
-                <option value="esp">Espanhol</option>
-                <option value="eng">Inglês</option>
                 <option value="por">Português</option>
               </select>
             </div>

@@ -60,8 +60,6 @@
                   <div class="form-group col-md-6">
                     <label for="user_language"><?=$fnT('Idioma')?></label>
                     <select class="form-control selectpicker" id="user_language" name="language" required>
-                      <option value="eng">Inglês</option>
-                      <option value="esp">Espanhol</option>
                       <option value="por">Português</option>
                     </select>
                   </div>
