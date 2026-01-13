@@ -1,10 +1,9 @@
-<?php global $fnT; ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<title>Legal Notification</title>
+		<title>Notificação legal</title>
 </head>
 <body>
     <table border='0' align='left' cellpadding='3' cellspacing='2'>
@@ -16,14 +15,14 @@
                             <tr><td width='717'></td></tr>
                             <tr>
                                 <td style='text-align: center; padding:10px;background:#eab54c; color:#ffffff; font-size:11px'>
-                                <span>Operational Performance Improvement Required</span></td>
+	                                <span>Melhoria de desempenho operacional necessária</span></td>
                             </tr>
                             <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-church's"></center></td></tr>
 
                             <? if (strpos($_SERVER['HTTP_HOST'], '-stage.') !== false): ?>
                                 <tr>
                                     <td style='text-align: center; padding:10px;background:#7FDFD4; color:black; font-size:11px'>
-                                    <span><b>TO STAGE: <?=$data['email']?></b></span></td>
+	                                    <span><b>PARA STAGE: <?=$data['email']?></b></span></td>
                                 </tr>
                             <? endif ?>
 
@@ -38,44 +37,44 @@
                                     <div style='border:1px solid #eee;padding:10px'>
                                         <span><?= date("F j, Y") ?></span><br><br>
                                         <div>
-                                            <span>Smalls Sliders Restaurants No. <?=$data['location_number']?></span><br>
+	                                            <span>Smalls Sliders Restaurants Nº <?=$data['location_number']?></span><br>
                                             <span><?=$data['location_address']?></span><br><br>
                                         </div>
 
                                         <div>
-                                            <span>Re: Notice of Operational Performance Improvement Required Letter</span><br><br>
-                                            <span>Dear <?=$data['dirigido']?>,</span><br><br>
+	                                            <span>Ref.: Aviso de necessidade de melhoria de desempenho operacional</span><br><br>
+	                                            <span>Prezado(a) <?=$data['dirigido']?>,</span><br><br>
                                         </div>
 
                                         <div>
                                             <span>
-                                                On <?= date("F j, Y", strtotime( $data['date_visit'] )) ?>, a QSC Inspection was conducted at restaurant #<?=$data['location_number']?> which resulted in a Restaurant Rating of “<?=$data['score']?>, <?=getScoreDefinition($data['score'])[1]?>”. This Restaurant Rating is a direct result of conditions noted in the QSC Inspection report which are non-compliant with the required operating procedures in the Smalls Sliders Operations Manual.  
-                                            </span><br><br>
-                                        </div>
+	                                                Em <?= date("F j, Y", strtotime( $data['date_visit'] )) ?>, foi realizada uma inspeção QSC no restaurante #<?=$data['location_number']?>, que resultou em uma classificação de “<?=$data['score']?>, <?=getScoreDefinition($data['score'])[1]?>”. Essa classificação é resultado direto das condições apontadas no relatório da inspeção QSC, as quais não estão em conformidade com os procedimentos operacionais exigidos no Manual de Operações do Smalls Sliders.
+	                                            </span><br><br>
+	                                        </div>
 
                                         <div>
                                             <span>
-                                                In response to this QSC Inspection, Arguilea will conduct another QSC Inspection in approximately 30 – 45 days to confirm that the conditions noted in the QSC Inspection have been resolved.  As you prepare for this QSC Inspection, please submit a "Corrective Action Plan" within the Arguilea portal and consider leveraging the self-assessment tool.
-                                            </span><br><br>
-                                            <span>If you have any questions, please reach out to your Regional Business Director.</span><br><br><br>
-                                        </div>
+	                                                Em resposta a esta inspeção QSC, a Arguilea realizará outra inspeção QSC em aproximadamente 30–45 dias para confirmar que as condições apontadas na inspeção QSC foram resolvidas. À medida que você se prepara para esta inspeção QSC, envie um “Plano de Ação Corretivo” no portal da Arguilea e considere utilizar a ferramenta de autoavaliação.
+	                                            </span><br><br>
+	                                            <span>Se você tiver alguma dúvida, entre em contato com seu Diretor Regional de Negócios.</span><br><br><br>
+	                                        </div>
 
                                         <div>
-                                            <span>Thank you.</span><br><br>
-                                            <span>Click the link below for the completed QSC Inspection report: </span><br><br>
-                                            <b><a href="<?=$data['url_report']?>"><?=$data['url_report']?></a></b><br><br>
-                                        </div>
+	                                            <span>Obrigado.</span><br><br>
+	                                            <span>Clique no link abaixo para acessar o relatório completo da inspeção QSC:</span><br><br>
+	                                            <b><a href="<?=$data['url_report']?>"><?=$data['url_report']?></a></b><br><br>
+	                                        </div>
 
                                         <div>
-                                            <span>Best Regards,</span><br>
-                                            <b>Smalls Sliders Restaurants Inc.</b>
+	                                            <span>Atenciosamente,</span><br>
+	                                            <b>Smalls Sliders Restaurants Inc.</b>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td><b><?=$fnT('Criado:')?></b> <?=date('M d - h:i', time())?></td>
+	                                <td><b>Criado:</b> <?=date('M d - h:i', time())?></td>
                             </tr>
                         </tbody>
                     </table>

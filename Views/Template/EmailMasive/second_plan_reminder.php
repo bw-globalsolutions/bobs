@@ -10,11 +10,11 @@
             </tr>';
         }
         $mensaje = "<!DOCTYPE html>
-        <html lang='es'>
+	        <html lang='pt'>
         <head>
             <meta charset='UTF-8'>
             <meta name='viewport' content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'>
-            <title>Auditorías para validar</title>
+	            <title>Auditorias para validar</title>
         </head>
         <body>
             <table border='0' align='left' cellpadding='3' cellspacing='2'>
@@ -26,22 +26,22 @@
                                     <tr><td width='717'></td></tr>
                                     <tr>
                                         <td style='text-align: center; padding:10px;background:#cf0a2c; color:#ffffff; font-size:11px'>
-                                        <span>Auditorías para validar</span></td>
+	                                        <span>Auditorias para validar</span></td>
                                     </tr>
                                     <tr>
                                         <td style='font-size:14px;padding:0px'>
                                             <div style='border:1px solid #eee;padding:10px'>
                                                 <hr style='margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee'>
                                                 <div>
-                                                    <span>La calificación de esta visita es 100, por favor validala</span>
+	                                                    <span>A pontuação desta visita é 100, por favor valide-a</span>
                                                 </div>
                                                 <div style='justify-content: center;'>
                                                     <table width='500' border='1' style='white-space: nowrap; font-size: 12px;'>
                                                         <tr bgcolor='orange'>
-                                                            <th>Tienda</th>
-                                                            <th>País</th>
-                                                            <th>Puntuación</th>
-                                                            <th>Tipo</th>
+	                                                            <th>Loja</th>
+	                                                            <th>País</th>
+	                                                            <th>Pontuação</th>
+	                                                            <th>Tipo</th>
                                                         </tr>
                                                         $rows
                                                     </table>
@@ -50,7 +50,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Creado:</b>". date('M d - h:i', time()) . "</td>
+	                                        <td><b>Criado:</b>". date('M d - h:i', time()) . "</td>
                                     </tr>
                                 </tbody>
                             </table>

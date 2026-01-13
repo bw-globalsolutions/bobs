@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<title>Announced visit</title>
+		<title>Visita anunciada</title>
 </head>
 <body>
     <table border='0' align='left' cellpadding='3' cellspacing='2'>
@@ -13,40 +13,40 @@
                     <table width='100%' border='0' cellspacing='0' cellpadding='5' style='font-size:11px;font-family:Arial,Helvetica,sans-serif'>
                         <tbody>
                             <tr><td width='717'></td></tr>
-                            <tr><td style='padding:10px;background:#eab54c;color:#ffffff;font-size:11px'>
-                                <span>Information about next RAV visit</span>
-                            </td></tr>
+	                            <tr><td style='padding:10px;background:#eab54c;color:#ffffff;font-size:11px'>
+	                                <span>Informações sobre a próxima visita RAV</span>
+	                            </td></tr>
                             <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-church's"></center></td></tr>
                             <tr>
                                 <td style='font-size:14px;padding:0px'>
                                     <div style='border:1px solid #eee;padding:10px'>
                                         <hr style='margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee'>
                                         <div>
-                                            <span><?=(in_array($data['country'], [1,6])?"Church's Texas Chicken":"Texas Chicken")?> has chosen to partner with Arguilea to conduct a RAV Announced Assessment. The RAV visit assess restaurant operations and food safety standards.</span>
-                                        </div>
-                                        <div>
-                                            <p>What to expect:</p>
-                                            <ul>
-                                                <li>1. An Arguilea Specialist will arrive within the time frame shown.  They will have credentials</li>
-                                                <li>2. Please welcome them and they will introduce themselves and explain what they will doing during the visit</li>
-                                                <li>3. The RGM should be present for this visit.</li>
-                                                <li>4. You can shadow the specialist during the visit.</li>
-                                                <li>5. The Arguilea Specialist will observe and document all observations. Note:  If the observation is corrected on site, it will still be an observation in the assessment.</li>
-                                                <li>6. The visit will last approximately 2.5 hours</li>
-                                                <li>7. The Arguilea Specialist will review the results of the RAV visit with the RGM.  Since this is an announced visit, the RGM will get an action plan to view and address any observations.</li>
-                                            </ul>
-                                        </div>
+	                                            <span><?=(in_array($data['country'], [1,6])?"Church's Texas Chicken":"Texas Chicken")?> decidiu fazer parceria com a Arguilea para realizar uma Avaliação Anunciada RAV. A visita RAV avalia as operações do restaurante e os padrões de segurança alimentar.</span>
+	                                        </div>
+	                                        <div>
+	                                            <p>O que esperar:</p>
+	                                            <ul>
+	                                                <li>1. Um especialista da Arguilea chegará dentro do horário indicado. Ele/ela estará credenciado(a).</li>
+	                                                <li>2. Por favor, receba-o(a); ele/ela se apresentará e explicará o que fará durante a visita.</li>
+	                                                <li>3. O RGM deve estar presente nesta visita.</li>
+	                                                <li>4. Você pode acompanhar o(a) especialista durante a visita.</li>
+	                                                <li>5. O(a) especialista da Arguilea observará e registrará todas as constatações. Observação: mesmo que a constatação seja corrigida no local, ela ainda será registrada na avaliação.</li>
+	                                                <li>6. A visita durará aproximadamente 2,5 horas.</li>
+	                                                <li>7. O(a) especialista da Arguilea revisará os resultados da visita RAV com o RGM. Como esta é uma visita anunciada, o RGM receberá um plano de ação para revisar e tratar quaisquer constatações.</li>
+	                                            </ul>
+	                                        </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <table align="center" class="table_store" style="width: 800px;">    
                                     <tr>
-                                        <td style="background-color: rgba(211, 211, 211, 1); padding: 4px; font-weight: bold;">Store Number</td>
-                                        <td style="background-color: rgba(211, 211, 211, 1); padding: 4px; font-weight: bold;">Store Name</td>    
-                                        <td style="background-color: rgba(211, 211, 211, 1); padding: 4px; font-weight: bold;">Date</td>
-                                        <td style="background-color: rgba(211, 211, 211, 1); padding: 4px; font-weight: bold;">Time</td>            
-                                    </tr>
+	                                        <td style="background-color: rgba(211, 211, 211, 1); padding: 4px; font-weight: bold;">Número da loja</td>
+	                                        <td style="background-color: rgba(211, 211, 211, 1); padding: 4px; font-weight: bold;">Nome da loja</td>    
+	                                        <td style="background-color: rgba(211, 211, 211, 1); padding: 4px; font-weight: bold;">Data</td>
+	                                        <td style="background-color: rgba(211, 211, 211, 1); padding: 4px; font-weight: bold;">Horário</td>            
+	                                    </tr>
                                     <tr>
                                         <td><?=$data['tienda_number']?></td>
                                         <td><?=$data['tienda_name']?></td>    

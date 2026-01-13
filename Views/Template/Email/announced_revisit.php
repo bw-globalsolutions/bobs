@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<?php global $fnT; ?>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<title>New certtis generated</title>
+		<title>Novos certtis gerados</title>
 </head>
 <body>
     <table border='0' align='left' cellpadding='3' cellspacing='2'>
@@ -29,7 +28,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><b><?=$fnT('Criado:')?></b> <?=date('M d - h:i', time())?> &nbsp;</td>
+	                                <td><b>Criado:</b> <?=date('M d - h:i', time())?> &nbsp;</td>
                             </tr>
                         </tbody>
                     </table>
@@ -39,4 +38,3 @@
     </table>
 </body>
 </html>
-

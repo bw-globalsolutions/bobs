@@ -373,50 +373,50 @@ function sendEmailMasivePlanSecond($data,$template){
     $de .= "Content-type: text/html; charset=UTF-8\r\n";
     $de .= "From: {$empresa} <{$remitente}>\r\n";
 
-    $mensaje = '<!DOCTYPE html>
-					<html lang="en">
-					<head>
-						<meta charset="UTF-8">
-						<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-						<title>Second Segundo recordatorio del Plan de Acción</title>
-					</head>
-					<body>
-						<table border="0" align="left" cellpadding="3" cellspacing="2">
-							<tbody>
-								<tr>
-									<td style="padding:5px;border:solid 1px #eeeeee;font-size:12px">
-										<table width="100%"" border="0" cellspacing="0" cellpadding="5" style="font-size:11px;font-family:Arial,Helvetica,sans-serif">
-											<tbody>
-												<tr><td width="717"></td></tr>
-												<tr>
-													<td style="text-align: center; padding:10px;background:#cf0a2c; color:#ffffff; font-size:11px">
-													<span>Second Segundo recordatorio del Plan de Acción</span></td>
-												</tr>
-												<tr>
-													<td style="font-size:14px;padding:0px">
-														<div style="border:1px solid #eee;padding:10px">
-															<ul>
-																<li><b>Ubicación: '.$data['brand_prefix'].' #'.$data['location_number'].', '.$data['location_name'].'</b></li>
-																<li><b>Ronda: '.$data['type'].', '.$data['round_name'].'</b></li>
-																<li><b>Fecha de visita: '. date("F j, Y, h:m", strtotime( $data['date_visit'] )) .'</b></li>
-																<li><b>Liberación del Informe Final:: '. date("F j, Y, h:m", strtotime( $data['date_release'] )) .'</b></li>
-																<li><b>Puntuación: '.$data['score'].'</li>
-																<li><b>Oportunidades pendientes a completar: '.$data['total_opps'].'</b></li>
-															</ul>
-															<hr style="margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee">
-															<div>
-																<span>Recuerde que tiene un máximo de '. $data['limit_days'] .' para completar el plan de acción</span><br>
-																<span>Fecha límite: '. $data['date_limit'] .'</span>
+	    $mensaje = '<!DOCTYPE html>
+						<html lang="pt">
+						<head>
+							<meta charset="UTF-8">
+							<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+							<title>Segundo lembrete do Plano de Ação</title>
+						</head>
+						<body>
+							<table border="0" align="left" cellpadding="3" cellspacing="2">
+								<tbody>
+									<tr>
+										<td style="padding:5px;border:solid 1px #eeeeee;font-size:12px">
+											<table width="100%" border="0" cellspacing="0" cellpadding="5" style="font-size:11px;font-family:Arial,Helvetica,sans-serif">
+												<tbody>
+													<tr><td width="717"></td></tr>
+													<tr>
+														<td style="text-align: center; padding:10px;background:#cf0a2c; color:#ffffff; font-size:11px">
+														<span>Segundo lembrete do Plano de Ação</span></td>
+													</tr>
+													<tr>
+														<td style="font-size:14px;padding:0px">
+															<div style="border:1px solid #eee;padding:10px">
+																<ul>
+																	<li><b>Localização: '.$data['brand_prefix'].' #'.$data['location_number'].', '.$data['location_name'].'</b></li>
+																	<li><b>Rodada: '.$data['type'].', '.$data['round_name'].'</b></li>
+																	<li><b>Data da visita: '. date("F j, Y, h:m", strtotime( $data['date_visit'] )) .'</b></li>
+																	<li><b>Liberação do Relatório Final: '. date("F j, Y, h:m", strtotime( $data['date_release'] )) .'</b></li>
+																	<li><b>Pontuação: '.$data['score'].'</b></li>
+																	<li><b>Oportunidades pendentes a concluir: '.$data['total_opps'].'</b></li>
+																</ul>
+																<hr style="margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee">
+																<div>
+																	<span>Lembre-se de que você tem no máximo '. $data['limit_days'] .' dias para concluir o plano de ação</span><br>
+																	<span>Prazo final: '. $data['date_limit'] .'</span>
+																</div>
 															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td><b>Created:</b> '.date('M d - h:i', time()).'</td>
-												</tr>
-											</tbody>
-										</table>
-									</td>
+														</td>
+													</tr>
+													<tr>
+														<td><b>Criado:</b> '.date('M d - h:i', time()).'</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
 								</tr>
 							</tbody>
 						</table>
@@ -443,27 +443,27 @@ function sendEmailMasivePlanFinal($data,$template){
     $de .= "Content-type: text/html; charset=UTF-8\r\n";
     $de .= "From: {$empresa} <{$remitente}>\r\n";
 	$divStage = '';
-	if (strpos($_SERVER["HTTP_HOST"], "-stage.") !== false) {
-		$divStage = '<tr>
-						<td style="text-align: center; padding:10px;background:#7FDFD4; color:black; font-size:11px">
-						<span><b>TO STAGE: '.$data['email'].'</b></span></td>
-					</tr>';
-	}
-    $mensaje = '<!DOCTYPE html>
-					<html lang="en">
-					<head>
-						<meta charset="UTF-8">
-						<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-						<title>Final Action Plan Reminder</title>
-					</head>
-					<body>
-						<table border="0" align="left" cellpadding="3" cellspacing="2">
-							<tbody>
-								<tr>
-									<td style="padding:5px;border:solid 1px #eeeeee;font-size:12px">
-										<table width="100%"" border="0" cellspacing="0" cellpadding="5" style="font-size:11px;font-family:Arial,Helvetica,sans-serif">
-											<tbody>
-												<tr><td width="717"></td></tr>
+		if (strpos($_SERVER["HTTP_HOST"], "-stage.") !== false) {
+			$divStage = '<tr>
+							<td style="text-align: center; padding:10px;background:#7FDFD4; color:black; font-size:11px">
+							<span><b>PARA STAGE: '.$data['email'].'</b></span></td>
+						</tr>';
+		}
+	    $mensaje = '<!DOCTYPE html>
+						<html lang="pt">
+						<head>
+							<meta charset="UTF-8">
+							<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+							<title>Lembrete final do Plano de Ação</title>
+						</head>
+						<body>
+							<table border="0" align="left" cellpadding="3" cellspacing="2">
+								<tbody>
+									<tr>
+										<td style="padding:5px;border:solid 1px #eeeeee;font-size:12px">
+											<table width="100%" border="0" cellspacing="0" cellpadding="5" style="font-size:11px;font-family:Arial,Helvetica,sans-serif">
+												<tbody>
+													<tr><td width="717"></td></tr>
 												<tr>
 													<td style="text-align: center; padding:10px;background:#cf0a2c; color:#ffffff; font-size:11px">
 													<span>'.$data['title_layout'].'</span></td>
@@ -474,30 +474,30 @@ function sendEmailMasivePlanFinal($data,$template){
 														<img class="img-fluid" style="width: 200px;" src="'. media() .'/images/logo_'. NOMBRE_EMPESA . '.jpg" alt="Logo">
 													</td>
 												</tr>
-												<tr>
-													<td style="font-size:14px;padding:0px">
-														<div style="border:1px solid #eee;padding:10px">
-															<ul>
-																<li><b>Location: '.$data['brand_prefix'].' #'.$data['location_number'].', '.$data['location_name'].'</b></li>
-																<li><b>Round: '.$data['type'].', '.$data['round_name'].'</b></li>
-																<li><b>Date of visit: '. date("F j, Y, h:m", strtotime( $data['date_visit'] )) .'</b></li>
-																<li><b>Release of the Final Report: '. date("F j, Y, h:m", strtotime( $data['date_release'] )) .'</b></li>
-																<li><b>Score: '.$data['score'].', '.getScoreDefinition($data['score'])[1].', Auto Fail: '.$data['auto_fail'].'</b></li>
-																<li><b>Pending opportunities to fill: '.$data['total_opps'].'</b></li>
-															</ul>
-															<hr style="margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee">
-															<div>
-																<span>'.$data['disclaimer'].'</span><br>
+													<tr>
+														<td style="font-size:14px;padding:0px">
+															<div style="border:1px solid #eee;padding:10px">
+																<ul>
+																	<li><b>Localização: '.$data['brand_prefix'].' #'.$data['location_number'].', '.$data['location_name'].'</b></li>
+																	<li><b>Rodada: '.$data['type'].', '.$data['round_name'].'</b></li>
+																	<li><b>Data da visita: '. date("F j, Y, h:m", strtotime( $data['date_visit'] )) .'</b></li>
+																	<li><b>Liberação do Relatório Final: '. date("F j, Y, h:m", strtotime( $data['date_release'] )) .'</b></li>
+																	<li><b>Pontuação: '.$data['score'].', '.getScoreDefinition($data['score'])[1].', Reprovação automática: '.$data['auto_fail'].'</b></li>
+																	<li><b>Oportunidades pendentes a preencher: '.$data['total_opps'].'</b></li>
+																</ul>
+																<hr style="margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee">
+																<div>
+																	<span>'.$data['disclaimer'].'</span><br>
+																</div>
 															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td><b>Created:</b> '.date('M d - h:i', time()).'</td>
-												</tr>
-											</tbody>
-										</table>
-									</td>
+														</td>
+													</tr>
+													<tr>
+														<td><b>Criado:</b> '.date('M d - h:i', time()).'</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
 								</tr>
 							</tbody>
 						</table>
@@ -524,19 +524,19 @@ function sendEmailMasiveTable($data){
     $de .= "Content-type: text/html; charset=UTF-8\r\n";
     $de .= "From: {$empresa} <{$remitente}>\r\n";
 	$divStage = '';
-    $mensaje = '<!DOCTYPE html>
-					<html lang="en">
-					<head>
-						<meta charset="UTF-8">
-						<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-						<title>'.$data['title_layout'].'</title>
+	    $mensaje = '<!DOCTYPE html>
+						<html lang="pt">
+						<head>
+							<meta charset="UTF-8">
+							<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+							<title>'.$data['title_layout'].'</title>
 					</head>
 					<body>
 						<table border="0" align="left" cellpadding="3" cellspacing="2">
 							<tbody>
 								<tr>
 									<td style="padding:5px;border:solid 1px #eeeeee;font-size:12px">
-										<table width="100%"" border="0" cellspacing="0" cellpadding="5" style="font-size:11px;font-family:Arial,Helvetica,sans-serif">
+											<table width="100%" border="0" cellspacing="0" cellpadding="5" style="font-size:11px;font-family:Arial,Helvetica,sans-serif">
 											<tbody>
 												<tr><td width="717"></td></tr>
 												<tr>
@@ -556,12 +556,12 @@ function sendEmailMasiveTable($data){
 														</div>
 													</td>
 												</tr>
-												<tr>
-													<td><b>Created:</b> '.date('M d - h:i', time()).'</td>
-												</tr>
-											</tbody>
-										</table>
-									</td>
+													<tr>
+														<td><b>Criado:</b> '.date('M d - h:i', time()).'</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
 								</tr>
 							</tbody>
 						</table>

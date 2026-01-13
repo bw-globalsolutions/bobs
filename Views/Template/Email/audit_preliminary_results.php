@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -28,7 +28,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><b><?=$fnT('Criado:')?></b> <?=date('M d - h:i', time())?>  </td>
+	                                <td><b>Criado:</b> <?=date('M d - h:i', time())?>  </td>
                             </tr>
                         </tbody>
                     </table>

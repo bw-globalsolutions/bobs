@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+	<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operational Improvement Letter</title>
+	    <title>Carta de melhoria operacional</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,7 +36,7 @@
 <body>
 
     <div class="letter-heading">
-        <h1>Operational Improvement Letter</h1>
+	        <h1>Carta de melhoria operacional</h1>
         <p>ID: 62949</p>
     </div>
 
@@ -46,28 +46,28 @@
         <p><strong><?=$data['address_1']?> </strong></p>
         <p><strong> #<?=$data['numero_tienda']?> </strong></p>
 
-        <p>Ref.: Notice to Franchisee of Necessary Improvements no. 55777</p>
+	        <p>Ref.: Aviso ao franqueado sobre melhorias necessárias nº 55777</p>
 
-        <p>Dear Franchisee:</p>
+	        <p>Prezado(a) franqueado(a):</p>
 
-        <p>ARGUILEA recently completed a PRIDE Visit for American Corporation (“<b><?=$data['franchissees_name']?></b>”) at restaurant no. <b><?=$data['numero_tienda']?></b>, located at <b><?=$data['address_1']?></b> on <b><?=$data['date_visit']?></b>.</p>
+	        <p>A ARGUILEA concluiu recentemente uma visita PRIDE para a American Corporation (“<b><?=$data['franchissees_name']?></b>”) no restaurante nº <b><?=$data['numero_tienda']?></b>, localizado em <b><?=$data['address_1']?></b>, em <b><?=$data['date_visit']?></b>.</p>
 
-        <p>Franchisees are required to operate their restaurants in accordance with Franchisor’s standards as outlined in the System Standards and Operations Manual and PRIDE Standards of Performance (“System Standards”). </p>
+	        <p>Os franqueados devem operar seus restaurantes de acordo com os padrões do franqueador, conforme descrito nos Padrões do Sistema e no Manual de Operações, bem como nos Padrões de Desempenho PRIDE (“Padrões do Sistema”).</p>
         
-        <p>During the PRIDE Visit, ARGUILEA identified areas of operational performance in which improvement is required to meet said System Standards. Specific details of the operational performance deficiencies identified in the PRIDE Visit were provided to you by email and through the ARGUILEA portal, accessible through The Feed.</p>
+	        <p>Durante a visita PRIDE, a ARGUILEA identificou áreas de desempenho operacional em que é necessário melhorar para atender aos referidos Padrões do Sistema. Detalhes específicos das deficiências de desempenho operacional identificadas na visita PRIDE foram enviados a você por e-mail e também pelo portal da ARGUILEA, acessível pelo The Feed.</p>
         
-        <p>Franchisor wishes to provide you with the opportunity to remedy the operational performance deficiencies that ARGUILEA observed during the last visit. ARGUILEA will make another visit within the next fifteen (15) to forty-five (45) days to verify that the operational deficiencies of your restaurant are corrected.</p>
+	        <p>O franqueador deseja oferecer a você a oportunidade de corrigir as deficiências de desempenho operacional observadas pela ARGUILEA durante a última visita. A ARGUILEA realizará outra visita dentro dos próximos quinze (15) a quarenta e cinco (45) dias para verificar se as deficiências operacionais do seu restaurante foram corrigidas.</p>
 
-        <p>If the deficiencies are not corrected by the time of ARGUILEA’s follow-up visit, your case may be referred to the Franchisor’s Operations Team and the Legal Department.</p>
+	        <p>Se as deficiências não forem corrigidas até a visita de acompanhamento da ARGUILEA, seu caso poderá ser encaminhado à equipe de Operações do franqueador e ao Departamento Jurídico.</p>
 
-        <p>If you have any questions regarding this notice, the System Standards, or the Restaurant PRIDE Visit report, please contact your territory representative – Area Manager or Director of Operations.</p>
+	        <p>Se você tiver alguma dúvida sobre este aviso, os Padrões do Sistema ou o relatório da visita PRIDE, entre em contato com seu representante de território – Gerente de Área ou Diretor de Operações.</p>
 
-        <p>DC:</p>
+	        <p>CC:</p>
 
-        <div class="letter-signature">
-            <p><strong>Franchise Owner: Email Address?</strong></p>
-            <p>(You need to keep track of the name of this email so you know who it will come from)</p>
-        </div>
+	        <div class="letter-signature">
+	            <p><strong>Proprietário da franquia: E-mail?</strong></p>
+	            <p>(Você precisa manter o registro do nome deste e-mail para saber de quem ele virá)</p>
+	        </div>
     </div>
 
 
