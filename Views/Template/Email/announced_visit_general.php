@@ -22,7 +22,7 @@
                                     <div style='border:1px solid #eee;padding:10px'>
                                         <hr style='margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee'>
                                         <div>
-	                                            <span>Os restaurantes Smalls Sliders contrataram a Arguilea para realizar uma visita QSC (Qualidade, Serviço e Limpeza). O objetivo da visita é ajudá-lo a melhorar as operações, impulsionando o tráfego e aumentando a rentabilidade das franquias.</span>
+	                                            <span>Os restaurantes bobs contrataram a Arguilea para realizar uma visita QSC (Qualidade, Serviço e Limpeza). O objetivo da visita é ajudá-lo a melhorar as operações, impulsionando o tráfego e aumentando a rentabilidade das franquias.</span>
 	                                        </div>
 	                                        <div>
 	                                            <p>Sobre a visita e o que esperar:</p>
@@ -30,7 +30,7 @@
 	                                                <li>Você pode acompanhar o(a) especialista e fazer perguntas</li>
 	                                                <li>Ao final da visita, será elaborado um relatório completo com as oportunidades identificadas</li>
 	                                                <li>O relatório completo será enviado à equipe de liderança dentro de 48 horas após a avaliação</li>
-	                                                <li>O objetivo da visita é que a equipe do Smalls Sliders entenda os padrões da auditoria QSC</li>
+	                                                <li>O objetivo da visita é que a equipe do bobs entenda os padrões da auditoria QSC</li>
 	                                            </ul>
 	                                        </div>
 

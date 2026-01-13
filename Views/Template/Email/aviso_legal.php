@@ -37,7 +37,7 @@
                                     <div style='border:1px solid #eee;padding:10px'>
                                         <span><?= date("F j, Y") ?></span><br><br>
                                         <div>
-	                                            <span>Smalls Sliders Restaurants Nº <?=$data['location_number']?></span><br>
+	                                            <span>bobs Restaurants Nº <?=$data['location_number']?></span><br>
                                             <span><?=$data['location_address']?></span><br><br>
                                         </div>
 
@@ -48,7 +48,7 @@
 
                                         <div>
                                             <span>
-	                                                Em <?= date("F j, Y", strtotime( $data['date_visit'] )) ?>, foi realizada uma inspeção QSC no restaurante #<?=$data['location_number']?>, que resultou em uma classificação de “<?=$data['score']?>, <?=getScoreDefinition($data['score'])[1]?>”. Essa classificação é resultado direto das condições apontadas no relatório da inspeção QSC, as quais não estão em conformidade com os procedimentos operacionais exigidos no Manual de Operações do Smalls Sliders.
+	                                                Em <?= date("F j, Y", strtotime( $data['date_visit'] )) ?>, foi realizada uma inspeção QSC no restaurante #<?=$data['location_number']?>, que resultou em uma classificação de “<?=$data['score']?>, <?=getScoreDefinition($data['score'])[1]?>”. Essa classificação é resultado direto das condições apontadas no relatório da inspeção QSC, as quais não estão em conformidade com os procedimentos operacionais exigidos no Manual de Operações do bobs.
 	                                            </span><br><br>
 	                                        </div>
 
@@ -67,7 +67,7 @@
 
                                         <div>
 	                                            <span>Atenciosamente,</span><br>
-	                                            <b>Smalls Sliders Restaurants Inc.</b>
+	                                            <b>bobs Restaurants Inc.</b>
                                         </div>
                                     </div>
                                 </td>

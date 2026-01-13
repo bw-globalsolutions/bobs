@@ -22,7 +22,7 @@
     <body class="bg-ss">
         <div class="container">
             <div class="d-flex justify-content-center mt-3 mb-1">
-                <img class="img-fluid" src="<?=media()?>/images/logo2_Smalls Sliders.png" alt="Logo" id="img-main">
+                <img class="img-fluid" src="<?=media()?>/images/logo2_bobs.png" alt="Logo" id="img-main">
             </div>
             <div class="bg-white rounded p-3 mb-5">
                 <div class="row">
