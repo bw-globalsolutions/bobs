@@ -243,7 +243,7 @@ function emailSend($to = NULL, $subject, $body, $cc = NULL, $bcc = NULL)
 		</tr>" . $body;
 		
 		//$to='mosorio@bw-globalsolutions.com,emaldonado@bw-globalsolutions.com,epena@bw-globalsolutions.com'; 
-		$to='mosorio@bw-globalsolutions.com,cordonez@bw-globalsolutions.com,alopez@arguilea.com,mmaximiliano@arguilea.com'; 
+		$to='mosorio@bw-globalsolutions.com,cordonez@bw-globalsolutions.com'; 
 		$cc=NULL; 
 		$bcc=NULL;
 		//$bcc='mosorio@bw-globalsolutions.com,dpeza@bw-globalsolutions.com,ycabello@bw-globalsolutions.com';
