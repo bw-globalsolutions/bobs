@@ -38,6 +38,7 @@ $jsonApp['result']['CHECKLISTINFO'] = [
 
 //Armar Manualmente el Scoring para tal o cual version
 //Cada nuevo checklist, revisar esta parte manualmente.
+//seccion diamante puntos extra solo se toman en cuenta para earn y no para target
 $jsonApp['result']['CHECKLISTINFO']['general_scores'] = [
     ['title' => 'Segurança dos Alimentos',
      'title_esp' => 'Segurança dos Alimentos',
@@ -47,8 +48,8 @@ $jsonApp['result']['CHECKLISTINFO']['general_scores'] = [
         'formula' => 
             '(SUM_SECTIONS_EARNED_POINTS/SUM_SECTIONS_TARGET_POINTS)*100',
             'variables' => [
-                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'10'],
-                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'10']]
+                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'11'],
+                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'11']]
         ]
     ],
     ['title' => 'Padrões da Marca',
@@ -59,20 +60,32 @@ $jsonApp['result']['CHECKLISTINFO']['general_scores'] = [
         'formula' => 
             '(SUM_SECTIONS_EARNED_POINTS/SUM_SECTIONS_TARGET_POINTS)*100',
             'variables' => [
-                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'11', 'to'=>'19'],
-                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'11', 'to'=>'19']]
+                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'12', 'to'=>'20'],
+                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'12', 'to'=>'20']]
         ]
     ],
-    ['title' => 'Pontuação geral',
-     'title_esp' => 'Pontuação geral',
+    ['title' => 'EXTRA',
+     'title_esp' => 'EXTRA',
+     'how_to' => [
+        'datatype' => 'FLOAT(5,2)',
+        'unit' => 'PTS',
+        'formula' => 
+            'SUM_SECTIONS_TARGET_POINTS-(SUM_SECTIONS_TARGET_POINTS-SUM_SECTIONS_EARNED_POINTS)',
+            'variables' => [
+                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'21', 'to'=>'21'],
+                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'21', 'to'=>'21']]
+        ]
+    ],
+    ['title' => 'Nota final',
+     'title_esp' => 'Nota final',
      'how_to' => [
         'datatype' => 'FLOAT(5,2)',
         'unit' => '%',
         'formula' => 
             '(SUM_SECTIONS_EARNED_POINTS/SUM_SECTIONS_TARGET_POINTS)*100',
             'variables' => [
-                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'19'],
-                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'19']]
+                'SUM_SECTIONS_TARGET_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'20'],
+                'SUM_SECTIONS_EARNED_POINTS' => ['active'=>'1', 'from'=>'2', 'to'=>'21']]
         ]
     ]
 ];

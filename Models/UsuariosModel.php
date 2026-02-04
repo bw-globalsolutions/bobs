@@ -104,6 +104,14 @@ class UsuariosModel extends Mysql{
         return $request;
 	}
 
+	public function getLocationsIds($condition = "1"){
+		$sql = "WITH RECURSIVE numbers AS ( SELECT 1 AS n UNION ALL SELECT n + 1 FROM numbers WHERE n < 1000 ) SELECT GROUP_CONCAT(DISTINCT loc_id ORDER BY CAST(loc_id AS UNSIGNED)) as ids FROM ( SELECT DISTINCT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(u.location_id, ',', n.n), ',', -1)) as loc_id FROM user u JOIN numbers n ON n.n <= (LENGTH(u.location_id) - LENGTH(REPLACE(u.location_id, ',', '')) + 1) WHERE u.location_id IS NOT NULL AND u.location_id != '' AND $condition AND TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(u.location_id, ',', n.n), ',', -1)) != '' ) as datos";
+		$res = new Mysql;
+        $request = $res->select_all($sql);
+
+		return $request[0]['ids'];
+	}
+
 	public function updateStatusUsuario(int $id){
 		$sql = "UPDATE user SET status=? WHERE id = ?";
 		$res = new Mysql;
@@ -267,6 +275,17 @@ class UsuariosModel extends Mysql{
 			}
 		}
 		return $request;
+	}
+
+	public function getRegionales(){
+		$sql = "SELECT id, name FROM user WHERE status=1 AND ";
+		return [];
+	}
+
+	public function getConsultores(){
+		$sql = "SELECT id, name FROM user WHERE status=1 AND role_id = 14";
+		$rs = $this->select_all($sql);
+		return $rs;
 	}
 
 

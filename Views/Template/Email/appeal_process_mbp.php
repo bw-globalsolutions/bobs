@@ -17,7 +17,7 @@
                                 <td style='text-align: center; padding:10px;background:#eab54c; color:#ffffff; font-size:15px'>
 	                                <span>Apelações sob revisão</span></td>
                             </tr>
-                            <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-church's"></center></td></tr>
+                            <tr><td><center><img src="<?=base_url()?>/Assets/images/logo.png?<?=rand(1, 15)?>" style="height:75px; width:85px;" alt="logo-BOBS"></center></td></tr>
 
                             <? if (strpos($_SERVER['HTTP_HOST'], '-stage.') !== false): ?>
                                 <tr>

@@ -30,9 +30,9 @@ class Announced_Visits extends Controllers{
 	{
 		require_once("Models/CountryModel.php");
 		$objData = new CountryModel();
-		$data['page_tag'] = "Announced visits";
-		$data['page_title'] = "Announced visits";
-		$data['page_name'] = "announced_Visits";
+		$data['page_tag'] = "Visitas anunciadas";
+		$data['page_title'] = "Visitas anunciadas";
+		$data['page_name'] = "Visitas anunciadas";
         $data['page-functions_js'] = "functions_announced_visits.js";
 		$data['page_content'] = "Announced visits";
 

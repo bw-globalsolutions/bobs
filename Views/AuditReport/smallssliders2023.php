@@ -85,7 +85,7 @@
                         <div class="card mb-3">
                             <div class="card-header hd-ss d-flex text-center">
                                 <h6 class="col border-right d-none d-md-block"><?=$fnT('FALHA AUTOMÁTICA')?></h6>
-                                <h6 class="col border-right d-none d-md-block"><?=$fnT('SEGURANÇA ALIMENTAR')?></h6>
+                                <h6 class="col border-right d-none d-md-block"><?=$fnT('Segurança dos alimentos')?></h6>
                                 <h6 class="col"><?=$fnT('RESULTADO')?></h6>
                             </div>
                             <div class="card-body d-flex p-2">

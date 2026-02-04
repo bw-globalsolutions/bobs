@@ -17,7 +17,18 @@ class AuditsModel extends Mysql {
 	}
 	    	
 	public function getChecklist(int $checklist_id, int $audit_id, string $col, string $audited_areas = null){
-		$filter_area = empty($audited_areas)? '' : ' AND area IN("' . str_replace("|", '","', $audited_areas) . '")';
+		if($audited_areas==NULL){
+			$filter_area='';
+		}else{
+			$areas = explode(",", $audited_areas);
+			$strAreas = "";
+			foreach($areas as $a){
+				$strAreas.="'".($a=='SALu00c3O'?'SALÃO':$a)."',";
+			}
+			$strAreas = substr($strAreas, 0, -1);
+			$filter_area = "AND area IN ($strAreas)";
+		}
+		//$filter_area = empty($audited_areas)? '' : ' AND area IN("' . str_replace("|", '","', $audited_areas) . '")';
         $sql = "SELECT id, IFNULL($col, eng) AS 'txt', priority, points, question_prefix, section_number, IF(EXISTS(SELECT * FROM audit_na_question WHERE audit_id = $audit_id AND question_prefix = ci.question_prefix), 1, 0) AS 'na' FROM checklist_item ci WHERE type = 'Question' AND checklist_id = $checklist_id $filter_area";
 
 		$request = [];
@@ -99,6 +110,16 @@ class AuditsModel extends Mysql {
 					FROM audit_list a WHERE 
 					". ($condition ? "$condition" : '1') ." AND country_id IN({$_SESSION['userData']['country_id']}) AND (a.location_id IN({$_SESSION['userData']['location_id']}) OR '{$_SESSION['userData']['location_id']}'=0) $isAdmin 
 				ORDER BY date_visit DESC, id DESC $limit";
+		$res = new Mysql;
+		$request = $res->select_all($query);
+		return $request;
+	}
+
+	Public function getAuditsDashboard($condition=null){
+		$query = "SELECT a.*, s.value_1, s.value_2, s.value_3, s.value_4
+					FROM audit a LEFT JOIN audit_score s ON (a.id = s.audit_id) WHERE 
+					". ($condition ? "$condition" : '1') ." AND a.status IN('Completed') AND (a.location_id IN({$_SESSION['userData']['location_id']}) OR '{$_SESSION['userData']['location_id']}'=0) 
+				ORDER BY date_visit DESC, id DESC";
 		$res = new Mysql;
 		$request = $res->select_all($query);
 		return $request;

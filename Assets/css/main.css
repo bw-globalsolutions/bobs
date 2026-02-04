@@ -177,6 +177,85 @@ sup {
   vertical-align: baseline;
 }
 
+.contPG{
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 200px;
+  align-items: center;
+  background-color: #ffffff55;
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.p1, .p4{
+  font-size: 3em;
+  margin-top: 50px;
+}
+
+.p2,.p3{
+  font-size: 30px;
+}
+
+.contPS{
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 50%;
+  align-items: center;
+  background-color: #ffffff55;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.contCuentas{
+  display: flex;
+  width: 100%;
+  position: relative;
+  gap:20px;
+}
+
+.mitad{
+  width: 50%;
+}
+
+.contColorC{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.contClasificacion{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: #ffffff55;
+  border-radius: var(--radius);
+  padding: 10px;
+}
+
+.circulo{
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+}
+
+.cverde{
+  background-color: #82be4dff;
+}
+
+.camarillo{
+  background-color: #ddd832ff;
+}
+
+.crojo{
+  background-color: #e16361ff;
+}
+
+.cnaranja{
+  background-color: #d66933ff;
+}
+
 sub {
   bottom: -.25em;
 }
@@ -274,9 +353,102 @@ sup {
 }
 
 #myPieChart{
+  width: 150px !important;
+  height: 150px !important;
+  position: relative;
+  top: -30px;
+}
+
+#tacometro1{
+  width: 150px !important;
+  height: 150px !important;
+  position: relative;
+}
+
+#tacometro2{
+  width: 150px !important;
+  height: 150px !important;
+  position: relative;
+}
+
+.califSecT{
+  position: absolute;
+    top: 100px;
+    font-size: 30px;
+}
+
+.contColorC p{
+  margin: 0;
+}
+
+.contTopDesvios{
+  background-color: #faacac;
+    padding: 10px;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lineaDes{
+  background-color: #e5526d;
+  width: 100%;
+  height: 5px;
+  border-radius: var(--radius);
+}
+
+#clasificacion{
   width: 300px !important;
   height: 300px !important;
 }
+
+.tabla{
+  width:100%;
+}
+
+.tabla thead tr{
+  background-color: var(--color4);
+  border-bottom: 1px solid rgb(0, 153, 255);
+}
+
+.tabla thead tr th{
+  padding: 10px;
+}
+
+.tabla thead tr th:first-child{
+ border-top-left-radius: var(--radius); 
+}
+
+.tabla thead tr th:last-child{
+ border-top-right-radius: var(--radius); 
+}
+
+/* EFECTO HOVER */
+.tabla tbody tr:hover {
+    background-color: #a7b0bb;
+    transition: background-color 0.2s ease;
+}
+
+/* FILAS IMPARES */
+.tabla tbody tr:nth-child(odd) {
+    background-color: #e8ecf0;
+}
+
+/* FILAS PARES */
+.tabla tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* Bordes redondeados para la primera y última fila */
+.tabla tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--radius);
+}
+
+.tabla tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--radius);
+}
+
+
 
 .chart-container{
   display: flex;
@@ -4597,7 +4769,7 @@ input[type="button"].btn-block {
 }
 
 .custom-file-input:lang(en) ~ .custom-file-label::after {
-  content: "Browse";
+  content: "Buscar";
 }
 
 .custom-file-input ~ .custom-file-label[data-browse]::after {
@@ -4631,7 +4803,7 @@ input[type="button"].btn-block {
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
   color: var(--color4);
-  content: "Browse";
+  content: "Buscar";
   background-color: var(--color1);
   border-left: inherit;
   border-radius: 0 4px 4px 0;

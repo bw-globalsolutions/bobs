@@ -142,7 +142,7 @@
                                         <th><?=$fnT('Loja')?></th>
                                         <th><?=$fnT('Visitas')?></th>
                                         <th><?=$fnT('Falhas automáticas')?></th>
-                                        <th class="bg-ws"><?=$fnT('Segurança alimentar')?></th>
+                                        <th class="bg-ws"><?=$fnT('Segurança dos alimentos')?></th>
                                         <th class="bg-ws"><?=$fnT('Excelência operacional')?></th>
                                         <th class="bg-ws"><?=$fnT('Pontuação geral')?></th>
                                     </tr>
@@ -237,7 +237,7 @@
                             <span class="input-group-text border-0"><?=$fnT('Seção principal')?></span>
                         </div>
                         <select class="form-control selectpicker" onchange="setTopOpp(this.value)" id="select-top-opp">
-                            <option value='Food safety' selected><?=$fnT('Segurança alimentar')?></option>
+                            <option value='Food safety' selected><?=$fnT('Segurança dos alimentos')?></option>
                             <option value='Operations excellence' selected><?=$fnT('Excelência operacional')?></option>
                         </select>
                     </div>

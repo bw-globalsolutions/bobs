@@ -24,18 +24,41 @@
       </ul>
     </div>
 
-    <div class="tile">
+    <!--<div class="tile">
       <div style="display:flex; gap:10px; align-items: center;">
       <? foreach($data['paises'] as $pais): ?>
         <input type="radio" class="country" hidden id="<?=$pais['name']?>" name="country" value="<?=$pais['id']?>">
         <label class="elementS noBG" for="<?=$pais['name']?>" ><img src="Assets/images/paises/<?=$pais['name']?>.png" class="pais" alt="<?=$pais['name']?>"></label>
       <? endforeach ?>
       </div>
-    </div>
+    </div>-->
     
     <? if(!empty($data['permissionAudit']['r'])): ?>
-      <div class="tile" style="display:flex; gap:10px;">
-        <ul class="nav">
+      <div class="tile">
+          <ul class="nav">
+            <li class="nav-item">
+              <span class="nav-link"><?=$fnT('Seção')?>:</span>
+            </li>
+
+            <div class="contES">
+              <li class="nav-item">
+                  <input type="radio" checked class="auditType" hidden id="opInicio" name="opG" value="1">
+                  <label class="elementS" for="opInicio" >Início</label>
+              </li>
+              <li class="nav-item">
+                <input type="radio" class="auditType" hidden id="opDesempenho" name="opG" value="2">
+                <label class="elementS" for="opDesempenho" >Desempenho</label>
+              </li>
+              <li class="nav-item">
+                <input type="radio" class="auditType" hidden id="opAC" name="opG" value="3">
+                <label class="elementS" for="opAC" >Ações corretivas</label>
+              </li>
+            </div>
+          </ul>
+        </div>
+      <div class="tile" style="display:flex; gap:10px; flex-wrap:wrap;">
+        
+        <!--<ul class="nav">
           <li class="nav-item">
             <span class="nav-link"><?=$fnT('Tipo de auditoria')?>:</span>
           </li>
@@ -56,14 +79,120 @@
             <!--<li class="nav-item">
               <a class="nav-link" href="<?=base_url()?>/moduloComunicacion">Modulo comunicacion</a>
             </li>-->
-        </ul>
+        <!--</ul>-->
+        <div class="input-group" style="max-width:200px; max-height:34px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text border-0"><?=$fnT('Tipo de visita')?></span>
+            </div>
+            <select class="form-control selectpicker" id="filter_tipo" name="list_tipo[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
+                <option value="Standard" selected>Padrão</option>
+                <option value="Calibration Audit" selected>Auditoria de Calibração</option>
+                <option value="Training-visits" selected>Visita de Treinamento</option>
+
+            </select>
+        </div>
         <div class="input-group" style="max-width:200px; max-height:34px;">
             <div class="input-group-prepend">
                 <span class="input-group-text border-0"><?=$fnT('Período')?></span>
             </div>
             <select class="form-control selectpicker" id="filter_period" name="list_period[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
-                <? foreach($data['periods'] as $period): ?>
-                    <option value="<?=$period?>" <?=$period==end($data['periods'])? 'selected' : ''?>><?=$period?></option>
+                <? $periodosMeses = [
+        'Round 1 2026' => ['Enero 2026', 'Febrero 2026', 'Marzo 2026'],
+        'Round 2 2026' => ['Abril 2026', 'Mayo 2026', 'Junio 2026'],
+        'Round 3 2026' => ['Julio 2026', 'Agosto 2026', 'Septiembre 2026'],
+        'Round 4 2026' => ['Octubre 2026', 'Noviembre 2026', 'Diciembre 2026']
+    ];
+                foreach($data['periods'] as $periodo => $meses): 
+                // Crear ID único para el periodo
+        $periodoId = strtolower(str_replace(' ', '_', $periodo)); ?>
+                    <<option value="<?=$periodo?>" 
+            data-option="period" 
+            data-period="<?=$periodoId?>" selected>
+        <?='Ciclo '.explode('Round ', $periodo)[1]?>
+    </option>
+    <?php foreach($meses as $mes): ?>
+    <option value="<?=$periodo.'-'.$mes?>" 
+            class="month-option month-<?=$periodoId?>"
+            data-option="month"
+            data-period="<?=$periodoId?>"
+            selected>
+        &nbsp;&nbsp;&nbsp;&nbsp;↳ <?=$mes?>
+    </option>
+    <?php endforeach; ?>
+    
+    <!-- Separador visual (opcional) -->
+    <option data-divider="true"></option>
+                <? endforeach ?>
+            </select>
+        </div>
+        <div class="input-group" style="max-width:200px; max-height:34px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text border-0"><?=$fnT('Classificação')?></span>
+            </div>
+            <select class="form-control selectpicker" id="filter_clasificacion" name="list_clasificacion[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
+                <option value="ZONA DE EXCELÊNCIA" selected>Zona de exceléncia</option>
+                <option value="ZONA DE QUALIDADE" selected>Zona de qualidade</option>
+                <option value="ZONA DE ATENÇÃO" selected>Zona de atenção</option>
+                <option value="ZONA CRÍTICA" selected>Zona crítica</option>
+            </select>
+        </div>
+        <div class="input-group" style="max-width:200px; max-height:34px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text border-0"><?=$fnT('Seção')?></span>
+            </div>
+            <select class="form-control selectpicker" id="filter_seccion" name="list_seccion[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
+                <? foreach($data['secciones'] as $sec): ?>
+                    <option value="<?=$sec['main_section']?>" selected><?=$sec['main_section']?></option>
+                <? endforeach ?>
+            </select>
+        </div>
+        <div class="input-group" style="max-width:200px; max-height:34px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text border-0"><?=$fnT('Regional')?></span>
+            </div>
+            <select class="form-control selectpicker" id="filter_regional" name="list_regional[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
+                <? foreach($data['regionales'] as $reg): ?>
+                    <option value="<?=$reg['regional']?>" selected><?=$reg['regional']?></option>
+                <? endforeach ?>
+            </select>
+        </div>
+        <div class="input-group" style="max-width:200px; max-height:34px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text border-0"><?=$fnT('Estado')?></span>
+            </div>
+            <select class="form-control selectpicker" id="filter_estado" name="list_estado[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
+                <? foreach($data['estados'] as $es): ?>
+                    <option value="<?=$es['state_name']?>" selected><?=$es['state_name']?></option>
+                <? endforeach ?>
+            </select>
+        </div>
+        <div class="input-group" style="max-width:200px; max-height:34px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text border-0"><?=$fnT('Gerente')?></span>
+            </div>
+            <select class="form-control selectpicker" id="filter_gerente" name="list_gerente[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
+                <? foreach($data['gerentes'] as $g): ?>
+                    <option value="<?=$g['id']?>" selected><?=$g['name']?></option>
+                <? endforeach ?>
+            </select>
+        </div>
+        <div class="input-group" style="max-width:200px; max-height:34px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text border-0"><?=$fnT('Consultor')?></span>
+            </div>
+            <select class="form-control selectpicker" id="filter_consultor" name="list_consultor[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
+                <? foreach($data['consultores'] as $con): ?>
+                    <option value="<?=$con['id']?>" selected><?=$con['name']?></option>
+                <? endforeach ?>
+            </select>
+        </div>
+        <div class="input-group" style="max-width:200px; max-height:34px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text border-0"><?=$fnT('Loja')?></span>
+            </div>
+            <select class="form-control selectpicker" id="filter_loja" name="list_loja[]" multiple data-actions-box="true" data-selected-text-format="count>1" data-live-search="true" data-live-search-placeholder="Procurar..." data-live-search-normalize="true" required>
+                <? foreach($data['lojas'] as $l): ?>
+                    <option value="<?=$l['id']?>" selected>#<?=$l['number']?> - <?=$l['name']?></option>
                 <? endforeach ?>
             </select>
         </div>
@@ -84,9 +213,9 @@
                     </div>
       </div>
       </div>-->
-      <div style="display:flex;">
+      <div class="contenidoD" style="display:flex; flex-direction:column; gap:20px;">
         <div class="contCuentas">
-          <? if(in_array( $_SESSION['userData']['role']['id'], [1,2] )): ?>
+          <!--<? if(in_array( $_SESSION['userData']['role']['id'], [1,2] )): ?>
             <div style="min-width:193px; padding:0;" class="col-md-6 col-lg-3">
               <div style="min-width:193px;" class="widget-small info coloured-icon <?=$pend? 'cr-pointer' : 'cr-not-allowed'?>" onclick="<?=$pend? '' : 'return;'?> location.href = '<?=base_url() . '/audits?type=' . base64_encode('Standard')?>&filter=<?=base64_encode('Pending')?>'">
                 <div class="drop-icon" style="position:absolute;">
@@ -135,8 +264,113 @@
         </div>
         <div class="chart-container">
           <canvas id="myPieChart"></canvas>
+        </div>-->
+        <div class="mitad">
+          <div style="display:flex; gap:10px;">
+            <div class="contPG">
+              <p>Pontuação geral</p>
+              <b class="p1">0</b>
+            </div>
+            <div class="contPG" style="background-color:#ffffff00; gap:10px; box-sizing:border-box">
+              <div class="contPS">
+                <p>Avaliações</p>
+                <b class="p2">0</b>
+              </div>
+              <div class="contPS">
+                <p>Lojas avaliadas</p>
+                <b class="p3">0</b>
+              </div>
+            </div>
+            <div class="contPG">
+              <p>Tentativas de auditoria</p>
+              <b class="p4">0</b>
+            </div>
+          </div>
+        </div>
+        <div class="mitad">
+          <div style="display:flex; gap:10px; flex-direction:column;">
+            <p>Classificação geral</p>
+            <div style="display:flex;">
+              <div class="chart-container">
+                <canvas id="myPieChart"></canvas>
+              </div>
+              <div class="contClasificacion">
+                <b>Classificação</b>
+                <div class="contColorC">
+                  <div class="circulo cverde"></div>
+                  <p>Zona de exceléncia</p>
+                </div>
+                <div class="contColorC">
+                  <div class="circulo camarillo"></div>
+                  <p>Zona de qualidade</p>
+                </div>
+                <div class="contColorC">
+                  <div class="circulo crojo"></div>
+                  <p>Zona de critica</p>
+                </div>
+                <div class="contColorC">
+                  <div class="circulo cnaranja"></div>
+                  <p>Zona de atenção</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <div class="contCuentas">
+        <div class="mitad contClasificacion">
+            <b style="text-align:center;">Segurança dos Alimentos</b>
+            <div style="display:flex;">
+              <div class="mitad">
+                <div class="chart-container">
+                  <canvas id="tacometro1"></canvas>
+                  <b id="fs" class="califSecT">0</b>
+                </div>
+              </div>
+              <div class="mitad" style="display:flex; flex-direction:column; align-items:center;">
+                <p>Lojas acima de 80%</p>
+                <b id="fsC" style="font-size:20px;">0</b>
+                <b id="fsP" style="font-size:20px;">0%</b>
+              </div>
+            </div>
+            <div class="contTopDesvios">
+              <div class="lineaDes"></div>
+              <b>Maiores desvios de segurança dos alimentos</b>
+              <div style="display:flex; width:100%; justify-content:space-between;"><span class="preg1"></span><span style="padding: 0 0 0 10px;" class="porcent1"></span></div>
+              <div style="display:flex; width:100%; justify-content:space-between;"><span class="preg2"></span><span style="padding: 0 0 0 10px;" class="porcent2"></span></div>
+              <div style="display:flex; width:100%; justify-content:space-between;"><span class="preg3"></span><span style="padding: 0 0 0 10px;" class="porcent3"></span></div>
+              <div style="display:flex; width:100%; justify-content:space-between;"><span class="preg4"></span><span style="padding: 0 0 0 10px;" class="porcent4"></span></div>
+              <div style="display:flex; width:100%; justify-content:space-between;"><span class="preg5"></span><span style="padding: 0 0 0 10px;" class="porcent5"></span></div>
+            </div>
+        </div>
+        <div class="mitad contClasificacion">
+            <b style="text-align:center;">Padrões da Marca</b>
+            <div style="display:flex;">
+              <div class="mitad">
+                <div class="chart-container">
+                  <canvas id="tacometro2"></canvas>
+                  <b id="pm" class="califSecT">0</b>
+                </div>
+              </div>
+              <div class="mitad" style="display:flex; flex-direction:column; align-items:center;">
+                <p>Lojas acima de 80%</p>
+                <b id="pmC" style="font-size:20px;">0</b>
+                <b id="pmP" style="font-size:20px;">0%</b>
+              </div>
+            </div>
+            <div class="contTopDesvios">
+              <div class="lineaDes"></div>
+              <b>Maiores desvios de padrões da marca</b>
+              <div style="display:flex; width:100%; justify-content:space-between;"><span class="preg1PM"></span><span style="padding: 0 0 0 10px;" class="porcent1PM"></span></div>
+              <div style="display:flex; width:100%; justify-content:space-between;"><span class="preg2PM"></span><span style="padding: 0 0 0 10px;" class="porcent2PM"></span></div>
+              <div style="display:flex; width:100%; justify-content:space-between;"><span class="preg3PM"></span><span style="padding: 0 0 0 10px;" class="porcent3PM"></span></div>
+              <div style="display:flex; width:100%; justify-content:space-between;"><span class="preg4PM"></span><span style="padding: 0 0 0 10px;" class="porcent4PM"></span></div>
+              <div style="display:flex; width:100%; justify-content:space-between;"><span class="preg5PM"></span><span style="padding: 0 0 0 10px;" class="porcent5PM"></span></div>
+            </div>
+        </div>
+      </div>
+    </div>
+    
     <? endif ?>
 
     <!-- <b class="my-1 b">*<?= $fnT('Informações do ano atual') ?></b> -->
@@ -263,3 +497,64 @@
 
   permissionDoc = <?=json_encode($data['permissionDoc'])?>;
 </script> 
+<!-- Script para manejar la selección -->
+<script>
+/*$(document).ready(function() {
+    // Inicializar selectpicker
+    $('#filter_period').selectpicker();
+    
+    // Manejar selección de periodo completo
+    $('#filter_period').on('changed.bs.select', function(e) {
+        var selectedValues = $(this).val() || [];
+        var selectedOptions = $(this).find('option:selected');
+        
+        // Detectar si se seleccionó un periodo completo
+        selectedOptions.each(function() {
+            var $option = $(this);
+            var isPeriod = $option.data('option') === 'period';
+            var periodId = $option.data('period');
+            
+            if (isPeriod && $option.prop('selected')) {
+                // Seleccionar todos los meses de este periodo
+                $('.month-' + periodId).prop('selected', true);
+            } else if (isPeriod && !$option.prop('selected')) {
+                // Deseleccionar todos los meses de este periodo
+                $('.month-' + periodId).prop('selected', false);
+            }
+        });
+        
+        // Actualizar el selectpicker
+        $(this).selectpicker('refresh');
+    });
+    
+    // Manejar selección/deselección de meses individuales
+    $('#filter_period').on('loaded.bs.select', function() {
+        $(this).data('originalValues', $(this).val() || []);
+    });
+});*/
+</script>
+
+<style>
+/* Estilos para diferenciar periodos y meses */
+option[data-option="period"] {
+    font-weight: bold;
+    background-color: #f8f9fa !important;
+    color: #007bff !important;
+}
+
+option[data-option="month"] {
+    color: #6c757d !important;
+}
+
+/* Separador más visible */
+.bootstrap-select .divider {
+    height: 2px !important;
+    background-color: #dee2e6 !important;
+    margin: 5px 0 !important;
+}
+
+/* Para hover states */
+.bootstrap-select .dropdown-menu li a:hover .text {
+    background-color: #f8f9fa;
+}
+</style>

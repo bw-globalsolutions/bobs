@@ -18,13 +18,13 @@
 	                                                <tr><td style='padding:10px;background:#eab54c;color:#ffffff;font-size:11px'>
 	                                                    <span>Informações sobre a próxima visita RAV</span>
 	                                                </td></tr>
-                                                <tr><td><center><img src='".base_url()."/Assets/images/logo.png?".rand(1, 15)."' style='height:75px; width:85px;' alt='logo-church's'></center></td></tr>
+                                                <tr><td><center><img src='".base_url()."/Assets/images/logo.png?".rand(1, 15)."' style='height:75px; width:85px;' alt='logo-BOBS'></center></td></tr>
                                                 <tr>
                                                     <td style='font-size:14px;padding:0px'>
                                                         <div style='border:1px solid #eee;padding:10px'>
                                                             <hr style='margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee'>
                                                             <div>
-	                                                                <span>Church's Texas Chicken/Texas Chicken decidiu fazer parceria com a Arguilea para realizar uma Avaliação Anunciada RAV. A visita RAV avalia as operações do restaurante e os padrões de segurança alimentar.</span>
+	                                                                <span>BOBS decidiu fazer parceria com a Arguilea para realizar uma Avaliação Anunciada RAV. A visita RAV avalia as operações do restaurante e os padrões de Segurança dos alimentos.</span>
 	                                                            </div>
 	                                                            <div>
 	                                                                <p>O que esperar:</p>

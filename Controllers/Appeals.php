@@ -37,9 +37,9 @@ class Appeals extends Controllers{
 
 	public function appeals(){
 		$data['page_id'] = 2;
-		$data['page_tag'] = "Appeals";
-		$data['page_title'] = "Appeals";
-		$data['page_name'] = "appeals";
+		$data['page_tag'] = "Apelação";
+		$data['page_title'] = "Apelação";
+		$data['page_name'] = "Apelação";
 		$data['page-functions_js'] = "functions_appeals.js";
 
 		$data['rounds'] = $this->model->listRounds();	
@@ -166,6 +166,17 @@ class Appeals extends Controllers{
 							$border = "#F1E307";
 							$badgeDes = "warning";
 						}
+						if($item['decision_result']=='Proceeds by exception'){
+							$desicion = 'Processos por exceção';
+						}else if($item['decision_result']=='Proceeds by criterion'){
+							$desicion = 'Processos por critério';
+						}else if($item['decision_result']=='Approved'){
+							$desicion = 'Aprovada';
+						}else if($item['decision_result']=='Not proceeds'){
+							$desicion = 'Não são rendimentos';
+						}else if($item['decision_result']=='Not approved'){
+							$desicion = 'Não aprovado';
+						}
 
 						$datas['clarifications'] .= 
 							'<div class="mb-2" style="border-left: 8px solid '.$border.'; padding: 5px; border-top: 1px solid #CCC; border-right: 1px solid #CCC; border-bottom: 1px solid #CCC;">
@@ -175,11 +186,11 @@ class Appeals extends Controllers{
 								<br><div class="d-flex flex-wrap">'.$files.'</div>
 								<div class="bg-info p-3 text-center text-white"><i class="fa fa-exclamation-triangle"></i> '.$fnT("Apelação").'</div>
 								<div class="text-center">
-									<h3><b><span class="badge badge-'.$badgeDes.'">'.$item['decision_result'].'</span></b></h3>
+									<h3><b><span class="badge badge-'.$badgeDes.'">'.$desicion.'</span></b></h3>
 									<br><b style="color:red !important;">GM '.$fnT("Comentário").'</b>
 									<br><b style="color:red !important;">'.$item['author_comment'].'</b>
 									<hr class="border border-primary">
-									<b style="color:#F18E07 !important;">Decision '.$fnT("Comentário").'</b>
+									<b style="color:#F18E07 !important;">Comentário da decisão</b>
 									<br><b style="color:#F18E07 !important;">'.$item['decision_comment'].'</b>
 									<hr class="border border-primary">
 									<div class="d-flex flex-wrap">'.$filesAppeals.'</div>
@@ -187,15 +198,24 @@ class Appeals extends Controllers{
 							</div>';
 
 						}
+						if($values['gralInfo']['type']=="Standard"){
+							$tipo = "Padrão";
+						}else if($values['gralInfo']['type']=="Calibration-Audit"){
+							$tipo = "Auditoria de Calibração";
+						}else if($values['gralInfo']['type']=="Training-visits"){
+							$tipo = "visitas de treinamento";
+						}else if($values['gralInfo']['type']=="Self-Evaluation"){
+							$tipo = "Autoavaliação";
+						}
 						//dep ($dataAppeals);
 						//dep ($values);
 						//$datas['id'] = 'AP'.$values['id'].'-AU'.$values['audit_id'];
 						$datas['id'] = $values['id'];
 						$datas['store'] = '<b>'.$values['location']['number'].' - '.$values['location']['name'].'</b>
-											<br><b>'.$values['gralInfo']['round_name'].'</b>
+											<br><b>'.("Ciclo".explode('Round', $values['gralInfo']['round_name'])[1]).'</b>
 											<br><b>'.$fnT("Região").': '.$values['gralInfo']['region'].'</b>
 											<br><b>'.$fnT("Data da visita").': '.date("Y-m-d", strtotime( $values['gralInfo']['date_visit'] )).'</b>
-											<br><b>'.$fnT("Tipo de auditoria").': '.$fnT($values['gralInfo']['type']).'</b>
+											<br><b>'.$fnT("Tipo de auditoria").': '.$tipo.'</b>
 											<br><b><a href="'.getURLReport($values['audit_id'], $values['gralInfo']['report_layout_id']).'" target="_blank">'.$fnT("Ver relatório").'</a>';
 						//$datas['clarifications'] = '<div class="mb-2" style="border-left: 5px solid #28A745; padding: 5px; border-top: 1px solid #CCC; border-right: 1px solid #CCC; border-bottom: 1px solid #CCC;">'.$values['items'][0]['auditor_comment'].'<br>'.$values['items'][0]['author_comment'].'</div>';
 						$datas['date'] = date("Y-m-d", strtotime( $values['date_start'] ));
@@ -216,9 +236,16 @@ class Appeals extends Controllers{
 						} else if( in_array( $_SESSION['userData']['role']['id'], [14, 19, 20, 21] )) {
 							$strUsers = '<br><b>'.$fnT("RBD").': <i class="fa fa-user"></i>  '.$values['user_desicion'].'</b>';
 						}
+						if($values['status']=="Completed"){
+							$estado = "Completo";
+						}else if($values['status']=="In Process"){
+							$estado = "Em andamento";
+						}else if($values['status']=="Pending"){
+							$estado = "Pendente";
+						}
 		
 						$datas['options'] = 
-							'<b><span class="badge badge-info">'.$fnT( $values['status'] ).'</span></b>
+							'<b><span class="badge badge-info">'.$estado.'</span></b>
 							<br><b><i class="fa fa-calendar"></i> '.$fnT("Data de início").' '.date("Y-m-d", strtotime( $values['date_start'] )).'</b>'.$strUsers.'
 							
 							<br><button class="btn btn-warning btnViewDetails" '.$disabled.' onclick="openModalUpd('.$values['id'].')" title="'.$fnT("Detalhes").'">'.$fnT("Detalhes").'</button><br>';

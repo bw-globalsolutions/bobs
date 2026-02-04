@@ -23,9 +23,9 @@ class Files extends Controllers{
 		$objData = new CountryModel();
         $obj2 = new RolesModel();
         $this->model->inactivarFechasCad();
-		$data['page_tag'] = 'Files';
-		$data['page_title'] = "Files";
-		$data['page_name'] = "Files";
+		$data['page_tag'] = 'Arquivos';
+		$data['page_title'] = "Arquivos";
+		$data['page_name'] = "Arquivos";
         $data['page-functions_js'] = "functions_files.js";
         $data['permissionDoc'] = $_SESSION['userData']['permission']['Archivos'];
         $data['paises'] = $objData->getCountry(['id','name'], "id IN (".$_SESSION['userData']['country_id'].")");

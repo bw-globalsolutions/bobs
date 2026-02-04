@@ -18,6 +18,19 @@ class RoundModel extends Mysql {
 		
 		return $request;
 	}
+
+	public function getRoundsIds($condition=NULL){
+				
+		$query = "SELECT GROUP_CONCAT(id) as ids
+				  FROM round  
+				  ". ($condition ? " WHERE $condition " : '') ." 
+				  ORDER BY id ASC";
+		//echo $query;
+		$res = new Mysql;
+		$request = $res -> select_all($query);
+		
+		return $request[0]['ids'];
+	}
 	
 	public function insertRound($args){
 

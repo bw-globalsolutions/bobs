@@ -9,17 +9,29 @@ $res = new Mysql;
 $sqlAudit = "SELECT checklist_id, audited_areas FROM audit WHERE id = $audit_id ";
 $audit = $res->select($sqlAudit);
 
-$sqlFS = "SELECT SUM(lost_point) AS total FROM audit_point WHERE audit_id = $audit_id AND section_number>1 AND section_number<11";
+//la seccion diamante es extra y no se cuenta para el target solo para los lostpoints
+$sqlFS = "SELECT SUM(lost_point) AS total FROM audit_point WHERE audit_id = $audit_id AND section_number>1 AND section_number<12";
 $foodSafety = $res->select($sqlFS);
 $sqlFS = "SELECT SUM(points) AS total FROM checklist_item WHERE type='Question' AND section_number>1 AND section_number<11 AND checklist_id = ".$audit['checklist_id'];
 $foodSafetyTotal = $res->select($sqlFS);
 //$foodSafety = $this->select($sqlFS);
 
-$sqlBS = "SELECT SUM(lost_point) AS total FROM audit_point WHERE audit_id = $audit_id AND section_number>10 AND section_number<20 ";
+$sqlBS = "SELECT SUM(lost_point) AS total FROM audit_point WHERE audit_id = $audit_id AND section_number>11 AND section_number<21 ";
 $brandStandards = $res->select($sqlBS);
-$sqlFS = "SELECT SUM(points) AS total FROM checklist_item WHERE type='Question' AND section_number>10 AND section_number<21 AND checklist_id = ".$audit['checklist_id'];
+$sqlFS = "SELECT SUM(points) AS total FROM checklist_item WHERE type='Question' AND section_number>11 AND section_number<21 AND checklist_id = ".$audit['checklist_id'];
 $brandStandardsTotal = $res->select($sqlFS);
-//$operations = $this->select($sqlBS);
+//$brandStandards = $this->select($sqlBS);
+
+$sqlBS = "SELECT SUM(lost_point) AS total FROM audit_point WHERE audit_id = $audit_id AND section_number=21 ";
+$extras = $res->select($sqlBS);
+$sqlFS = "SELECT SUM(points) AS total FROM checklist_item WHERE type='Question' AND section_number=21 AND checklist_id = ".$audit['checklist_id'];
+$extrasTotal = $res->select($sqlFS);
+//$extras = $this->select($sqlBS);
+
+//si se le nego la entrada es autofail
+$sql = "SELECT * FROM audit_opp WHERE audit_id = $audit_id AND checklist_item_id = 2 AND auditor_answer LIKE '%2.- Entrada negada%'";
+$noEntrada = $res->select_all($sql);
+if(count($noEntrada)>0)$autoFail=1;
 
 $sqlFS = "SELECT SUM(points) AS total FROM checklist_item WHERE type='Question' AND checklist_id = ".$audit['checklist_id'];
 $totalTotal = $res->select($sqlFS);
@@ -61,7 +73,7 @@ $sqlPAF = "SELECT GROUP_CONCAT(id SEPARATOR ',') AS ids2 FROM checklist_item WHE
 $pAF = $res->select($sqlPAF);
 
 #### Identificar si hay puntos penalizados que sean autofail--------------------------------
-if($pAF['ids2']){
+if($pAF['ids2'] && $autoFail==0){
 	$sqlAutoFail = "SELECT COUNT(id) AS totalAF FROM audit_opp WHERE audit_id = $audit_id AND checklist_item_id IN ($pAF[ids2]) ";
 	$autoFail = $res->select($sqlAutoFail)['totalAF'];
 }
@@ -70,11 +82,13 @@ if(empty($foodSafety['total'])) $foodSafety['total']=0;
 if(empty($brandStandards['total'])) $brandStandards['total']=0;
 $totalPerdidos = $foodSafety['total'] + $brandStandards['total'];
 $totalNA = $ptsNA['totalFS'] + $ptsNA['totalBS'];
+$extrasPts = $extrasTotal['total']-$extras['total'];
 
 $overallFS = ((($foodSafetyTotal['total']-$ptsNA['totalFS'])-$foodSafety['total'])/($foodSafetyTotal['total']-$ptsNA['totalFS']))*100;
 $overallFS = number_format($overallFS, 2);
-$brandStandardsE = ((($brandStandardsTotal['total']-$ptsNA['totalBS'])-$brandStandards['total'])/($brandStandardsTotal['total']-$ptsNA['totalBS']))*100;
+$brandStandardsE = ((($brandStandardsTotal['total']-$ptsNA['totalBS'])-($brandStandards['total']-$extrasPts))/($brandStandardsTotal['total']-$ptsNA['totalBS']))*100;
 $brandStandardsE = number_format($brandStandardsE, 2);
+if($brandStandardsE>100)$brandStandardsE=100;
 /*$overallScore = ((($totalTotal['total']-$totalNA)-$totalPerdidos)/($totalTotal['total']-$totalNA))*100;
 $overallScore = number_format($overallScore, 2);*/
 $overallScore = ($overallFS+$brandStandardsE)/2;
@@ -82,10 +96,10 @@ $overallScore = number_format($overallScore, 2);
 
 if($autoFail>0) $overallScore = 0;
 
-if($overallScore >= 90){ $letra = 'ZONA DE EXCELÊNCIA'; $color='#3f6320'; }
-if($overallScore >= 80 && $overallScore <90){ $letra = 'ZONA DE CUALIDADE'; $color='#5e8d35'; }
-if($overallScore >= 70 && $overallScore <80){ $letra = 'ZONA DE ATENÇÃO'; $color='#d0a113'; }
-if($overallScore <70){ $letra = 'ZONA CRÍTICA'; $color='#a51111'; }
+if($overallScore >= 90){ $letra = 'ZONA DE EXCELÊNCIA'; $color='#82be4dff'; }
+if($overallScore >= 80 && $overallScore <90){ $letra = 'ZONA DE QUALIDADE'; $color='#ddd832ff'; }
+if($overallScore >= 70 && $overallScore <80){ $letra = 'ZONA DE ATENÇÃO'; $color='#d66933ff'; }
+if($overallScore <70){ $letra = 'ZONA CRÍTICA'; $color='#e16361ff'; }
 //if($criticos > 0) $letra = 'F';
 
 $sqlScore = "SELECT id FROM audit_score WHERE audit_id = $audit_id AND type='General' AND name='OVERALL SCORE' LIMIT 1";

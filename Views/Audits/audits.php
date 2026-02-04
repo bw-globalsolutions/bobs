@@ -3,18 +3,18 @@
     $filter = empty($_GET['filter'])? false : base64_decode($_GET['filter']);
 
     $data['months'] = array(
-        '01' 	=> "January",
-        '02' 	=> "February",
-        '03' 	=> "March",
-        '04' 	=> "April",
-        '05' 	=> "May",
-        '06' 	=> "June",
-        '07' 	=> "July",
-        '08' 	=> "August",
-        '09' 	=> "September",
-        '10' 	=> "October",
-        '11' 	=> "November",
-        '12' 	=> "December"
+        '01' 	=> "Janeiro",
+        '02' 	=> "Fevereiro",
+        '03' 	=> "Marchar",
+        '04' 	=> "Abril",
+        '05' 	=> "Poderia",
+        '06' 	=> "Junho",
+        '07' 	=> "Julho",
+        '08' 	=> "Agosto",
+        '09' 	=> "Setembro",
+        '10' 	=> "Nutubro",
+        '11' 	=> "Novembro",
+        '12' 	=> "Dezembro"
     );
     global $fnT;
 ?>
@@ -49,7 +49,7 @@
                             </div>
                             <select class="form-control selectpicker" id="filter_rname" multiple data-actions-box="true" data-selected-text-format="count>1" required>
                                 <? foreach($data['round_name'] as $round): ?>
-                                    <option value="<?=$round?>" selected><?=$round?></option>
+                                    <option value="<?=$round?>" selected><?='ciclo'.explode('Round', $round)[1]?></option>
                                 <? endforeach ?>
                             </select>
                         </div>
@@ -111,7 +111,7 @@
                 <div class="tile-body">
                     <ul class="app-menu pb-0">
                         <? foreach($data['types'] as $type): ?>
-                            <li><a style="display:flex; justify-content:space-between;" class="app-menu__item <?=$type['type']==$data['type']? 'selected' : ''?>" href="<?=base_url() . '/audits?type=' . base64_encode($type['type'])?>"><span><?=$fnT($type['type'])?></span> <b class="cantidad"><?=$data[$type['type']]?></b></a></li>
+                            <li><a style="display:flex; justify-content:space-between;" class="app-menu__item <?=$type['type']==$data['type']? 'selected' : ''?>" href="<?=base_url() . '/audits?type=' . base64_encode($type['type'])?>"><span><?if($type['type']=="Self-Evaluation"){echo "Autoavaliação";}else if($type['type']=="Calibration Audit"){echo "Auditoria de Calibração";}else if($type['type']=="Training-visits"){echo "visitas de treinamento";}else if($type['type']=="Standard"){echo "Auditoria Operativa";}?></span> <b class="cantidad"><?=$data[$type['type']]?></b></a></li>
                         <? endforeach ?>
                     </ul>
                 </div>
@@ -166,7 +166,7 @@
                                                 </div>
                                                 <div class="lbl-s1" style="max-width: 180px; margin-top:10px;">
                                                     <span><?=$fnT('Marca')?>: <b><?=$audit['brand_name']?></b></span>
-                                                    <span><?=$fnT('Rodada')?>: <b><?=$audit['round_name']?></b></span>
+                                                    <span><?=$fnT('Rodada')?>: <b><?='ciclo'.explode('Round', $audit['round_name'])[1]?></b></span>
                                                     <span><?=$fnT('Mês')?>: <b><?= $audit['period']==''? 'NA' : substr($audit['period'], -2) ?></b></span>
                                                 </div>
                                             </span>
@@ -184,10 +184,10 @@
                                                     <div class="row">
                                                         <div class="col-md-8">
                                                             <span style="font-size: 13px;">
-                                                                <?=$fnT('Status')?>: <b style="margin-left:5px;"><?=$fnT($audit['status'])?></b><br>
+                                                                <?=$fnT('Status')?>: <b style="margin-left:5px;"><?if($audit['status']=="In Process"){echo "Em andamento";}else if($audit['status']=="Completed"){echo "Concluída";}else if($audit['status']=="Pending"){echo "Pendente";}else if($audit['status']=="Deleted!"){echo "Excluída!";}?></b><br>
                                                                 <?=$fnT('Data da visita')?>: <b><?=$fnT($audit['date_visit'])?? $fnT('Sem registro')?></b><br>
                                                                 <?=$fnT('Auditor')?>: <b data-toggle="tooltip" data-placement="top" title="<?=$audit['auditor_email']?>"><?=$audit['auditor_name']?></b><br>
-                                                                <?=$fnT('Tipo de auditoria')?>: <b><?= $fnT($data['type']) ?></b><br>
+                                                                <?=$fnT('Tipo de auditoria')?>: <b><?if($data['type']=="Self-Evaluation"){echo "Autoavaliação";}else if($data['type']=="Calibration Audit"){echo "Auditoria de Calibração";}else if($data['type']=="Training-visits"){echo "visitas de treinamento";}else if($data['type']=="Standard"){echo "Auditoria Operativa";}?></b><br>
                                                                 <div <?=($audit['autofails']>0?'class="lbl-s4" style="max-width: 100px; margin-top: 5px; align-items:center;"':'')?>><span><?=$fnT('Falhas automáticas')?>: <b><?= $audit['autofails'] ?></b></span></div>
                                                                 
                                                             </span>

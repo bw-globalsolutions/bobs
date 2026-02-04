@@ -23,7 +23,7 @@ class Audits extends Controllers{
 	public function audits()
 	{
 		$data['page_tag'] = "Audits";
-		$data['page_title'] = "Audit list";
+		$data['page_title'] = "Lista de auditorias";
 		$data['page_name'] = "audits";
         $data['page-functions_js'] = "functions_audits.js?15022024";
 		$data['permision'] = $this->permission;
@@ -131,9 +131,9 @@ class Audits extends Controllers{
 
 	public function audit()
 	{
-		$data['page_tag'] = "Audit";
-		$data['page_title'] = "Audit";
-		$data['page_name'] = "audit";
+		$data['page_tag'] = "Auditoria";
+		$data['page_title'] = "Auditoria";
+		$data['page_name'] = "Auditoria";
         $data['page-functions_js'] = "functions_audit.js";
 		$data['permision'] = $this->permission;
 
@@ -143,8 +143,16 @@ class Audits extends Controllers{
 		$data['status'] = $tmp[0]['status'];
 		$data['visit_status'] = $tmp[0]['visit_status'];
 		$data['type'] = $tmp[0]['type'];
-		$data['section'] = listSeccions($checklist_id, $tmp[0]['audited_areas']);
-		$data['question'] = $this->model->getChecklist($checklist_id, $_GET['id'], $_SESSION['userData']['default_language'], addslashes($tmp[0]['audited_areas']));
+		$areas="";
+		if($tmp[0]['audited_areas']!=NULL){
+			$areas = str_replace("[", "", $tmp[0]['audited_areas']);
+			$areas = str_replace("]", "", $areas);
+			$areas = str_replace('\\', '', $areas);
+			$areas = str_replace('"', '', $areas);
+		}
+		$data['section'] = listSeccions($checklist_id, $areas);
+		//die(var_dump($data['section']));
+		$data['question'] = $this->model->getChecklist($checklist_id, $_GET['id'], $_SESSION['userData']['default_language'], addslashes($areas));
 		
 		$this->views->getView($this, "audit", $data);
 	}

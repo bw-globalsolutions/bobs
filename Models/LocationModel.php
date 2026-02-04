@@ -21,6 +21,20 @@ class LocationModel extends Mysql
 		return $request;
 	}
 
+	public function getLocationsIds($condition = NULL)
+	{
+
+		$query = "SELECT GROUP_CONCAT(id) as ids 
+				  FROM location 
+				  " . ($condition ? " WHERE $condition " : '') . " 
+				  ORDER BY id ASC";
+
+		$res = new Mysql;
+		$request = $res->select_all($query);
+
+		return $request[0]['ids'];
+	}
+
 	public function insertLocation($args)
 	{
 

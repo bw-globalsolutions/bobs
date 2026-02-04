@@ -54,7 +54,7 @@
                         </div>
                         <select class="form-control selectpicker" id="fRound" name="fRound" multiple data-actions-box="true" data-selected-text-format="count>1">
                             <? foreach($data['rounds'] as $id => $r): ?>
-                                <option value="<?=$r['name']?>" selected><?=$r['name']?></option>
+                                <option value="<?=$r['name']?>" selected><?='ciclo'.explode('Round', $r['name'])[1]?></option>
                             <? endforeach ?>
                         </select>
                     </div>

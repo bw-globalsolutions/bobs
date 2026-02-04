@@ -33,6 +33,8 @@ class Checklist_ItemModel extends Mysql {
 				  GROUP BY main_section, section_number, section_name 
 				  ORDER BY section_number ASC";		
 
+		//die(var_dump($query));
+
 		$res = new Mysql;
 		$request = $res -> select_all($query);
 		
@@ -62,6 +64,14 @@ class Checklist_ItemModel extends Mysql {
 			$sql = "UPDATE checklist_item SET por = '".$r['eng']."', por_answer = '".$r['eng_answer']."' WHERE id =".$r['id'];
 			$rs = $res->update($sql, []);
 		}
+	}
+
+	public function getSeccs($condition=1){
+		$sql = "SELECT DISTINCT(main_section) FROM checklist_item WHERE $condition";
+		$res = new Mysql;
+		$request = $res -> select_all($sql);
+
+		return $request;
 	}
 }
 ?>

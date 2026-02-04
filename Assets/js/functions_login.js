@@ -3,10 +3,10 @@ const loader = document.getElementById('lodaer');
 const btnSubmitLogin = document.getElementById('btn-submit-login');
 
 window.onload = function() {
-  this.document.querySelector('.lblMarca').style.animationName='lblM';
+	if(document.querySelector('.lblMarca'))this.document.querySelector('.lblMarca').style.animationName='lblM';
 };
 
-document.getElementById('email').focus();
+if(document.getElementById('email'))document.getElementById('email').focus();
 
 const logIn = element => {
 	loader.classList.remove('d-none');
@@ -146,7 +146,8 @@ const resetPassword = element => {
 			body: payload
 		}).then(res => res.json()).then(dat => {
 			if(dat.status == 1){
-				window.location.reload();
+				window.location.href="https://bobs.bw-globalsolutions.com";
+				console.log(dat);
 			} else{
 				swal({
 					title: 'Error',

@@ -24,5 +24,23 @@ class CountryModel extends Mysql {
 		
 		return $request;
 	}
+
+	public function getEstados(){
+		$query = "SELECT DISTINCT state_name FROM location ";
+		
+		$res = new Mysql;
+		$request = $res -> select_all($query);
+		
+		return $request;
+	}
+
+	public function getRegionales(){
+		$query = "SELECT DISTINCT regional FROM location WHERE regional!='' AND regional IS NOT NULL";
+		
+		$res = new Mysql;
+		$request = $res -> select_all($query);
+		
+		return $request;
+	}
 }
 ?>

@@ -2,6 +2,26 @@
     global $fnT;
     $isClosed = $data['visit_status'] != 'Visited'? 'disabled' : 0;
     $permissions = ($_SESSION['userData']['permission']['Auditorias']['u'] or isMySelfEvaluation($data['id']));
+
+    if($data['status']=='Pending'){
+        $estatus = 'Pendente';
+    }else if($data['status']=='In Process'){
+        $estatus = 'Em andamento';
+    }else if($data['status']=='Completed'){
+        $estatus = 'Concluída';
+    }else if($data['status']=='Deleted!'){
+        $estatus = 'Excluída!';
+    }
+
+    if($data['type']=='Self-Evaluation'){
+        $tipo = 'Autoavaliação';
+    }else if($data['type']=='Standard'){
+        $tipo = 'Padrão';
+    }else if($data['type']=='Calibration-Audit'){
+        $tipo = 'Auditoria de Calibração';
+    }else if($data['type']=='Training-visits'){
+        $tipo = 'visitas de treinamento';
+    }
 ?>
 <?php if($_SESSION['userData']['id'] == 1){
         //dep($_SESSION['userData']);
@@ -24,17 +44,17 @@
                                     <span class="badge badge-info"><?=$data['brand_prefix']?></span>
                                     <b class="text-success"> <?=$data['location_number']?> - <?=$data['location_name']?></b></span>
                                 </p>
-                                <p class="mb-1"><?=$fnT('Status')?>: <b id="audit_status" class="etlbl"><?=$fnT($data['status'])?></b></p>
+                                <p class="mb-1"><?=$fnT('Status')?>: <b id="audit_status" class="etlbl"><?=$estatus?></b></p>
                                 <p class="mb-1"><?=$fnT('Data da visita')?>: <b><?=$data['date_visit']?? $fnT('Sem registro')?></b></p>
                                                                 
-                                <p class="mb-3"><?=$fnT('Tipo')?>: <b><?=$fnT($data['type'])?></b></p>
+                                <p class="mb-3"><?=$fnT('Tipo')?>: <b><?=$tipo?></b></p>
                                 <p class="small text-secondary" style="display:flex; align-items:center;">
                                     <b class="lbl-s5" style="padding: 5px 15px; cursor:pointer;" onclick="copiarAlPortapapeles('<?=base_url()?>/audits/audit?id=<?=$_GET['id']?>')">ID: <?=$data['id']?></b> — CHK<?=$data['checklist_id']?> — SCG<?=$data['scoring_id']?></small>
                                 </p>
                                 <div class="mb-1">
                                     <div class="btn-group mb-1" role="group">
                                         <button type="button" class="btn btn-info btn-sm">
-                                            <?=$fnT('Segurança alimentar')?>: <span id="score-critics"><?=$data['score']['FootSafety']?></span>
+                                            <?=$fnT('Segurança dos alimentos')?>: <span id="score-critics"><?=$data['score']['FootSafety']?></span>
                                         </button>
                                         <button type="button" class="btn btn-info btn-sm">
                                             <?=$fnT('Padrões da marca')?>: <span id="score-nocritics"><?=$data['score']['OperationsE']?></span>
@@ -53,7 +73,7 @@
                                     </div><br>
                                     <div class="btn-group mb-1" role="group">
                                         <button type="button" class="btn btn-danger btn-sm">
-                                            <?=$fnT('Falha automática')?>: <span id="score-autofail"><?=$data['score']['AutoFail']?></span>
+                                            <?=$fnT('Regra de diamante')?>: <span id="score-autofail"><?=$data['score']['AutoFail']?></span>
                                         </button>
                                     </div>
                                     <!-- <div class="btn-group mb-1" role="group">
@@ -66,7 +86,7 @@
                                     </div> -->
                                     <? if(in_array($data['status'], ['Temp Processing', 'Pending', 'In Process']) and !$isClosed and $permissions): ?>
                                         <button type="button" class="btn btn-primary btn-sm mb-1 btn-s1" id="btn-next-status" onclick="nextStep()">
-                                            <?=$fnT('Mover para')?>: <span id="text-next-status"><?=$fnT($data['next-status'])?></span>
+                                            <?=$fnT('Mover para')?>: <span id="text-next-status"><?=/*$fnT($data['next-status'])*/"Completo"?></span>
                                         </button>
                                     <? endif ?>
                                     <? if(in_array($data['status'], ['Pending', 'In Process']) && $data['type'] == 'Self-Evaluation' && $permissions): ?>
@@ -195,16 +215,16 @@
     let config;
     let status = document.getElementById('audit_status').innerHTML;
     switch(status){
-        case 'Pending':
+        case 'Pendente':
             document.getElementById('audit_status').style.backgroundColor='var(--color6)';
             break;
-        case 'In Process':
+        case 'Em andamento':
             document.getElementById('audit_status').style.backgroundColor='var(--color7)';
             break;
-        case 'Completed':
+        case 'Concluída':
             document.getElementById('audit_status').style.backgroundColor='var(--color8)';
             break;
-        case 'Deleted!':
+        case 'Excluída!':
             document.getElementById('audit_status').style.backgroundColor='var(--color9)';
             break;
     }

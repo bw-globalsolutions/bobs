@@ -75,18 +75,18 @@ const rootStyles = getComputedStyle(document.documentElement);
     const color8v = rootStyles.getPropertyValue('--color8').trim();
     const color9v = rootStyles.getPropertyValue('--color9').trim();
 
-    document.querySelectorAll('.etlbls').forEach(e=>{
+    document.querySelectorAll('.etlbl').forEach(e=>{
         switch(e.innerHTML){
-            case 'Pending':
+            case 'Pendente':
                 e.style.backgroundColor=color6v;
                 break;
-            case 'In Process':
+            case 'Em andamento':
                 e.style.backgroundColor=color7v;
                 break;
-            case 'Completed':
+            case 'Concluída':
                 e.style.backgroundColor=color8v;
                 break;
-            case 'Deleted!':
+            case 'Excluída!':
                 e.style.backgroundColor=color9v;
                 break;
         }

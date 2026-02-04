@@ -69,7 +69,7 @@
       <? endif ?>
       <li>
         <a class="app-menu__item" href="<?=base_url()?>/home">
-          <i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label"><?=$fnT('Dashboard')?></span>
+          <i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label"><?=$fnT('painel de controle')?></span>
         </a>
       </li>
 

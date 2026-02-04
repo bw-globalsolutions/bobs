@@ -154,6 +154,7 @@ function listAudits(){ //Se utiliza
     request.send();
     request.onreadystatechange = function(){
 		if(request.readyState == 4 && request.status == 200){
+			console.log(request.responseText);
 			document.querySelector('#listAudits').innerHTML = request.responseText;
 			$('#listAudits').selectpicker('render');
 			$('#listAudits').selectpicker('refresh');

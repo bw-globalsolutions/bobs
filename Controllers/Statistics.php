@@ -28,9 +28,9 @@ class Statistics extends Controllers{
 		$objData = new CountryModel();
 		$obj2 = new UsuariosModel();
 		$obj3 = new LocationModel();
-		$data['page_tag'] = "Statistics";
-		$data['page_title'] = "Statistics";
-		$data['page_name'] = "statistics";
+		$data['page_tag'] = "Estatísticas";
+		$data['page_title'] = "Estatísticas";
+		$data['page_name'] = "Estatísticas";
         $data['page-functions_js'] = "functions_statistics.js?21102024";
 		
 		$data['audit_types'] = listAuditTypes();

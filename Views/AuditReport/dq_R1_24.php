@@ -35,8 +35,9 @@
     <body class="bg-ss">
         <div class="container">
             <div class="d-flex justify-content-center mt-1 mb-1">
-                <img class="img-fluid" src="<?=media()?>/images/logo.png?<?=rand(1, 15)?>" alt="LogoChurchs" id="img-main" height="100">
+                <img class="img-fluid" src="<?=media()?>/images/logo.png?<?=rand(1, 15)?>" alt="Logo BOBS" id="img-main" height="100">
             </div>
+            <b style="position:absolute; top:10px; right:10px;">#<?=$data['audit']['location_number']?> - <?=$data['audit']['location_name']?></b>
             <div class="bg-white rounded p-3 mb-5">
                 <div class="row">
                     <div class="col-lg-5">
@@ -100,10 +101,10 @@
                     <div class="col-lg-7">
                         <div class="card mb-3">
                             <div class="d-flex text-center">
-                                <div class="col card-header" style="background-color: var(--color1);">
-                                    <h6><?=$fnT('Segurança alimentar')?></h6>
+                                <div class="col card-header" style="background-color: #4dea62;">
+                                    <h6><?=$fnT('Segurança dos alimentos')?></h6>
                                 </div>
-                                <div class="col card-header" style="background-color: var(--color1);">
+                                <div class="col card-header" style="background-color: #4deae7;">
                                     <h6><?=$fnT('Excelência operacional')?></h6>
                                 </div>
                             </div>
@@ -118,16 +119,12 @@
                                 <h6 class="col"><?=$fnT('Vermelho')?></h6>
                             </div> -->
                             <div class="d-flex text-center">
-                                <div class="col card-header hd-red">
-                                    <h6><?=$fnT('Falha automática')?></h6>
-                                </div>
                                 <div class="col card-header" style="background-color: var(--color1);">
                                     <h6><?=$fnT('Pontuação geral')?></h6>
                                 </div>
                             </div>
                             <div class="card-body d-flex p-2">
                                 <!-- <div class="col d-none d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['Verdes']??0?></b><span>#</span></div> -->
-                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['AutoFail']??0?></b><span>#</span></div>
                                 <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['OverallScore']??0?></b><span>#</span></div>
                             </div>
                             <!--<div class="card-header hd-ss d-flex text-center">

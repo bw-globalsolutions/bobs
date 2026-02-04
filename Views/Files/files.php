@@ -95,7 +95,7 @@
                         <input hidden id="roles" name="roles">
                         <? foreach($data['roles'] as $rol): ?>
                           <input type="checkbox" class="rol" hidden onchange="actualizarRoles()" id="<?=$rol['name']?>" rId="<?=$rol['id']?>" value="<?=$rol['id']?>">
-                          <label class="elementS" for="<?=$rol['name']?>" ><?=$fnT($rol['name'])?></label>
+                          <label class="elementS" for="<?=$rol['name']?>" ><?if($rol['name']=="Restaurant manager"){echo "Gerente do restaurante";}else{echo $rol['name'];}?></label>
                         <? endforeach ?>
                         </div>
                       </div>
@@ -103,9 +103,9 @@
                         <label for="input-files" class="col-sm-2 col-form-label"><?=$fnT('Status')?></label>
                         <div style="display:flex; gap:20px; align-items: center; flex-wrap:wrap;" class="col-sm-10">
                           <input type="radio" checked class="statusF" hidden id="activo" name="statusF" value="1">
-                          <label class="elementS" for="activo" >Activo</label>
+                          <label class="elementS" for="activo" >Ativo</label>
                           <input type="radio" class="statusF" hidden id="inactivo" name="statusF" value="0">
-                          <label class="elementS" for="inactivo" >Inactivo</label>
+                          <label class="elementS" for="inactivo" >Inativo</label>
                         </div>
                       </div>
                       <div class="form-group row">

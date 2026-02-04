@@ -232,7 +232,7 @@ function emailFilterArg($emails){
 
 function emailSend($to = NULL, $subject, $body, $cc = NULL, $bcc = NULL)
 {
-	if (strpos($_SERVER['HTTP_HOST'], '-stage.') !== false) {
+	if (true) { //strpos($_SERVER['HTTP_HOST'], '-stage.') !== false
 		
 		$sendTo = emailFilter($to, $cc, $bcc);
 		if(is_array($sendTo))$sendTo=implode(',', $sendTo);
@@ -243,7 +243,7 @@ function emailSend($to = NULL, $subject, $body, $cc = NULL, $bcc = NULL)
 		</tr>" . $body;
 		
 		//$to='mosorio@bw-globalsolutions.com,emaldonado@bw-globalsolutions.com,epena@bw-globalsolutions.com'; 
-		$to='mosorio@bw-globalsolutions.com,cordonez@bw-globalsolutions.com'; 
+		$to='epena@bw-globalsolutions.com,schirino@bw-globalsolutions.com,cordonez@bw-globalsolutions.com'; 
 		$cc=NULL; 
 		$bcc=NULL;
 		//$bcc='mosorio@bw-globalsolutions.com,dpeza@bw-globalsolutions.com,ycabello@bw-globalsolutions.com';
@@ -873,8 +873,21 @@ function listAuditTypes(){
 function listSeccions($checklist_id, $audited_areas = null){
 	require_once("Models/Checklist_ItemModel.php");
 	$objData = new Checklist_ItemModel();
-	$filter_area = is_null($audited_areas)? '' : 'AND area IN("' . str_replace("|", '","', $audited_areas) . '")';
+	if($audited_areas==NULL){
+		$filter_area='';
+	}else{
+		$areas = explode(",", $audited_areas);
+		$strAreas = "";
+		foreach($areas as $a){
+			$strAreas.="'".($a=='SALu00c3O'?'SALÃO':$a)."',";
+		}
+		$strAreas = substr($strAreas, 0, -1);
+		$filter_area = "AND area IN ($strAreas)";
+	}
+	//$filter_area = is_null($audited_areas)? '' : 'AND area IN("' . str_replace("|", '","', $audited_areas) . '")';
+	//die(var_dump($filter_area));
 	$arrSection = $objData->getChecklistSection("checklist_id = $checklist_id $filter_area");
+	//die(var_dump($arrSection));
 	return $arrSection;
 }
 
@@ -920,15 +933,25 @@ function knowRoundInfoBy($brand='', $period=''){
 	$year = explode("-", $period)[0];
     $month = explode("-", $period)[1];
 	
-	if(in_array($month, array('01', '02', '03', '04', '05', '06'))){
+	if(in_array($month, array('01', '02', '03'))){
 		$return = [
 			'name' => "Round 1 $year",
 			'date_start' => "$year-01-01 00:00:00"];
-		
-	} else if(in_array($month, array('07', '08', '09', '10', '11', '12'))){
+
+	} else if(in_array($month, array('04', '05', '06'))){
 		$return = [
 			'name' => "Round 2 $year",
+			'date_start' => "$year-04-01 00:00:00"];
+
+	} else if(in_array($month, array('07', '08', '09'))){
+		$return = [
+			'name' => "Round 3 $year",
 			'date_start' => "$year-07-01 00:00:00"];
+
+	} else if(in_array($month, array('10', '11', '12'))){
+		$return = [
+			'name' => "Round 10 $year",
+			'date_start' => "$year-10-01 00:00:00"];
 
 	}
 

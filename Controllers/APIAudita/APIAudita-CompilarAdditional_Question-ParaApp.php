@@ -25,9 +25,11 @@ $jsonApp['info'] = [
 
 //Conocer las Audited Areas del Checklist
 $areas = [];
-$rs = Checklist_ItemModel::getChecklistItem(['area'], "checklist_id=2 AND area IS NOT NULL");
+$rs = Checklist_ItemModel::getChecklistItem(['area'], "checklist_id=1 AND area IS NOT NULL");
 if(count($rs)) foreach($rs as $r){
-    $areas[] = ['title'=>$r['area'], 'title_esp'=>$r['area'], 'requests'=>NULL];
+    if(!in_array($r['area'], array_column($areas, 'title'))){
+        $areas[] = ['title'=>$r['area'], 'title_esp'=>$r['area'], 'requests'=>NULL];
+    }
 } else {
     $areas[] = ['title'=>'-Sin-Areas-', 'title_esp'=>'-Sin-Areas-', 'requests'=>NULL];
 }
@@ -48,10 +50,8 @@ $jsonApp['result']['REQUIRED_GENERAL_INFORMATION'] = [
         ['title' => 'End Time', 'title_esp' => translate_live($lang, 'End Time'), 'request_type'=>'TIME', 'required'=>true, 'placeholder'=>'HH:MM:SS'],
         ['title' => 'Day part', 'title_esp' => translate_live($lang, 'Day part'), 'request_type'=>'SELECT_OPTIONS', 'required'=>true, 
          'OPTIONS'=>[
-            ['title'=>'Breakfast (10:00am - 1:00pm)', 'title_esp'=>translate_live($lang, 'Breakfast (10:00am - 1:00pm)'), 'requests'=>NULL],
-            ['title'=>'Food (1:00pm - 5:00pm)', 'title_esp'=>translate_live($lang, 'Food (1:00pm - 5:00pm)'), 'requests'=>NULL],
-            ['title'=>'Afternoon (5:00pm - 7:00pm)', 'title_esp'=>translate_live($lang, 'Afternoon (5:00pm - 7:00pm)'), 'requests'=>NULL],
-            ['title'=>'Dinner (7:00pm - 10:00pm)', 'title_esp'=>translate_live($lang, 'Dinner (7:00pm - 10:00pm)'), 'requests'=>NULL]
+            ['title'=>'Almoço (11:00am - 3:59pm)', 'title_esp'=>translate_live($lang, 'Almoço (11:00am - 3:59pm)'), 'requests'=>NULL],
+            ['title'=>'Jantar (4:00pm - 10:00pm)', 'title_esp'=>translate_live($lang, 'Jantar (4:00pm - 10:00pm)'), 'requests'=>NULL]
             ]],
         ['title' => 'Restaurant E-mail', 'title_esp' => translate_live($lang, 'Restaurant E-mail'), 'request_type'=>'FREE_TEXT', 'required'=>true, 'placeholder'=>'mail@mail.com'],
         ['title' => 'General Manager Name', 'title_esp' => translate_live($lang, 'General Manager Name'), 'request_type'=>'FREE_TEXT', 'required'=>true, 'placeholder'=>'John Doe'],

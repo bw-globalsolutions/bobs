@@ -363,8 +363,7 @@ class APIAudita extends Controllers
                 $summary = array();
                 foreach ($audita_data['audita_data'] as $x => $row) {
     
-                    $location = LocationModel::getLocation(['id', 'country_id', 'address_1', 'shop_type'], "number='$row[Numero_Tienda]' AND brand_id='$brand[id]' (and status = 'Active' or status = 1)")[0];
-    
+                    $location = LocationModel::getLocation(['id', 'country_id', 'address_1', 'shop_type'], "number='$row[Numero_Tienda]' AND brand_id='$brand[id]' AND (status = 'Active' or status = 1)")[0];
                     // if(!empty($location['shop_type'])){
                     //     $checklist = ChecklistModel::getChecklist(['id'], "brand_id=$brand[id] AND name like '%$location[shop_type]%' AND date_start <= '{$audita_data['periodo']}-01')")[0];
                     //     $data['definitions']['checklist_id'] = $checklist['id'];
@@ -540,7 +539,7 @@ class APIAudita extends Controllers
 
         $roundNameToFind = $nombreRound['nm'];
         $country = $audit['Pais'];
-        if ($country == 'MEX') $country = 'MEXICO';
+        if ($country == 'BR') $country = 'Brazil';
         $tmpRound = RoundModel::getRoundAce(intval($audit['Tipo']), addslashes($roundNameToFind));
         //die(var_dump($tmpRound));
         /*----------  Creación del Round si no existe  ----------*/
@@ -580,7 +579,7 @@ class APIAudita extends Controllers
         }
         $round = $tmpRound[0];
         //die(var_dump(addslashes($roundNameToFind)));
-        if( (in_array($audit['Tipo'],array(1,11,18,28,29,23)) && $audit['marcaRef']=='DLP')){
+        if( (in_array($audit['Tipo'],array(1,11,18,28,29,23)) && $audit['marcaRef']=='BOBS')){
             $col = ['id', 'status', 'checklist_id', 'scoring_id'];
             $tmpAudita = AuditoriaModel::getAuditAce($col, "ace_folio='".$audit['Folio']."'");
             if(!empty($tmpAudita)){
@@ -913,7 +912,7 @@ class APIAudita extends Controllers
     public function fecha_programada ()
     {
         $_POST = json_decode(file_get_contents('php://input'), true);
-        echo '<div style="border:solid 1px #CCC; padding:10px; background:#FBFBFB;"><h1>Date Of Visit -- CHURCHS TEXAS CHICKEN</h1>';
+        echo '<div style="border:solid 1px #CCC; padding:10px; background:#FBFBFB;"><h1>Date Of Visit -- BOBS</h1>';
         dep($_POST);
         //echo '<pre>'; print_r($_POST); echo '</pre>';
         foreach($_POST as $i=>$v) if(is_numeric($i)){

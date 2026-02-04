@@ -14,7 +14,7 @@ class Login extends Controllers{
 
 	public function login()
 	{
-		$data['page_tag'] = "Church's Reports";
+		$data['page_tag'] = "BOBS Reports";
 		//$data['page_tag'] = "Login";
 		$data['page-functions_js'] = "functions_login.js";
 
