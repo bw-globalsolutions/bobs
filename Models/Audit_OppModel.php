@@ -145,21 +145,38 @@ class Audit_OppModel extends Mysql {
 		return $request? 1 : 0;
 	}
 
-	public function getTopBottomOpp($condition='1', $order='DESC', $totalVisitas){
-		$query = "SELECT ci.question_prefix, COUNT(ci.question_prefix) as total FROM audit_opp ao LEFT JOIN checklist_item ci ON (ao.checklist_item_id = ci.id) WHERE $condition AND ci.id>7 GROUP BY ci.question_prefix ORDER BY total $order LIMIT 5";	
-		//die(var_dump($query));
-		$prefix = $this -> select_all($query);
+	public function getTopBottomOpp($condition='1', $order='DESC', $totalVisitas=0, $audits=""){
+		$arrVisitas = ($audits!=''?explode(',', $audits):[]);
+		//$query = "SELECT ci.question_prefix, COUNT(ci.question_prefix) as total FROM audit_opp ao LEFT JOIN checklist_item ci ON (ao.checklist_item_id = ci.id) WHERE $condition AND ci.id>7 GROUP BY ci.question_prefix ORDER BY total $order LIMIT 5";	
+		$query = "SELECT ci.question_prefix, ao.audit_id FROM audit_opp ao LEFT JOIN checklist_item ci ON (ao.checklist_item_id = ci.id) WHERE $condition AND ci.id>7";
+		$rs = $this -> select_all($query);
+		$data = array();
+		$prefix = array();
+		foreach($rs as $r){
+			$data[$r['question_prefix']][$r['audit_id']]=1;
+		}
+		foreach($data as $p=>$id){
+			array_push($prefix, array("question_prefix"=>$p, "total"=>count($id)));
+		}
+		usort($prefix, function($a, $b) {
+			return $b['total'] - $a['total']; // Para orden descendente
+		});
+
+		// Obtener solo los 5 primeros elementos
+		$prefix = array_slice($prefix, 0, 5);
 		$request = array();
 		$i=0;
 		foreach($prefix as $p){
 			$request[$i]['question_prefix'] = $p['question_prefix'];
 			$request[$i]['total'] = $p['total'];
 			$request[$i]['frecuencia'] = round(($p['total']/$totalVisitas)*100, 2);
+			//echo $request[$i]['question_prefix'].'-'.$request[$i]['frecuencia'].', ';
 			$query = "SELECT eng FROM checklist_item WHERE question_prefix = '".$p['question_prefix']."' AND type = 'Question'";
 			$pregunta = $this -> select_all($query);
 			$request[$i]['pregunta'] = $pregunta[0]['eng'];
 			$i++;
 		}
+		//die();
 		
 		
 		return $request;
@@ -187,16 +204,25 @@ class Audit_OppModel extends Mysql {
 
 	public function getPromedioSecc($condition='1', $visitas=0, $totalVisitas, $secciones=""){
 		if($secciones!=""){
-			$filtroM="";
+			$filtroM = "AND main_section IN($secciones)";
 		}else{
-			$filtroM="AND main_section IN($secciones)";
+			$filtroM = "AND main_section IN('x')";
 		}
 		//obtenemos el checklist que este ligado al mayor numero de auditorias
 		$sqlAudit = "SELECT checklist_id, count(*) as total FROM audit WHERE id IN ($visitas) GROUP BY checklist_id order by total DESC";
 		$audit = $this->select_all($sqlAudit);
 		if($visitas==0)$audit[0]['checklist_id']=1;
+		//obtenemos los prefix filtrados segun el filtro de secciones
+		$sql = "SELECT DISTINCT(question_prefix) FROM `checklist_item` WHERE main_section IN ($secciones) AND checklist_id = ".$audit[0]['checklist_id'];
+		$prefs = $this->select_all($sql);
+		$strPefs = "";
+		foreach($prefs as $p){
+			$strPefs.="'".$p['question_prefix']."',";
+		}
+		$strPefs = substr($strPefs, 0, -1);
+		//die(var_dump($strPefs));
 		//obtenemos los targets y los puntos perdidos
-		$sql = "SELECT section_number, SUM(lost_point) AS total FROM audit_point WHERE $condition GROUP BY section_number ORDER BY section_number";
+		$sql = "SELECT section_number, SUM(lost_point) AS total FROM audit_point WHERE $condition AND question_prefix IN ($strPefs) GROUP BY section_number ORDER BY section_number";
 		$lostPoints = $this->select_all($sql);
 		$arrLost = array();
 		foreach($lostPoints as $lost){

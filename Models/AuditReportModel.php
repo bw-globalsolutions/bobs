@@ -25,7 +25,9 @@ class AuditReportModel extends Mysql{
                 'section_name'      => $s['section_name'],
                 'questions'         => $s['questions'],
                 'target'            => $s['target'],
-                'points'            => (float)$s['points']
+                'points'            => (float)$s['points'],
+                'puntos_win'        => ($s['target']-$s['points']),
+                'porcentaje'        => round(($s['target']>0?(($s['target']-$s['points'])/$s['target'])*100:0), 2)
             ]);
         }
 		return $request;
@@ -33,7 +35,7 @@ class AuditReportModel extends Mysql{
 
     public function getQuestionsOpp(int $audit_id, int $checklist_id, $lan){
         if($lan==NULL)$lan='eng';
-        $sql = "SELECT ci.section_name, IFNULL(ci.$lan, ci.eng) AS 'txt', ci.question_prefix, ci.priority FROM checklist_item ci INNER JOIN audit_point ap ON (ci.question_prefix = ap.question_prefix) WHERE ci.type = 'Question' AND ap.audit_id = $audit_id AND ci.checklist_id = $checklist_id AND ci.section_name!='Information'";
+        $sql = "SELECT ci.section_name, IFNULL(ci.$lan, ci.eng) AS 'txt', ci.points valor, ci.question_prefix, ci.priority FROM checklist_item ci INNER JOIN audit_point ap ON (ci.question_prefix = ap.question_prefix) WHERE ci.type = 'Question' AND ap.audit_id = $audit_id AND ci.checklist_id = $checklist_id AND ci.section_name!='Information'";
         $request = [];
 
         foreach($this->select_all($sql) as $q){
@@ -63,6 +65,7 @@ class AuditReportModel extends Mysql{
                 'priority'  => $q['priority'],
                 'question'  => $q['txt'],
                 'prefix'    => $q['question_prefix'],
+                'valor'     => $q['valor'],
                 'picklist'  => $picklist
             ]);
         }

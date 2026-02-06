@@ -105,7 +105,7 @@
                 foreach($data['periods'] as $periodo => $meses): 
                 // Crear ID único para el periodo
         $periodoId = strtolower(str_replace(' ', '_', $periodo)); ?>
-                    <<option value="<?=$periodo?>" 
+                    <option value="<?=$periodo?>" 
             data-option="period" 
             data-period="<?=$periodoId?>" selected>
         <?='Ciclo '.explode('Round ', $periodo)[1]?>
@@ -130,10 +130,51 @@
                 <span class="input-group-text border-0"><?=$fnT('Classificação')?></span>
             </div>
             <select class="form-control selectpicker" id="filter_clasificacion" name="list_clasificacion[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
-                <option value="ZONA DE EXCELÊNCIA" selected>Zona de exceléncia</option>
-                <option value="ZONA DE QUALIDADE" selected>Zona de qualidade</option>
-                <option value="ZONA DE ATENÇÃO" selected>Zona de atenção</option>
-                <option value="ZONA CRÍTICA" selected>Zona crítica</option>
+                        <option value="aprobadas" 
+                        data-option="ar" 
+                        data-clas="aprobadas" selected>
+                    Aprobadas
+                </option>
+                <option value="ZONA DE EXCELÊNCIA" 
+                        class="clasificacion-option clasificacion-e"
+                        data-option="clasificacion"
+                        data-clas="aprobadas"
+                        selected>
+                    &nbsp;&nbsp;&nbsp;&nbsp;↳ Zona de Execelência
+                </option>
+                <option value="ZONA DE QUALIDADE" 
+                        class="clasificacion-option clasificacion-q"
+                        data-option="clasificacion"
+                        data-clas="aprobadas"
+                        selected>
+                    &nbsp;&nbsp;&nbsp;&nbsp;↳ Zona de Qualidade
+                </option>
+                
+                <!-- Separador visual (opcional) -->
+                <option data-divider="true"></option>
+
+                <option value="reprobadas" 
+                        data-option="ar" 
+                        data-clas="reprobadas" selected>
+                    Reprobadas
+                </option>
+                <option value="ZONA CRÍTICA" 
+                        class="clasificacion-option clasificacion-c"
+                        data-option="clasificacion"
+                        data-clas="reprobadas"
+                        selected>
+                    &nbsp;&nbsp;&nbsp;&nbsp;↳ Zona Crítica
+                </option>
+                <option value="ZONA DE ATENÇÃO" 
+                        class="clasificacion-option clasificacion-a"
+                        data-option="clasificacion"
+                        data-clas="reprobadas"
+                        selected>
+                    &nbsp;&nbsp;&nbsp;&nbsp;↳ Zona de Atenção
+                </option>
+                
+                <!-- Separador visual (opcional) -->
+                <option data-divider="true"></option>
             </select>
         </div>
         <div class="input-group" style="max-width:200px; max-height:34px;">
@@ -163,6 +204,16 @@
             <select class="form-control selectpicker" id="filter_estado" name="list_estado[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
                 <? foreach($data['estados'] as $es): ?>
                     <option value="<?=$es['state_name']?>" selected><?=$es['state_name']?></option>
+                <? endforeach ?>
+            </select>
+        </div>
+        <div class="input-group" style="max-width:200px; max-height:34px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text border-0"><?=$fnT('Executivo')?></span>
+            </div>
+            <select class="form-control selectpicker" id="filter_executivo" name="list_executivo[]" multiple data-actions-box="true" data-selected-text-format="count>1" required>
+                <? foreach($data['executivos'] as $con): ?>
+                    <option value="<?=$con['id']?>" selected><?=$con['name']?></option>
                 <? endforeach ?>
             </select>
         </div>
@@ -532,6 +583,7 @@
         $(this).data('originalValues', $(this).val() || []);
     });
 });*/
+
 </script>
 
 <style>

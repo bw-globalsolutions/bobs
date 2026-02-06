@@ -268,9 +268,9 @@ class Usuarios extends Controllers{
 
 	public function perfil()
 	{
-		$data['page_tag'] = "Profile";
-		$data['page_title'] = "User profile";
-		$data['page_name'] = "profile";
+		$data['page_tag'] = "Perfil do usuário";
+		$data['page_title'] = "Perfil do usuário";
+		$data['page_name'] = "Perfil do usuário";
 		$data['page-functions_js'] = "functions_profile.js";
 
 		$data['countries'] = $this->model->getListCountries($_SESSION['userData']['id']);

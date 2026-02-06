@@ -7,6 +7,7 @@ const $gerente = $('#filter_gerente');
 const $consultor = $('#filter_consultor');
 const $loja = $('#filter_loja');
 const $seccion = $('#filter_seccion');
+const $executivo = $('#filter_executivo');
 const rootStyles = getComputedStyle(document.documentElement);
 const color1v = rootStyles.getPropertyValue('--color1').trim();
 const color2v = rootStyles.getPropertyValue('--color2').trim();
@@ -155,15 +156,16 @@ const data3 = {
         
 actualizarEstadisticas();
 
-$periodos.on('changed.bs.select', actualizarEstadisticas);
+//$periodos.on('changed.bs.select', actualizarEstadisticas); se actualiza solo con el evento asignado
 $tipos.on('changed.bs.select', actualizarEstadisticas);
-$clasificacion.on('changed.bs.select', actualizarEstadisticas);
+//$clasificacion.on('changed.bs.select', actualizarEstadisticas); //se actualiza solo con el evento asignado
 $regional.on('changed.bs.select', actualizarEstadisticas);
 $estado.on('changed.bs.select', actualizarEstadisticas);
 $gerente.on('changed.bs.select', actualizarEstadisticas);
 $consultor.on('changed.bs.select', actualizarEstadisticas);
 $loja.on('changed.bs.select', actualizarEstadisticas);
 $seccion.on('changed.bs.select', actualizarEstadisticas);
+$executivo.on('changed.bs.select', actualizarEstadisticas);
 
 document.querySelectorAll('input[name="auditType"]').forEach(e=>{
     e.addEventListener('change', ()=>{
@@ -192,9 +194,10 @@ function actualizarEstadisticas(){
     const consultorS = $consultor.val() || [];
     const lojaS = $loja.val() || [];
     const secciones = $seccion.val() || [];
+    const executivos = $executivo.val() || [];
     $.ajax({
         cache: false,
-            data: {"periodos":periodosSeleccionados, "tipos":tiposS, "clasificaciones":clasificacionS, "regiones":regionalS, "estados":estadoS, "gerentes":gerenteS, "consultores":consultorS, "tiendas":lojaS, "secciones":secciones},
+            data: {"periodos":periodosSeleccionados, "tipos":tiposS, "clasificaciones":clasificacionS, "regiones":regionalS, "estados":estadoS, "gerentes":gerenteS, "consultores":consultorS, "tiendas":lojaS, "secciones":secciones, "executivos":executivos},
             type: "POST",
             url: '../Home/actualizarDatos',
         beforeSend: function(){
@@ -1200,7 +1203,7 @@ function esColorClaroFunc(color) {
     }
 }
 
-const setTopOpp = mainSection => {
+/*const setTopOpp = mainSection => {
     var fcTopOppBs = new FusionCharts({
         type: 'bar2d',
         renderAt: 'chart-top-opp',
@@ -1401,7 +1404,7 @@ const sendFormAddFile = async element => {
     fetchFiles();
 }
 
-const fetchFiles = async () => {
+/*const fetchFiles = async () => {
     const pet = fetch(base_url + '/files/getFiles').then(res => res.json());
     const response = await pet;
     let first = true;
@@ -1499,6 +1502,90 @@ const prepareUpdFile = id => {
     
     $('#btn-send-af').html(fnT('Atualizar registro'));
     $('#collapseFormFile').collapse('show');
+}*/
+
+function togglePeriodMonths(periodId, selectAll) {
+    const $select = $('#filter_period');
+    let currentValues = $select.val() || [];
+    console.log($select);
+    console.log(`option[data-period="${periodId}"]`);
+    
+    // Encontrar todos los meses de este periodo
+    const $months = $select.find(`option[data-period="${periodId}"]`);
+    console.log($months);
+    
+    if (selectAll) {
+        // Agregar todos los meses
+        $months.each(function() {
+            const value = $(this).val();
+            if (currentValues.indexOf(value) === -1) {
+                currentValues.push(value);
+            }
+            $(this).prop('selected', true);
+        });
+    } else {
+        // Remover todos los meses
+        $months.each(function() {
+            const value = $(this).val();
+            const index = currentValues.indexOf(value);
+            if (index > -1) {
+                currentValues.splice(index, 1);
+            }
+            $(this).prop('selected', false);
+        });
+    }
+    
+    // Actualizar y refrescar
+    $select.val(currentValues);
+    $select.selectpicker('refresh');
 }
 
-document.addEventListener('DOMContentLoaded', reloadAll);
+$(document).ready(function() {
+    $('#filter_period').selectpicker();
+    
+    $('#filter_period').on('changed.bs.select', function(e, clickedIndex) {
+        const $select = $(this);
+        const $clickedOption = $select.find('option').eq(clickedIndex);
+        
+        // Verificar si es periodo (mira el valor que empieza con "PERIOD_")
+        if ($clickedOption.val().startsWith('Round ')) {
+            const periodId = $clickedOption.val().replaceAll(' ', '_').toLowerCase()
+            console.log(periodId);
+            const isSelected = $clickedOption.prop('selected');
+            
+            // Buscar meses por su atributo data-period-id
+            const $months = $select.find(`option[data-period="${periodId}"]`);
+            
+            // Marcar/desmarcar todos los meses
+            $months.prop('selected', isSelected);
+            
+            // Refrescar
+            $select.selectpicker('refresh');
+            actualizarEstadisticas();
+        }
+    });
+
+    $('#filter_clasificacion').selectpicker();
+    
+    $('#filter_clasificacion').on('changed.bs.select', function(e, clickedIndex) {
+        const $select = $(this);
+        const $clickedOption = $select.find('option').eq(clickedIndex);
+        
+        // Verificar si es periodo (mira el valor que empieza con "PERIOD_")
+        if (['aprobadas', 'reprobadas'].includes($clickedOption.val())) {
+            const Id = $clickedOption.val()
+            console.log(Id);
+            const isSelected = $clickedOption.prop('selected');
+            
+            // Buscar meses por su atributo data-period-id
+            const $clasificaciones = $select.find(`option[data-clas="${Id}"]`);
+            
+            // Marcar/desmarcar todos los meses
+            $clasificaciones.prop('selected', isSelected);
+            
+            // Refrescar
+            $select.selectpicker('refresh');
+            actualizarEstadisticas();
+        }
+    });
+});

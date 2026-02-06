@@ -136,12 +136,19 @@ class Home extends Controllers{
 			}
 			$strsecciones = substr($strsecciones, 0, -1);
 		}
+		$strexecutivos = "";
+		if($_POST['executivos']!=[]){
+			foreach($_POST['executivos'] as $p){
+				$strexecutivos.=$p.",";
+			}
+			$strexecutivos = substr($strexecutivos, 0, -1);
+		}
 
 		//Primero obtenemos los rounds
 		$rounds = $obj1->getRoundsIds("name IN (".($strPeriodos!=NULL?$strPeriodos:"'x'").") AND type IN (".($strTipos!=NULL?$strTipos:"'x'").")");
 
 		//despues obtenemos los location_id de las tiendas asignadas a los usuarios filtrados
-		$usrs = $strgerentes.($strgerentes!=""?",":"").$strconsultores;
+		$usrs = $strgerentes.($strgerentes!=""?",":"").$strconsultores.($strconsultores!=""?",":"").$strexecutivos;
 		$idsL = $obj2->getLocationsIds("id IN (".($usrs!=NULL?$usrs:0).")");
 
 		//filtramos por regiones, estados y tiendas
@@ -158,7 +165,7 @@ class Home extends Controllers{
 		$strVisitas = substr($strVisitas, 0, -1);
 
 		//top 5 question con mas oportunidades
-		$top5FS = $obj5->getTopBottomOpp("ao.audit_id IN (".($strVisitas!=''?$strVisitas:0).") AND ci.section_number>1 AND ci.section_number<12", "DESC", count($visits));
+		$top5FS = $obj5->getTopBottomOpp("ao.audit_id IN (".($strVisitas!=''?$strVisitas:0).") AND ci.section_number>1 AND ci.section_number<12", "DESC", count($visits), $strVisitas);
 		$top5PM = $obj5->getTopBottomOpp("ao.audit_id IN (".($strVisitas!=''?$strVisitas:0).") AND ci.section_number>11", "DESC", count($visits));
 		//todas las question con sus opp
 		$allOpp = $obj5->getAllOpp("ao.audit_id IN (".($strVisitas!=''?$strVisitas:0).") AND ci.section_number>1 AND ci.main_section IN (".($strsecciones!=''?$strsecciones:0).")", "DESC", count($visits));
@@ -170,6 +177,8 @@ class Home extends Controllers{
 		//primero obtenemos todos los gerentes y consultores segun los filtros
 		$arrGerentes = [];
 		$arrConsultores = [];
+		$arrExecutivos = [];
+		if($locations!="" && $locations!=NULL){
 		$arrLocations = explode(',', $locations);
 		foreach($arrLocations as $l){
 			$gerentes = $obj2->getUsers("FIND_IN_SET($l, location_id) AND role_id = 17");
@@ -188,13 +197,25 @@ class Home extends Controllers{
 					"location_id"=>$g['location_id']
 				);
 			}
+			$executivos = $obj2->getUsers("FIND_IN_SET($l, location_id) AND role_id = 18");
+			foreach($executivos as $g){
+				if($arrExecutivos[$g['id']]==NULL)$arrExecutivos[$g['id']]=array(
+					"id"=>$g['id'],
+					"name"=>$g['name'],
+					"location_id"=>$g['location_id']
+				);
+			}
 		}
 		foreach($arrGerentes as $g){
 			$visitsG = $obj4->getAuditsDashboard("a.round_id IN (".($rounds!=NULL?$rounds:0).") AND a.location_id IN (".($g['location_id']!=NULL?$g['location_id']:0).") AND s.value_3 IN (".($strclasificaciones!=NULL?$strclasificaciones:"'x'").")");
 			//die(count($visitsG));
 			$sumaG = 0;
 			foreach($visitsG as $v){
-				$sumaG+=$v['value_4'];
+				$sumaT = 0;
+				if(in_array('Segurança dos Alimentos', $_POST['secciones']))$sumaT += $v['value_1'];
+				if(in_array('Padrões da Marca', $_POST['secciones']))$sumaT += $v['value_2'];
+				$sumaG += (count($_POST['secciones'])>0?$sumaT/count($_POST['secciones']):0);
+				//$sumaG+=$v['value_4'];
 			}
 			$promedioG = (count($visitsG)>0?$sumaG/count($visitsG):0);
 			$arrGerentes[$g['id']]['promedio'] = $promedioG;
@@ -204,10 +225,28 @@ class Home extends Controllers{
 			//die(count($visitsG));
 			$sumaC = 0;
 			foreach($visitsC as $v){
-				$sumaC+=$v['value_4'];
+				$sumaT = 0;
+				if(in_array('Segurança dos Alimentos', $_POST['secciones']))$sumaT += $v['value_1'];
+				if(in_array('Padrões da Marca', $_POST['secciones']))$sumaT += $v['value_2'];
+				$sumaC += (count($_POST['secciones'])>0?$sumaT/count($_POST['secciones']):0);
+				//$sumaC+=$v['value_4'];
 			}
 			$promedioC = (count($visitsC)>0?$sumaC/count($visitsC):0);
 			$arrConsultores[$g['id']]['promedio'] = $promedioC;
+		}
+		foreach($arrExecutivos as $g){
+			$visitsC = $obj4->getAuditsDashboard("a.round_id IN (".($rounds!=NULL?$rounds:0).") AND a.location_id IN (".($g['location_id']!=NULL?$g['location_id']:0).") AND s.value_3 IN (".($strclasificaciones!=NULL?$strclasificaciones:"'x'").")");
+			//die(count($visitsG));
+			$sumaEx = 0;
+			foreach($visitsC as $v){
+				$sumaT = 0;
+				if(in_array('Segurança dos Alimentos', $_POST['secciones']))$sumaT += $v['value_1'];
+				if(in_array('Padrões da Marca', $_POST['secciones']))$sumaT += $v['value_2'];
+				$sumaEx += (count($_POST['secciones'])>0?$sumaT/count($_POST['secciones']):0);
+				//$sumaC+=$v['value_4'];
+			}
+			$promedioC = (count($visitsC)>0?$sumaEx/count($visitsC):0);
+			$arrExecutivos[$g['id']]['promedio'] = $promedioC;
 		}
 		//Puntuacion por estados
 		//Primero obtenemos todos los estados y regiones con sus locations_id
@@ -237,7 +276,11 @@ class Home extends Controllers{
 			//die(count($visitsG));
 			$sumaE = 0;
 			foreach($visitsE as $v){
-				$sumaE+=$v['value_4'];
+				$sumaT = 0;
+				if(in_array('Segurança dos Alimentos', $_POST['secciones']))$sumaT += $v['value_1'];
+				if(in_array('Padrões da Marca', $_POST['secciones']))$sumaT += $v['value_2'];
+				$sumaE += (count($_POST['secciones'])>0?$sumaT/count($_POST['secciones']):0);
+				//$sumaE+=$v['value_4'];
 			}
 			$promedioE = (count($visitsE)>0?$sumaE/count($visitsE):0);
 			$arrEstados[$g['name']]['promedio'] = $promedioE;
@@ -248,12 +291,16 @@ class Home extends Controllers{
 			//die(count($visitsG));
 			$sumaR = 0;
 			foreach($visitsR as $v){
-				$sumaR+=$v['value_4'];
+				$sumaT = 0;
+				if(in_array('Segurança dos Alimentos', $_POST['secciones']))$sumaT += $v['value_1'];
+				if(in_array('Padrões da Marca', $_POST['secciones']))$sumaT += $v['value_2'];
+				$sumaR += (count($_POST['secciones'])>0?$sumaT/count($_POST['secciones']):0);
+				//$sumaR+=$v['value_4'];
 			}
 			$promedioR = (count($visitsR)>0?$sumaR/count($visitsR):0);
 			$arrRegiones[$g['name']]['promedio'] = $promedioR;
 		}
-
+		}
 		
 		$suma=0;
 		$suma2=0;
@@ -380,6 +427,7 @@ class Home extends Controllers{
 		$data['gerentes'] = $objData->getUsers("status=1 AND role_id = 17");
 		$data['estados'] = $obj2->getEstados();
 		$data['regionales'] = $obj2->getRegionales();
+		$data['executivos'] = $objData->getUsers("status=1 AND role_id = 18");
 		$data['lojas'] = $obj3->getLocation(['id', 'name', 'number'], "status = 1");
 		$data['secciones'] = $obj4->getSeccs("main_section NOT IN ('Informações Iniciais')");
 

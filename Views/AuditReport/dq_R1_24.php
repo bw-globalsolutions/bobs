@@ -102,16 +102,16 @@
                         <div class="card mb-3">
                             <div class="d-flex text-center">
                                 <div class="col card-header" style="background-color: #4dea62;">
-                                    <h6><?=$fnT('Segurança dos alimentos')?></h6>
+                                    <h6><?=$fnT('Segurança dos Alimentos')?></h6>
                                 </div>
                                 <div class="col card-header" style="background-color: #4deae7;">
-                                    <h6><?=$fnT('Excelência operacional')?></h6>
+                                    <h6><?=$fnT('Padrões da Marca')?></h6>
                                 </div>
                             </div>
 
                             <div class="card-body d-flex p-2">
-                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['FootSafety']??0?></b><span>#</span></div>
-                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['OperationsE']??0?></b><span>#</span></div>
+                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['FootSafety']??0?></b><span>%</span></div>
+                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['OperationsE']??0?></b><span>%</span></div>
                             </div>
                             <!-- <div class="card-header hd-red d-flex text-center">
                                 <h6 class="col border-right d-none d-md-block"><?=$fnT('Verde')?></h6>
@@ -120,12 +120,12 @@
                             </div> -->
                             <div class="d-flex text-center">
                                 <div class="col card-header" style="background-color: var(--color1);">
-                                    <h6><?=$fnT('Pontuação geral')?></h6>
+                                    <h6><?=$fnT('Pontuação Geral')?></h6>
                                 </div>
                             </div>
                             <div class="card-body d-flex p-2">
                                 <!-- <div class="col d-none d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['Verdes']??0?></b><span>#</span></div> -->
-                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['OverallScore']??0?></b><span>#</span></div>
+                                <div class="col  d-md-flex justify-content-center align-items-center"><b class="display-4"><?=$data['scoring']['OverallScore']??0?></b><span>%</span></div>
                             </div>
                             <!--<div class="card-header hd-ss d-flex text-center">
                                 <h6 class="col"><?=$fnT('Letra')?></h6>
@@ -137,6 +137,7 @@
                         </div>
                         <? 
                             foreach($data['mains'] as $m => $sections):
+                            if(!in_array($m, ['Informações Iniciais'])){
                             $points = 0; $questions = 0;
                         ?>
                             <div class="card mb-3">
@@ -168,10 +169,54 @@
                                     </table>
                                 </div>
                             </div>
+                            <? } ?>
                         <? endforeach ?>
                     </div>
                 </div>
             </div>
+            <?php
+            foreach($data['mains'] as $m => $sections){
+                if(!in_array($m, ['Informações Iniciais'])){
+                $pointsT = 0; $targetT = 0;
+            ?>
+            <table class="tabla" style="margin-top:10px; margin-bottom:10px;">
+                <thead>
+                    <tr><th colspan="4" style="text-align:center; background-color: var(--color5);">Resumo por seção</th></tr>
+                    <tr><th colspan="4" style="text-align:center;"><?=$m?></th></tr>
+                    <tr>
+                        <th>Nome da seção</th>
+                        <th>Pontos Ganhos</th>
+                        <th>Pontos possíveis</th>
+                        <th>Pontuação da Seção</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <? foreach($sections as $s){ 
+                        if(in_array($s['section_name'], ['PERGUNTA EXTRA'])){
+                            $pointsT+=$s['puntos_win'];
+                        }else{
+                            $pointsT+=$s['puntos_win'];
+                            $targetT+=$s['target'];
+                        } ?>
+                        <tr>
+                            <td><?=$s['section_name']?></td>
+                            <td><?=$s['puntos_win']?></td>
+                            <td><?=$s['target']?></td>
+                            <td><?=$s['porcentaje']?></td>
+                        </tr>
+                    <? } 
+                    $promedio = ($m=="Segurança dos Alimentos"?$data['scoring']['FootSafety']??0:round(($pointsT/$targetT)*100, 2));
+                    if($promedio>100)$promedio=100;
+                    ?>
+                    <tr style="background-color: var(--color6); color: var(--color4);">
+                        <td>Média de <?=$m?></td>
+                        <td><?=$pointsT?></td>
+                        <td><?=$targetT?></td>
+                        <td><?=$promedio?></td>
+                    </tr>
+                </tbody>
+            </table>
+            <? } } ?>
             <div class="card mb-5">
                 <h4 class="card-header bg-danger text-white"><i class="fa fa-bolt"></i>&nbsp;&nbsp;<?=$fnT('Detalhe da oportunidade')?></h4>
                 <div class="card-body pb-0">
@@ -184,7 +229,7 @@
                                     <? if(!empty($q['priority'])): ?>
                                         <b class="<?=$q['priority']=='Critical'? 'text-danger' : '' ?>"><?=$fnT($q['priority'])?>:</b>&nbsp;
                                     <? endif ?>
-                                    <?=$q['question']?>
+                                    <?=$q['question']?> <span class="badge badge-secondary" style="background-color:var(--color9); padding: 5px;">-<?=$q['valor']?> pts</span>
                                     <? foreach($q['picklist'] as $p): ?>
                                         <div class="pl-4 my-2">
                                             <p class="mb-1"><i class="fa fa-bolt text-danger"></i> <b><?=$p['text']?> :</b>&nbsp;&nbsp;<?=implode(', ',$p['answers'])?></p>
